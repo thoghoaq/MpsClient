@@ -6,10 +6,10 @@ import { PartialDeep } from 'type-fest';
 
 const defaultAuthConfig = {
 	tokenStorageKey: 'jwt_access_token',
-	signInUrl: 'api/auth/sign-in',
+	signInUrl: 'api/account/login',
 	signUpUrl: 'api/auth/sign-up',
 	tokenRefreshUrl: 'api/auth/refresh',
-	getUserUrl: 'api/auth/user',
+	getUserUrl: 'api/account/logged-user',
 	updateUserUrl: 'api/auth/user',
 	updateTokenFromHeader: false
 };
@@ -221,9 +221,9 @@ const useJwtAuth = <User, SignInPayload, SignUpPayload>(
 		const response = axios.post(authConfig.signInUrl, credentials);
 
 		response.then(
-			(res: AxiosResponse<{ user: User; access_token: string }>) => {
+			(res: AxiosResponse<{ user: User; accessToken: string }>) => {
 				const userData = res?.data?.user;
-				const accessToken = res?.data?.access_token;
+				const accessToken = res?.data?.accessToken;
 
 				handleSignInSuccess(userData, accessToken);
 

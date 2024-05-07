@@ -1014,7 +1014,7 @@ const navigationConfig: FuseNavItemType[] = [
 				id: 'sign-out',
 				title: 'Sign out',
 				type: 'item',
-				auth: authRoles.user,
+				auth: authRoles.customer,
 				url: 'sign-out',
 				icon: 'exit_to_app'
 			},
@@ -1044,7 +1044,7 @@ const navigationConfig: FuseNavItemType[] = [
 				id: 'only-staff-navigation-item',
 				title: 'Nav item only for Staff',
 				type: 'item',
-				auth: authRoles.staff,
+				auth: authRoles.supplier,
 				url: 'auth/staff-role-example',
 				icon: 'verified_user'
 			},
