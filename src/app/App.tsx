@@ -17,7 +17,8 @@ import axios from 'axios';
 /**
  * Axios HTTP Request defaults
  */
-axios.defaults.baseURL = "https://localhost:7133";
+const apiUrl = import.meta.env.VITE_API_URL;
+axios.defaults.baseURL = apiUrl;
 // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 // axios.defaults.headers.common['Content-Type'] = 'application/json';
 
