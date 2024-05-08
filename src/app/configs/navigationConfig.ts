@@ -19,6 +19,24 @@ const navigationConfig: FuseNavItemType[] = [
 		type: 'item',
 		icon: 'heroicons-outline:star',
 		url: 'example'
+	},
+	{
+		id: 'apps',
+		title: 'Applications',
+		subtitle: 'Custom made application designs',
+		type: 'group',
+		icon: 'heroicons-outline:cube',
+		translate: 'APPLICATIONS',
+		children: [
+			{
+				id: 'apps.contacts',
+				title: 'Users',
+				type: 'item',
+				icon: 'heroicons-outline:user-group',
+				url: '/apps/users',
+				translate: 'Users'
+			}
+		]
 	}
 ];
 
