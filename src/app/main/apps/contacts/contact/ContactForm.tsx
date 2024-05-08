@@ -129,7 +129,7 @@ function ContactForm() {
 	}
 
 	const background = watch('background');
-	const name = watch('name');
+	const name = watch('fullName');
 
 	if (isError && contactId !== 'new') {
 		setTimeout(() => {
@@ -259,7 +259,7 @@ function ContactForm() {
 				</div>
 				<Controller
 					control={control}
-					name="name"
+					name="fullName"
 					render={({ field }) => (
 						<TextField
 							className="mt-32"

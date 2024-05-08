@@ -26,10 +26,10 @@ export const ContactEmailModel = (data: Partial<ContactEmail> | null): ContactEm
  */
 const ContactModel = (data: PartialDeep<Contact>): Contact =>
 	_.defaults(data || {}, {
-		id: _.uniqueId(),
+		userId: _.uniqueId(),
 		avatar: '',
 		background: '',
-		name: '',
+		fullName: '',
 		emails: [ContactEmailModel(null)],
 		phoneNumbers: [ContactPhoneModel(null)],
 		title: '',
