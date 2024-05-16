@@ -1,52 +1,25 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@fuse/*": ["./src/@fuse/*"],
-      "@history*": ["./src/@history"],
-      "@lodash": ["./src/@lodash"],
-      "@mock-api/*": ["./src/@mock-api/*"],
-      "@schema": ["./src/@schema"],
-      "app/store": ["./src/app/store/index"],
-      "app/store/*": ["./src/app/store/*"],
-      "app/shared-components/*": ["./src/app/shared-components/*"],
-      "app/configs/*": ["./src/app/configs/*"],
-      "app/theme-layouts/*": ["./src/app/theme-layouts/*"],
-      "app/AppContext": ["./src/app/AppContext"]
-    },
-    "declaration": true,
     "target": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es2020",
-      "scripthost"
-    ],
-    "plugins": [{ "name": "typescript-plugin-css-modules" }],
-    "allowJs": true,
+    "module": "esnext",
+    "importHelpers": true,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "es2022",
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
+    "moduleResolution": "node",
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "baseUrl": ".",
+    "lib": ["esnext", "dom",
+      "dom.iterable",
+      "scripthost"],
+    "types": ["vite/client"],
+    "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }]
   },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": [
-    "src/app/main/documentation/material-ui-components/components/**/*",
-    "src/app/main/documentation/material-ui-components/pages/**/*",
     "node_modules"
-  ],
-  "include": [
-    "src",
-    "tailwind.config.js",
-    "vite.config.mts",
-    "vite-env.d.ts"
-  ],
+  ]
 }
