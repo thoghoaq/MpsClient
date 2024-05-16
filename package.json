@@ -42,5 +42,8 @@
   "lint-staged": {
     "*.{ts,vue}": "eslint --fix"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "license": "MIT"
 }
