@@ -1,0 +1,8 @@
+.navigation-enter-active,
+.navigation-leave-active {
+  transition: transform 0.2s ease;
+}
+.navigation-enter,
+.navigation-leave-to {
+  transform: translateX(-100%);
+}

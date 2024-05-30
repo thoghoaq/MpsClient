@@ -1,0 +1,76 @@
+<script setup lang="ts">
+  import { ref } from 'vue'
+
+  const props = defineProps({
+    visible: Boolean,
+    onVisibleChange: Function,
+  })
+
+  const items = ref([
+    {
+        separator: false,
+    },
+    {
+        label: 'Administrator',
+        items: [
+            {
+                label: 'Manage Staffs',
+                icon: 'pi pi-users',
+            },
+            {
+                label: 'Manage Shop Owners',
+                icon: 'pi pi-shopping-bag',
+            },
+            {
+                label: 'Manage Customers',
+                icon: 'pi pi-shopping-cart',
+            }
+        ]
+    },
+    {
+        label: 'Shop',
+        items: [
+            {
+                label: 'Manage Products',
+                icon: 'pi pi-table',
+            },
+            {
+                label: 'Information',
+                icon: 'pi pi-user-edit',
+            },
+            {
+                label: 'Report',
+                icon: 'pi pi-chart-bar',
+            }
+        ]
+    },
+    {
+        separator: false,
+    }
+]);
+
+</script>
+<template>
+  <div v-if="props.visible" class="card flex justify-content-center h-screen">
+        <Menu :model="items" class="w-full md:w-15rem border-0 border-noround">
+            <template #start>
+                <span class="inline-flex align-items-center gap-1 px-2 py-4">
+                    <span class="font-medium text-xl font-semibold">SMPS<span class="text-primary">Admin</span></span>
+                </span>
+            </template>
+            <template #submenuheader="{ item }">
+                <span class="text-primary font-bold">{{ item.label }}</span>
+            </template>
+            <template #item="{ item, props }">
+                <a v-ripple class="flex align-items-center" v-bind="props.action">
+                    <span :class="item.icon" />
+                    <span class="ml-2">{{ item.label }}</span>
+                    <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
+                    <span v-if="item.shortcut" class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">{{ item.shortcut }}</span>
+                </a>
+            </template>
+            <template #end>
+            </template>
+        </Menu>
+    </div>
+</template>
