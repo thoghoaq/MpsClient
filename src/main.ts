@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import './style.css';
 import App from './App.vue';
+import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
 
 import Button from 'primevue/button';
@@ -25,8 +26,11 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 
 const app = createApp(App);
+const pinia = createPinia();
+
 app.use(PrimeVue);
 app.use(ToastService);
+app.use(pinia);
 
 app.component('Button', Button);
 app.component('Toast', Toast);

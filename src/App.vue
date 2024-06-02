@@ -16,5 +16,5 @@ const greet = () => {
 </script>
 
 <template>
-    <Layout></Layout>
+    <SignIn></SignIn>
 </template>

@@ -1,11 +1,29 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-
-  const data = ref({
+  import { ref, reactive } from 'vue'
+  import { useToast } from 'primevue/usetoast'
+  import useVuelidate from '@vuelidate/core'
+  import { required, email, minLength } from '@vuelidate/validators'
+  const toast = useToast()
+  const state = reactive({
     email: '',
     password: '',
     rememberMe: false,
   })
+
+  const rules = {
+    email: { required, email },
+    password: { required, minLength: minLength(6)},
+    rememberMe: {},
+  }
+
+  const v$ = useVuelidate(rules, state)
+
+  const submitForm = () => {
+    v$.value.$touch()
+    if (!v$.value.$invalid) {
+      alert('Form submitted successfully')
+    }
+  }
 </script>
 <template>
   <div>
@@ -45,31 +63,41 @@
           <span class="text-600 font-medium">Please enter your details</span>
         </div>
         <div class="flex flex-column">
-          <InputGroup class="mb-4">
-            <InputGroupAddon>
-              <i class="pi pi-envelope"></i>
-            </InputGroupAddon>
-            <InputText
-              v-model="data.email"
-              placeholder="Email"
-              class="w-full"
-            />
-          </InputGroup>
-          <InputGroup class="mb-4">
-            <InputGroupAddon>
-              <i class="pi pi-lock"></i>
-            </InputGroupAddon>
-            <Password
-              v-model="data.password"
-              placeholder="Password"
-              toggleMask
-              class="w-full"
-            />
-          </InputGroup>
+          <div class="mb-4 text-right">
+            <InputGroup>
+              <InputGroupAddon>
+                <i class="pi pi-envelope"></i>
+              </InputGroupAddon>
+              <InputText
+                v-model="state.email"
+                placeholder="Email"
+                class="w-full"
+                @blur="v$.email.$touch"
+                :invalid="v$.email.$error"
+              />
+            </InputGroup>
+            <small class="p-error">{{ v$.email.$errors[0]?.$message }}</small>
+          </div>
+          <div class="mb-4 text-right">
+            <InputGroup>
+              <InputGroupAddon>
+                <i class="pi pi-lock"></i>
+              </InputGroupAddon>
+              <Password
+                v-model="state.password"
+                placeholder="Password"
+                toggleMask
+                class="w-full"
+                @blur="v$.password.$touch"
+                :invalid="v$.password.$error"
+              />
+            </InputGroup>
+            <small class="p-error">{{ v$.password.$errors[0]?.$message }}</small>
+          </div>
           <div class="mb-4 flex flex-wrap gap-3">
             <div>
               <Checkbox
-                v-model="data.rememberMe"
+                v-model="state.rememberMe"
                 input-id="rememberMe"
                 :binary="true"
                 class="mr-2"
@@ -86,7 +114,7 @@
               />
             </router-link>
           </div>
-          <Button label="Log In" />
+          <Button label="Log In" @click="submitForm" />
         </div>
       </div>
     </div>
