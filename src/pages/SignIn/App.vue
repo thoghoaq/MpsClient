@@ -3,7 +3,10 @@
   import { useToast } from 'primevue/usetoast'
   import useVuelidate from '@vuelidate/core'
   import { required, email, minLength } from '@vuelidate/validators'
+  import { useAuthStore } from '../../stores/auth'
+  import { router } from 'src/router'
   const toast = useToast()
+  const authStore = useAuthStore()
   const state = reactive({
     email: '',
     password: '',
@@ -12,7 +15,7 @@
 
   const rules = {
     email: { required, email },
-    password: { required, minLength: minLength(6)},
+    password: { required, minLength: minLength(6) },
     rememberMe: {},
   }
 
@@ -21,7 +24,24 @@
   const submitForm = () => {
     v$.value.$touch()
     if (!v$.value.$invalid) {
-      alert('Form submitted successfully')
+      authStore.login(state.email, state.password).then((response) => {
+        if (response.success) {
+          toast.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Logged in successfully',
+            life: 3000,
+          })
+          router.push({ name: 'home' })
+        } else {
+          toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: response.content,
+            life: 3000,
+          })
+        }
+      })
     }
   }
 </script>
@@ -92,7 +112,9 @@
                 :invalid="v$.password.$error"
               />
             </InputGroup>
-            <small class="p-error">{{ v$.password.$errors[0]?.$message }}</small>
+            <small class="p-error">{{
+              v$.password.$errors[0]?.$message
+            }}</small>
           </div>
           <div class="mb-4 flex flex-wrap gap-3">
             <div>

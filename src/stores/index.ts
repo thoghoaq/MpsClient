@@ -27,11 +27,12 @@ const getControllerUrl = function (action: string, controller: string) {
 }
 
 const controllers = {
-    account: 'account'
+    account: '/account'
 }
 
 export const appConfig : AppConfig = {
     apiEndpoint: getAppPath(),
+    language: 'vi-VN',
     api: {
         account: {
             login: getControllerUrl('login', controllers.account)

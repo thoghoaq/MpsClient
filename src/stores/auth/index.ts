@@ -7,7 +7,7 @@ import axios, { AxiosError } from 'axios'
 export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
-    auth: <Auth>{},
+    auth: <Auth>JSON.parse(localStorage.getItem('auth') || '{}'),
   }),
   actions: {
     async login(email: string, password: string): Promise<APIResponse<any>> {
@@ -21,13 +21,22 @@ export const useAuthStore = defineStore({
             accessToken: response.data["accessToken"],
             user: response.data["user"],
           }
+          //store token in local storage
+          localStorage.setItem("auth", JSON.stringify(this.auth));
           return {
             success: true,
             content: response.data,
             status: response.status,
           }
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<any, any>) => {
+          if (error.response) {
+            return {
+              success: false,
+              content: error.response.data["reason"],
+              status: error.response.status,
+            }
+          }
           return {
             success: false,
             content: error.message,

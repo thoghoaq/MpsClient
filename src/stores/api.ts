@@ -1,13 +1,16 @@
+import axios from 'axios'
 import { useAuthStore } from './auth'
+import { appConfig } from './index'
 
 export const useApi = () => {
   const { auth } = useAuthStore()
   const defaultHeaders = {
     Authorization: `Bearer ${auth.accessToken}`,
+    'Accept-Language': appConfig.language,
   }
 
   const get = async (url: string) => {
-    const response = await fetch(url, {
+    const response = await axios.get(url, {
       headers: defaultHeaders,
     })
 
@@ -15,8 +18,7 @@ export const useApi = () => {
   }
 
   const post = async (url: string, data: any) => {
-    const response = await fetch(url, {
-      method: 'POST',
+    const response = await axios.post(url, {
       headers: {
         ...defaultHeaders,
         'Content-Type': 'application/json',
@@ -27,8 +29,7 @@ export const useApi = () => {
   }
 
   const put = async (url: string, data: any) => {
-    const response = await fetch(url, {
-      method: 'PUT',
+    const response = await axios.put(url, {
       headers: {
         ...defaultHeaders,
         'Content-Type': 'application/json',
@@ -39,8 +40,7 @@ export const useApi = () => {
   }
 
   const delele = async (url: string) => {
-    const response = await fetch(url, {
-      method: 'DELETE',
+    const response = await axios.delete(url, {
       headers: defaultHeaders,
     })
     return response

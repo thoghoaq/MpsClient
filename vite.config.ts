@@ -11,4 +11,10 @@ export default defineConfig({
       resolvers: [PrimeVueResolver()],
     }),
   ],
+  resolve: {
+    alias: {
+      '@': '/src',
+      'src': '/src',
+    },
+  }
 })
