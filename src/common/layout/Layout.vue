@@ -11,6 +11,9 @@
     <div class="flex">
       <NavigationBar :visible="visible"/>
       <TopBar :on-toggle-menu="toggleMMenu" />
+      <div class="flex-1">
+        <slot></slot>
+      </div>
     </div>
 </template>
 <style src="./Layout.css" scoped></style>

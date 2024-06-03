@@ -18,8 +18,10 @@ import InputGroup from 'primevue/inputgroup'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import Checkbox from 'primevue/checkbox'
 import Menu from 'primevue/menu'
+import Badge from 'primevue/badge'
 
 import ToastService from 'primevue/toastservice'
+import Ripple from 'primevue/ripple';
 
 import 'primevue/resources/themes/aura-light-green/theme.css'
 import 'primevue/resources/primevue.min.css'
@@ -62,5 +64,8 @@ app.component('InputGroup', InputGroup)
 app.component('InputGroupAddon', InputGroupAddon)
 app.component('Checkbox', Checkbox)
 app.component('Menu', Menu)
+app.component('Badge', Badge)
+
+app.directive('ripple', Ripple)
 
 app.mount('#app')
