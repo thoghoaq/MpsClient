@@ -26,9 +26,19 @@ import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 import { router } from './router'
+import { createI18n } from 'vue-i18n'
+import { messages, defaultLocale } from './locales'
 
 const app = createApp(App)
 const pinia = createPinia()
+const i18n = createI18n({
+    legacy: false,
+    globalInjection: true,
+    locale: defaultLocale,
+    fallbackLocale: "en",
+    availableLocales: ["en", "vi"],
+    messages: messages,
+})
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL
 axios.defaults.headers.common['Accept-Language'] = 'vi-VN'
@@ -37,6 +47,7 @@ app.use(PrimeVue)
 app.use(ToastService)
 app.use(pinia)
 app.use(router)
+app.use(i18n)
 
 app.component('Button', Button)
 app.component('Toast', Toast)

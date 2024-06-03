@@ -1,12 +1,14 @@
 <script setup lang="ts">
   import { ref, reactive } from 'vue'
-  import { useToast } from 'primevue/usetoast'
   import useVuelidate from '@vuelidate/core'
   import { required, email, minLength } from '@vuelidate/validators'
   import { useAuthStore } from '../../stores/auth'
   import { router } from 'src/router'
-  const toast = useToast()
+  import { useToastStore } from 'src/stores/toast'
+  import { useI18n } from 'vue-i18n'
+  const { t } = useI18n()
   const authStore = useAuthStore()
+  const toast = useToastStore()
   const state = reactive({
     email: '',
     password: '',
@@ -14,7 +16,10 @@
   })
 
   const rules = {
-    email: { required, email },
+    email: {
+      required,
+      email,
+    },
     password: { required, minLength: minLength(6) },
     rememberMe: {},
   }
@@ -26,20 +31,10 @@
     if (!v$.value.$invalid) {
       authStore.login(state.email, state.password).then((response) => {
         if (response.success) {
-          toast.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Logged in successfully',
-            life: 3000,
-          })
           router.push({ name: 'home' })
+          toast.success(t('Logged in successfully'))
         } else {
-          toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: response.content,
-            life: 3000,
-          })
+          toast.error(response.content)
         }
       })
     }
@@ -79,8 +74,10 @@
         class="border-1 surface-border surface-card border-round py-7 px-4 md:px-7 z-1"
       >
         <div class="mb-4">
-          <div class="text-900 text-xl font-bold mb-2">Log in</div>
-          <span class="text-600 font-medium">Please enter your details</span>
+          <div class="text-900 text-xl font-bold mb-2">{{ $t('Log in') }}</div>
+          <span class="text-600 font-medium">{{
+            $t('Please enter your details')
+          }}</span>
         </div>
         <div class="flex flex-column">
           <div class="mb-4 text-right">
@@ -96,7 +93,9 @@
                 :invalid="v$.email.$error"
               />
             </InputGroup>
-            <small class="p-error">{{ v$.email.$errors[0]?.$message }}</small>
+            <small class="p-error" v-if="v$.email.$error">{{
+              $t(v$.email.$errors[0]?.$message?.toString())
+            }}</small>
           </div>
           <div class="mb-4 text-right">
             <InputGroup>
@@ -112,8 +111,8 @@
                 :invalid="v$.password.$error"
               />
             </InputGroup>
-            <small class="p-error">{{
-              v$.password.$errors[0]?.$message
+            <small class="p-error" v-if="v$.password.$error">{{
+              $t(v$.password.$errors[0]?.$message?.toString())
             }}</small>
           </div>
           <div class="mb-4 flex flex-wrap gap-3">
@@ -125,18 +124,18 @@
                 class="mr-2"
               />
               <label for="rememberMe" class="text-900 font-medium mr-8">
-                Remember Me
+                {{ $t('Remember me') }}
               </label>
             </div>
             <router-link to="/" target="_blank" rel="noopener">
               <Button
-                label="Reset password"
+                :label="$t('Reset password')"
                 link
                 class="p-0 text-600 text-primary"
               />
             </router-link>
           </div>
-          <Button label="Log In" @click="submitForm" />
+          <Button :label="$t('Log in')" @click="submitForm" />
         </div>
       </div>
     </div>
