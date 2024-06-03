@@ -23,7 +23,7 @@ import Badge from 'primevue/badge'
 import ToastService from 'primevue/toastservice'
 import Ripple from 'primevue/ripple';
 
-import 'primevue/resources/themes/aura-light-green/theme.css'
+import 'primevue/resources/themes/aura-light-indigo/theme.css'
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
