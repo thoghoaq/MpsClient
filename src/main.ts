@@ -3,7 +3,7 @@ import './style.css'
 import App from './App.vue'
 import axios from 'axios'
 import { createPinia } from 'pinia'
-import PrimeVue from 'primevue/config'
+import PrimeVue, { usePrimeVue } from 'primevue/config'
 
 import Layout from './common/layout/Layout.vue'
 
@@ -21,11 +21,11 @@ import InputGroupAddon from 'primevue/inputgroupaddon'
 import Checkbox from 'primevue/checkbox'
 import Menu from 'primevue/menu'
 import Badge from 'primevue/badge'
+import RadioButton from 'primevue/radiobutton'
 
 import ToastService from 'primevue/toastservice'
 import Ripple from 'primevue/ripple';
 
-import 'primevue/resources/themes/aura-light-indigo/theme.css'
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
@@ -69,6 +69,7 @@ app.component('InputGroupAddon', InputGroupAddon)
 app.component('Checkbox', Checkbox)
 app.component('Menu', Menu)
 app.component('Badge', Badge)
+app.component('RadioButton', RadioButton)
 
 app.directive('ripple', Ripple)
 
