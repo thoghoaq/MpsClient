@@ -1,10 +1,8 @@
-<script setup lang="ts">
-</script>
 <template>
     <Layout>
         <template #page-content>
             <div>
-                
+                Customer
             </div>
         </template>
     </Layout>

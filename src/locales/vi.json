@@ -6,5 +6,13 @@
   "Value is required": "Không được để trống",
   "Value is not a valid email address": "Vui lòng nhập địa chỉ email hợp lệ",
   "This field should be at least 6 characters long": "Vui lòng nhập ít nhất 6 ký tự",
-  "Logged in successfully": "Đăng nhập thành công"
+  "Logged in successfully": "Đăng nhập thành công",
+  "Administrator": "Quản trị",
+  "Manage Staffs": "Quản lý nhân viên",
+  "Manage Shop Owners": "Quản lý chủ cửa hàng",
+  "Manage Customers": "Quản lý khách hàng",
+  "Shop": "Cửa hàng",
+  "Manage Products": "Quản lý sản phẩm",
+  "Information": "Thông tin",
+  "Report": "Báo cáo"
 }

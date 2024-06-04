@@ -5,6 +5,8 @@ import axios from 'axios'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 
+import Layout from './common/layout/Layout.vue'
+
 import Button from 'primevue/button'
 import Toast from 'primevue/toast'
 import InputText from 'primevue/inputtext'
@@ -50,6 +52,8 @@ app.use(ToastService)
 app.use(pinia)
 app.use(router)
 app.use(i18n)
+
+app.component('Layout', Layout)
 
 app.component('Button', Button)
 app.component('Toast', Toast)

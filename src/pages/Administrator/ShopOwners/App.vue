@@ -1,10 +1,8 @@
-<script setup lang="ts">
-</script>
 <template>
     <Layout>
         <template #page-content>
             <div>
-                
+                Shop Owners
             </div>
         </template>
     </Layout>
