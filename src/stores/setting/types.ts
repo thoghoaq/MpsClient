@@ -4,3 +4,8 @@ export interface Theme {
     color: string;
     isDark?: boolean;
 }
+
+export type Language = {
+    code: string,
+    name: string
+}

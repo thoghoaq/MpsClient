@@ -22,6 +22,10 @@ import Checkbox from 'primevue/checkbox'
 import Menu from 'primevue/menu'
 import Badge from 'primevue/badge'
 import RadioButton from 'primevue/radiobutton'
+import Dropdown from 'primevue/dropdown'
+import TreeTable from 'primevue/treetable'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
 
 import ToastService from 'primevue/toastservice'
 import Ripple from 'primevue/ripple';
@@ -70,6 +74,10 @@ app.component('Checkbox', Checkbox)
 app.component('Menu', Menu)
 app.component('Badge', Badge)
 app.component('RadioButton', RadioButton)
+app.component('Dropdown', Dropdown)
+app.component('TreeTable', TreeTable)
+app.component('DataTable', DataTable)
+app.component('Column', Column)
 
 app.directive('ripple', Ripple)
 

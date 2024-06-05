@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
-import { Theme } from './types'
-import { Locales } from 'src/locales/locales'
+import { Language, Theme } from './types'
 
-const themeInfo = localStorage.getItem('theme');
-const savedTheme = themeInfo ? JSON.parse(themeInfo) : {theme: 'aura-light-indigo', scheme: 'Light'}
+const themeInfo = localStorage.getItem('theme')
+const savedTheme = themeInfo
+  ? JSON.parse(themeInfo)
+  : { theme: 'aura-light-indigo', scheme: 'Light' }
 
 export const useSettingStore = defineStore({
   id: 'setting',
@@ -11,8 +12,7 @@ export const useSettingStore = defineStore({
     currentTheme: savedTheme.theme,
     collection: themeCollection,
     colorSchemes: colorSchemes,
-    currentScheme: savedTheme.scheme,
-    languages: languages,
+    currentScheme: savedTheme.scheme
   }),
   actions: {
     changeTheme(theme: string, scheme?: string) {
@@ -20,7 +20,7 @@ export const useSettingStore = defineStore({
       const themeInfo = {
         theme: theme,
         scheme: scheme ? scheme : this.currentScheme,
-      } 
+      }
       localStorage.setItem('theme', JSON.stringify(themeInfo))
     },
   },
@@ -78,7 +78,5 @@ const themeCollection: Theme[] = [
     color: 'bg-teal-500',
   },
 ]
-
-const languages: string[] = [Locales.VI, Locales.EN]
 
 const colorSchemes: string[] = ['Light', 'Dark']

@@ -7,45 +7,43 @@
     onVisibleChange: Function,
   })
 
-  const { t } = useI18n()
-
   const items = ref([
     {
       separator: false,
     },
     {
-      label: t('Administrator'),
+      label: 'Administrator',
       items: [
         {
-          label: t('Manage Staffs'),
+          label: 'Manage Staffs',
           icon: 'pi pi-users',
           route: '/admin/staffs',
         },
         {
-          label: t('Manage Shop Owners'),
+          label: 'Manage Shop Owners',
           icon: 'pi pi-shopping-bag',
           route: '/admin/shop-owners',
         },
         {
-          label: t('Manage Customers'),
+          label: 'Manage Customers',
           icon: 'pi pi-shopping-cart',
           route: '/admin/customers',
         },
       ],
     },
     {
-      label: t('Shop'),
+      label: 'Shop',
       items: [
         {
-          label: t('Manage Products'),
+          label: 'Manage Products',
           icon: 'pi pi-table',
         },
         {
-          label: t('Information'),
+          label: 'Information',
           icon: 'pi pi-user-edit',
         },
         {
-          label: t('Report'),
+          label: 'Report',
           icon: 'pi pi-chart-bar',
         },
       ],
@@ -77,7 +75,7 @@
         >
           <a v-ripple :href="href" v-bind="props.action" @click="navigate">
             <span :class="item.icon" />
-            <span class="ml-2">{{ item.label }}</span>
+            <span class="ml-2">{{ $t(item.label?.toString() ?? '') }}</span>
             <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
             <span
               v-if="item.shortcut"

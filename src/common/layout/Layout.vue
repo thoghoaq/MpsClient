@@ -14,7 +14,7 @@
       <NavigationBar :visible="visible" />
       <div class="flex flex-column w-full h-screen">
         <TopBar :on-toggle-menu="toggleMenu" />
-        <div class="bg-primary-reverse h-full m-3 border-round">
+        <div class="bg-primary-reverse h-full overflow-auto m-3 border-round">
           <slot name="page-content"></slot>
         </div>
       </div>

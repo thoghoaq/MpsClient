@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, watch } from 'vue'
   import { useSettingStore } from 'src/stores/setting'
   import { usePrimeVue } from 'primevue/config'
   import { Theme } from 'src/stores/setting/types'
+
   const primeVue = usePrimeVue()
   const settingStore = useSettingStore()
 
@@ -27,11 +28,15 @@
   const changeScheme = function (scheme: string) {
     if (settingStore.currentScheme === scheme) return
     const isDark = scheme === 'Dark'
-    const nextTheme = settingStore.collection.find((theme: Theme) =>
-      theme.light === settingStore.currentTheme || theme.dark === settingStore.currentTheme,
+    const nextTheme = settingStore.collection.find(
+      (theme: Theme) =>
+        theme.light === settingStore.currentTheme ||
+        theme.dark === settingStore.currentTheme,
     )
     if (nextTheme)
-      isDark ? changeTheme(nextTheme.dark, scheme) : changeTheme(nextTheme.light, scheme)
+      isDark
+        ? changeTheme(nextTheme.dark, scheme)
+        : changeTheme(nextTheme.light, scheme)
   }
 </script>
 <template>
@@ -91,7 +96,7 @@
       :header="$t('Settings')"
       position="right"
     >
-      <div>
+      <div class="mb-5">
         <h3 class="mb-3">{{ $t('Themes') }}</h3>
         <Button
           v-for="theme in settingStore.collection"
@@ -103,7 +108,7 @@
           "
         ></Button>
       </div>
-      <div>
+      <div class="mb-5">
         <h3 class="mb-3">{{ $t('Color Scheme') }}</h3>
         <div
           v-for="scheme in settingStore.colorSchemes"
@@ -119,6 +124,15 @@
           />
           <label :for="scheme" class="ml-2">{{ $t(scheme) }}</label>
         </div>
+      </div>
+      <div>
+        <h3 class="mb-3">{{ $t('Language') }}</h3>
+        <Dropdown
+          :options="$i18n.availableLocales"
+          v-model="$i18n.locale"
+          :placeholder="$t('Select a language')"
+          class="w-full"
+        ></Dropdown>
       </div>
     </Sidebar>
     <Sidebar v-model:visible="showProfile" header="Profile" position="right">
