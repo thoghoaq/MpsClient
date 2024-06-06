@@ -15,7 +15,8 @@ export const useSettingStore = defineStore({
     currentTheme: savedTheme.theme,
     collection: themeCollection,
     colorSchemes: colorSchemes,
-    currentScheme: savedTheme.scheme
+    currentScheme: savedTheme.scheme,
+    dark: savedTheme.scheme == 'Dark',
   }),
   actions: {
     changeTheme(theme: string, scheme?: string) {

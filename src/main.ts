@@ -26,6 +26,7 @@ import Dropdown from 'primevue/dropdown'
 import TreeTable from 'primevue/treetable'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+import Chip from 'primevue/chip'
 
 import ToastService from 'primevue/toastservice'
 import Ripple from 'primevue/ripple';
@@ -78,6 +79,7 @@ app.component('Dropdown', Dropdown)
 app.component('TreeTable', TreeTable)
 app.component('DataTable', DataTable)
 app.component('Column', Column)
+app.component('Chip', Chip)
 
 app.directive('ripple', Ripple)
 

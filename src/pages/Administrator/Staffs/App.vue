@@ -1,27 +1,61 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-  const staffs = ref([
-    { code: 'S001', name: 'John Doe', category: 'Manager', quantity: 1 },
-    { code: 'S002', name: 'Jane Doe', category: 'Staff', quantity: 2 },
-    { code: 'S003', name: 'John Smith', category: 'Staff', quantity: 3 },
-    { code: 'S004', name: 'Jane Smith', category: 'Staff', quantity: 4 },
-    { code: 'S005', name: 'John Doe', category: 'Manager', quantity: 1 },
-    { code: 'S006', name: 'Jane Doe', category: 'Staff', quantity: 2 },
-    { code: 'S007', name: 'John Smith', category: 'Staff', quantity: 3 },
-    { code: 'S008', name: 'Jane Smith', category: 'Staff', quantity: 4 },
-    { code: 'S009', name: 'John Doe', category: 'Manager', quantity: 1 },
-    { code: 'S010', name: 'Jane Doe', category: 'Staff', quantity: 2 },
-    { code: 'S011', name: 'John Smith', category: 'Staff', quantity: 3 },
-    { code: 'S012', name: 'Jane Smith', category: 'Staff', quantity: 4 },
-    { code: 'S013', name: 'John Doe', category: 'Manager', quantity: 1 },
-    { code: 'S014', name: 'Jane Doe', category: 'Staff', quantity: 2 },
-    { code: 'S015', name: 'John Smith', category: 'Staff', quantity: 3 },
-    { code: 'S016', name: 'Jane Smith', category: 'Staff', quantity: 4 },
-    { code: 'S017', name: 'John Doe', category: 'Manager', quantity: 1 },
-    { code: 'S018', name: 'Jane Doe', category: 'Staff', quantity: 2 },
-    { code: 'S019', name: 'John Smith', category: 'Staff', quantity: 3 },
-    { code: 'S020', name: 'Jane Smith', category: 'Staff', quantity: 4 },
-  ])
+  import { MenuItem } from 'primevue/menuitem';
+import { useStaffStore } from 'src/stores/administrator/staff'
+  import { useToastStore } from 'src/stores/toast'
+  import { onMounted, ref } from 'vue'
+  const staffStore = useStaffStore()
+  const toast = useToastStore()
+  const loading = ref(false)
+  onMounted(() => {
+    loading.value = true
+    staffStore
+      .fetchStaffs()
+      .catch((error) => {
+        toast.error(error)
+      })
+      .finally(() => {
+        loading.value = false
+      })
+  })
+
+  const getRoleClass = (role: string) => {
+    switch (role) {
+      case 'SuperAdmin':
+        return 'bg-red-200'
+      case 'Admin':
+        return 'bg-orange-200'
+      case 'Staff':
+        return 'bg-yellow-200'
+      case 'ShopOwner':
+        return 'bg-teal-200'
+      case 'Customer':
+        return ''
+      default:
+        return ''
+    }
+  }
+
+  const menu = ref();
+const items = ref<MenuItem[]>([
+    {
+        class: 'p-0',
+        items: [
+            {
+                label: 'Edit',
+                icon: 'pi pi-refresh'
+            },
+            {
+                label: 'Deactive',
+                icon: 'pi pi-trash',
+                class: 'text-red-500'
+            }
+        ]
+    }
+]);
+
+const toggle = (event: any) => {
+    menu.value.toggle(event);
+};
 </script>
 <template>
   <Layout>
@@ -38,13 +72,18 @@
                 type="text"
                 class="w-8rem sm:w-auto"
               />
-              <Button icon="pi pi-plus" :label="$t('Add New Staff')" outlined></Button>
+              <Button
+                icon="pi pi-plus"
+                :label="$t('Add New Staff')"
+                outlined
+              ></Button>
             </div>
           </template>
         </Menubar>
         <div class="card mt-1">
           <DataTable
-            :value="staffs"
+            :value="staffStore.staffs"
+            :loading="false"
             removableSort
             selectionMode="single"
             paginator
@@ -54,26 +93,28 @@
             paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
             :currentPageReportTemplate="`{first} ${$t('to')} {last} ${$t('of')} {totalRecords}`"
           >
-            <Column
-              field="code"
-              sortable
-              header="Code"
-            ></Column>
-            <Column
-              field="name"
-              sortable
-              header="Name"
-            ></Column>
-            <Column
-              field="category"
-              sortable
-              header="Category"
-            ></Column>
-            <Column
-              field="quantity"
-              sortable
-              header="Quantity"
-            ></Column>
+            <Column field="fullName" sortable header="Name"></Column>
+            <Column field="avatarPath" header="Avatar"></Column>
+            <Column field="email" sortable header="Email"></Column>
+            <Column header="Role">
+              <template #body="slotProps">
+                <Chip
+                  v-for="role in (slotProps.data.role as string)
+                    .split(',')
+                    .filter((x) => x.trim() != '')"
+                  :label="role"
+                  class="mr-1"
+                  :class="getRoleClass(role)"
+                ></Chip>
+              </template>
+            </Column>
+            <Column field="isActive" sortable header="Status"></Column>
+            <Column header="Action">
+              <template #body="slotProps">
+                <Button type="button" text icon="pi pi-ellipsis-v" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
+                <Menu ref="menu" id="overlay_menu" :model="items" :popup="true"  />
+              </template>
+            </Column>
           </DataTable>
         </div>
       </div>

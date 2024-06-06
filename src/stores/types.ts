@@ -16,6 +16,7 @@ export interface AppConfig {
     api: {
         account: {
             login: string;
+            all: string;
         }
     },
     loggedUser: User

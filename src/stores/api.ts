@@ -1,20 +1,39 @@
-import axios from 'axios'
-import { useAuthStore } from './auth'
+import axios, { AxiosError } from 'axios'
 import { appConfig } from './index'
+import { Auth } from './auth/types';
+import { APIResponse } from './types';
 
 export const useApi = () => {
-  const { auth } = useAuthStore()
+  const savedAuth = localStorage.getItem('auth');
+  const auth : Auth = savedAuth ? JSON.parse(savedAuth) : null;
   const defaultHeaders = {
-    Authorization: `Bearer ${auth.accessToken}`,
+    Authorization: `Bearer ${auth?.accessToken}`,
     'Accept-Language': appConfig.language,
   }
 
-  const get = async (url: string) => {
-    const response = await axios.get(url, {
+  const get = async (url: string) : Promise<APIResponse<any>> => {
+    return axios.get(url, {
       headers: defaultHeaders,
+    }).then((response) => {
+      return {
+        success: true,
+        content: response.data,
+        status: response.status,
+      }
+    }).catch((error : AxiosError<any, any>) => {
+      if (error.response) {
+        return {
+          success: false,
+          content: error.response.data["reason"] || error.response.data,
+          status: error.response.status,
+        }
+      }
+      return {
+        success: false,
+        content: error.message,
+        status: error.status,
+      }
     })
-
-    return response
   }
 
   const post = async (url: string, data: any) => {

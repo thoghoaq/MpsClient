@@ -64,7 +64,7 @@
         </span>
       </template>
       <template #submenuheader="{ item }">
-        <span class="text-primary font-bold">{{ $t(item.label?.toString() ?? '') }}</span>
+        <span class="text-primary font-bold">{{ item.label ? $t(item.label?.toString()) : '' }}</span>
       </template>
       <template #item="{ item, props }">
         <router-link
@@ -75,7 +75,7 @@
         >
           <a v-ripple :href="href" v-bind="props.action" @click="navigate">
             <span :class="item.icon" />
-            <span class="ml-2">{{ $t(item.label?.toString() ?? '') }}</span>
+            <span class="ml-2">{{ item.label ? $t(item.label?.toString()) : '' }}</span>
             <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
             <span
               v-if="item.shortcut"
@@ -92,7 +92,7 @@
           v-bind="props.action"
         >
           <span :class="item.icon" />
-          <span class="ml-2">{{ $t(item.label?.toString() ?? '') }}</span>
+          <span class="ml-2">{{ item.label ? $t(item.label?.toString()) : '' }}</span>
           <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
           <span
             v-if="item.shortcut"

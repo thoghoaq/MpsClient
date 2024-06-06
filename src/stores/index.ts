@@ -43,7 +43,8 @@ export const appConfig : AppConfig = {
     language: 'vi-VN',
     api: {
         account: {
-            login: getControllerUrl('login', controllers.account)
+            login: getControllerUrl('login', controllers.account),
+            all: getControllerUrl('all', controllers.account),
         }
     },
     loggedUser: getLoggedUser(),
