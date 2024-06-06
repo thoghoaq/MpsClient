@@ -1,3 +1,5 @@
+import { User } from 'src/stores/auth/types'
+
 export type APIResponse<T> = {
     success: boolean;
     content: T;
@@ -15,5 +17,6 @@ export interface AppConfig {
         account: {
             login: string;
         }
-    }
+    },
+    loggedUser: User
 }

@@ -30,6 +30,14 @@ const controllers = {
     account: '/account'
 }
 
+const getLoggedUser = function () {
+    var auth = localStorage.getItem('auth');
+    if (auth) {
+        return JSON.parse(auth)["user"];
+    }
+    return null;
+}
+
 export const appConfig : AppConfig = {
     apiEndpoint: getAppPath(),
     language: 'vi-VN',
@@ -37,5 +45,6 @@ export const appConfig : AppConfig = {
         account: {
             login: getControllerUrl('login', controllers.account)
         }
-    }
+    },
+    loggedUser: getLoggedUser(),
 }

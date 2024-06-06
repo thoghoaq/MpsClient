@@ -3,9 +3,12 @@
   import { useSettingStore } from 'src/stores/setting'
   import { usePrimeVue } from 'primevue/config'
   import { Theme } from 'src/stores/setting/types'
-
+  import { appConfig } from 'src/stores'
+  import { useAuthStore } from 'src/stores/auth'
+import { router } from 'src/router'
   const primeVue = usePrimeVue()
   const settingStore = useSettingStore()
+  const authStore = useAuthStore()
 
   const props = defineProps({
     onToggleMenu: Function,
@@ -37,6 +40,13 @@
       isDark
         ? changeTheme(nextTheme.dark, scheme)
         : changeTheme(nextTheme.light, scheme)
+  }
+
+  const logout = function () {
+    authStore.logout()
+    router.push({
+      name: 'signIn'
+    })
   }
 </script>
 <template>
@@ -85,6 +95,7 @@
           />
           <Avatar
             image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+            class="cursor-pointer"
             shape="circle"
             @click="showProfile = true"
           />
@@ -132,16 +143,21 @@
           v-model="$i18n.locale"
           :placeholder="$t('Select a language')"
           class="w-full"
+          @change="settingStore.changeLanguage($i18n.locale)"
         ></Dropdown>
       </div>
     </Sidebar>
-    <Sidebar v-model:visible="showProfile" header="Profile" position="right">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-      </p>
+    <Sidebar v-model:visible="showProfile" header=" " position="right">
+      <div>
+        <div class="font-bold text-lg mb-2">{{ $t('Hello') }}</div>
+        <div class="mb-4">{{ appConfig.loggedUser.data.displayName }}</div>
+        <Button severity="danger" class="w-full" outlined @click="logout">
+          <i class="pi pi-power-off px-2"></i>
+          <div class="flex flex-column text-left m-3">
+            <span>{{ $t('Sign Out') }}</span>
+          </div>
+        </Button>
+      </div>
     </Sidebar>
   </div>
 </template>

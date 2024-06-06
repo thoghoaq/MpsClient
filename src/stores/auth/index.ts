@@ -7,7 +7,7 @@ import axios, { AxiosError } from 'axios'
 export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
-    auth: <Auth>JSON.parse(localStorage.getItem('auth') || '{}'),
+    auth: <Auth | undefined>JSON.parse(localStorage.getItem('auth') || '{}'),
   }),
   actions: {
     async login(email: string, password: string): Promise<APIResponse<any>> {
@@ -44,6 +44,9 @@ export const useAuthStore = defineStore({
           }
         })
     },
-    logout() {},
+    logout() {
+      this.auth = undefined;
+      localStorage.removeItem("auth");
+    },
   },
 })

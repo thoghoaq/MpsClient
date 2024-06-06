@@ -29,6 +29,7 @@
   const submitForm = () => {
     v$.value.$touch()
     if (!v$.value.$invalid) {
+      loading.value = true
       authStore.login(state.email, state.password).then((response) => {
         if (response.success) {
           router.push({ name: 'home' })
@@ -36,9 +37,12 @@
         } else {
           toast.error(response.content)
         }
+        loading.value = false
       })
     }
   }
+
+  const loading = ref(false);
 </script>
 <template>
   <div>
@@ -135,7 +139,7 @@
               />
             </router-link>
           </div>
-          <Button :label="$t('Log in')" @click="submitForm" />
+          <Button :label="$t('Log in')" :loading="loading" @click="submitForm" />
         </div>
       </div>
     </div>

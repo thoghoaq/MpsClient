@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia'
 import { Language, Theme } from './types'
+import axios from 'axios'
+import LanguageHelper from 'src/helpers/language-helper'
+import { appConfig } from '..'
 
 const themeInfo = localStorage.getItem('theme')
 const savedTheme = themeInfo
@@ -23,6 +26,12 @@ export const useSettingStore = defineStore({
       }
       localStorage.setItem('theme', JSON.stringify(themeInfo))
     },
+    changeLanguage(language: string) {
+      var accept = LanguageHelper.getAcceptLanguage(language)?.toString() ?? 'vi-VN';
+      localStorage.setItem('language', language);
+      axios.defaults.headers.common['Accept-Language'] = accept;
+      appConfig.language = accept;
+    }
   },
 })
 

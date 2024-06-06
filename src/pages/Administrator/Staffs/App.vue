@@ -27,7 +27,7 @@
   <Layout>
     <template #page-content>
       <div class="mx-3">
-        <Menubar class="border-0 bg-gray-100 mt-3 px-3">
+        <Menubar class="border-0 mt-3 px-3">
           <template #start>
             <h4>{{ $t('List of Staffs') }}</h4>
           </template>
@@ -58,25 +58,21 @@
               field="code"
               sortable
               header="Code"
-              header-class="bg-gray-100"
             ></Column>
             <Column
               field="name"
               sortable
               header="Name"
-              header-class="bg-gray-100"
             ></Column>
             <Column
               field="category"
               sortable
               header="Category"
-              header-class="bg-gray-100"
             ></Column>
             <Column
               field="quantity"
               sortable
               header="Quantity"
-              header-class="bg-gray-100"
             ></Column>
           </DataTable>
         </div>

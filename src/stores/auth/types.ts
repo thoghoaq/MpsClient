@@ -3,12 +3,16 @@ export type Auth = {
     user: User;
 };
 
-type User = {
+export type User = {
     userId: number;
     uid: string;
     role: string[];
     isActive: boolean;
+    data: Data
+};
+
+type Data = {
     email: string;
     displayName: string;
     photoUrl: string;
-};
+}
