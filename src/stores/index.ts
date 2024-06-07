@@ -27,7 +27,8 @@ const getControllerUrl = function (action: string, controller: string) {
 }
 
 const controllers = {
-    account: '/account'
+    account: '/account',
+    image: '/image',
 }
 
 const getLoggedUser = function () {
@@ -45,7 +46,12 @@ export const appConfig : AppConfig = {
         account: {
             login: getControllerUrl('login', controllers.account),
             all: getControllerUrl('all', controllers.account),
+            register: getControllerUrl('register', controllers.account),
+        },
+        image: {
+            upload: getControllerUrl('upload', controllers.image)
         }
     },
     loggedUser: getLoggedUser(),
+    appendUrl: appendUrl,
 }

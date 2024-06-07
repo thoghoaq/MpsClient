@@ -11,3 +11,12 @@ export interface Staff {
     updatedAt:   Date | null;
     userDevices: null;
 }
+
+export interface StaffData {
+    identityCard:          string | undefined;
+    identityCardFrontPath: string | undefined;
+    identityCardBackPath:  string | undefined;
+    address:               string | undefined;
+    certificatePath:       string | undefined;
+}
+

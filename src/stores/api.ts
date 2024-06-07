@@ -1,56 +1,94 @@
 import axios, { AxiosError } from 'axios'
 import { appConfig } from './index'
-import { Auth } from './auth/types';
-import { APIResponse } from './types';
+import { Auth } from './auth/types'
+import { APIResponse } from './types'
 
 export const useApi = () => {
-  const savedAuth = localStorage.getItem('auth');
-  const auth : Auth = savedAuth ? JSON.parse(savedAuth) : null;
-  const defaultHeaders = {
-    Authorization: `Bearer ${auth?.accessToken}`,
-    'Accept-Language': appConfig.language,
+  const getDefaultHeaders = () => {
+    const savedAuth = localStorage.getItem('auth')
+    const auth: Auth = savedAuth ? JSON.parse(savedAuth) : null
+    const defaultHeaders = {
+      Authorization: `Bearer ${auth?.accessToken}`,
+      'Accept-Language': appConfig.language,
+    }
+    return defaultHeaders
   }
 
-  const get = async (url: string) : Promise<APIResponse<any>> => {
-    return axios.get(url, {
-      headers: defaultHeaders,
-    }).then((response) => {
-      return {
-        success: true,
-        content: response.data,
-        status: response.status,
-      }
-    }).catch((error : AxiosError<any, any>) => {
-      if (error.response) {
+  const get = async (url: string): Promise<APIResponse<any>> => {
+    return axios
+      .get(url, {
+        headers: getDefaultHeaders(),
+      })
+      .then((response) => {
+        return {
+          success: true,
+          content: response.data,
+          status: response.status,
+        }
+      })
+      .catch((error: AxiosError<any, any>) => {
+        if (error.response) {
+          return {
+            success: false,
+            content:
+              error.response.data['reason'] ||
+              error.response.data['message'] ||
+              error.response.data,
+            status: error.response.status,
+          }
+        }
         return {
           success: false,
-          content: error.response.data["reason"] || error.response.data,
-          status: error.response.status,
+          content: error.message,
+          status: error.status,
         }
-      }
-      return {
-        success: false,
-        content: error.message,
-        status: error.status,
-      }
-    })
+      })
   }
 
-  const post = async (url: string, data: any) => {
-    const response = await axios.post(url, {
-      headers: {
-        ...defaultHeaders,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-    return response
+  const post = async (url: string, data: any): Promise<APIResponse<any>> => {
+    let contentType = 'application/json'
+    let body: any = JSON.stringify(data)
+    if (data instanceof FormData) {
+      contentType = 'multipart/form-data'
+      body = data
+    }
+    return axios
+      .post(url, body, {
+        headers: {
+          ...getDefaultHeaders(),
+          'Content-Type': contentType,
+        },
+      })
+      .then((response) => {
+        return {
+          success: true,
+          content: response.data,
+          status: response.status,
+        }
+      })
+      .catch((error: AxiosError<any, any>) => {
+        if (error.response) {
+          return {
+            success: false,
+            content:
+              error.response.data['reason'] ||
+              error.response.data['message'] ||
+              error.response.data,
+            status: error.response.status,
+          }
+        }
+        return {
+          success: false,
+          content: error.message,
+          status: error.status,
+        }
+      })
   }
 
   const put = async (url: string, data: any) => {
     const response = await axios.put(url, {
       headers: {
-        ...defaultHeaders,
+        ...getDefaultHeaders,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
@@ -60,7 +98,7 @@ export const useApi = () => {
 
   const delele = async (url: string) => {
     const response = await axios.delete(url, {
-      headers: defaultHeaders,
+      headers: getDefaultHeaders(),
     })
     return response
   }
@@ -69,6 +107,6 @@ export const useApi = () => {
     get,
     post,
     put,
-    delele
+    delele,
   }
 }

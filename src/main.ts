@@ -27,6 +27,8 @@ import TreeTable from 'primevue/treetable'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Chip from 'primevue/chip'
+import FileUpload from 'primevue/fileupload'
+import Image from 'primevue/image'
 
 import ToastService from 'primevue/toastservice'
 import Ripple from 'primevue/ripple';
@@ -80,6 +82,8 @@ app.component('TreeTable', TreeTable)
 app.component('DataTable', DataTable)
 app.component('Column', Column)
 app.component('Chip', Chip)
+app.component('FileUpload', FileUpload)
+app.component('Image', Image)
 
 app.directive('ripple', Ripple)
 

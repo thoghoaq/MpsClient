@@ -17,7 +17,25 @@ export interface AppConfig {
         account: {
             login: string;
             all: string;
+            register: string;
+        },
+        image: {
+            upload: string;
         }
     },
-    loggedUser: User
+    loggedUser: User,
+    appendUrl: (url: string, params?: any) => string;
+}
+
+export enum ERole {
+    Admin = 'Admin',
+    Staff = 'Staff',
+    ShopOwner = 'ShopOwner',
+    Customer = 'Customer'
+}
+
+export enum EFileType {
+    UserAvatars = 1,
+    ProductImages = 2,
+    General = 3
 }
