@@ -8,6 +8,10 @@ export type User = {
     uid: string;
     role: string[];
     isActive: boolean;
+    isAdminGroup: boolean;
+    isManagerGroup: boolean;
+    isCustomer: boolean;
+    isShopOwner: boolean;
     data: Data
 };
 

@@ -28,6 +28,7 @@ export const useAuthStore = defineStore({
           }
           //store token in local storage
           localStorage.setItem('auth', JSON.stringify(this.auth))
+          appConfig.loggedUser = this.auth.user
           axios.defaults.headers.common['Authorization'] =
             `Bearer ${this.auth?.accessToken}`
           return {
