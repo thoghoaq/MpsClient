@@ -10,9 +10,6 @@
 
   const items = ref<MenuItem[]>([
     {
-      separator: false,
-    },
-    {
       label: 'Administrator',
       visible: appConfig.loggedUser.isManagerGroup,
       items: [
@@ -57,20 +54,19 @@
         },
       ],
     },
-    {
-      separator: false,
-    },
   ])
 </script>
 <template>
   <div v-if="props.visible" class="card flex justify-content-center h-screen">
     <Menu :model="items" class="w-full md:w-16rem border-0 border-noround">
       <template #start>
-        <span class="inline-flex align-items-center gap-1 px-2 py-4">
-          <span class="font-medium text-xl font-semibold"
-            >SMPS<span class="text-primary">Admin</span></span
-          >
-        </span>
+        <router-link to="/">
+          <span class="inline-flex align-items-center gap-1 px-2 py-4">
+            <span class="font-medium text-xl font-semibold"
+              >SMPS<span class="text-primary">Admin</span></span
+            >
+          </span>
+        </router-link>
       </template>
       <template #submenuheader="{ item }">
         <div class="text-primary font-bold pt-2 mx-1">{{ item.label ? $t(item.label?.toString()) : '' }}</div>

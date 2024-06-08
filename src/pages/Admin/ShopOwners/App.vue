@@ -28,15 +28,15 @@
   const getRoleClass = (role: string) => {
     switch (role) {
       case 'SuperAdmin':
-        return 'bg-red-200'
+        return 'bg-red-400'
       case 'Admin':
-        return 'bg-orange-200'
+        return 'bg-orange-400'
       case 'Staff':
-        return 'bg-yellow-200'
+        return 'bg-yellow-400'
       case 'ShopOwner':
-        return 'bg-teal-200'
+        return 'bg-green-400'
       case 'Customer':
-        return ''
+        return 'bg-cyan-400'
       default:
         return ''
     }
@@ -166,14 +166,10 @@
             <Column field="email" sortable :header="$t('Email')"></Column>
             <Column :header="$t('Role')">
               <template #body="slotProps">
-                <Chip
-                  v-for="role in (slotProps.data.role as string)
+                <Tag severity="contrast" v-for="role in (slotProps.data.role as string)
                     .split(',')
-                    .filter((x) => x.trim() != '')"
-                  :label="role"
-                  class="mr-1"
-                  :class="getRoleClass(role)"
-                ></Chip>
+                    .filter((x) => x.trim() != '')" :value="role" class="mr-1"
+                  :class="getRoleClass(role)"></Tag>
               </template>
             </Column>
             <Column

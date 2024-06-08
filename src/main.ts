@@ -31,6 +31,8 @@ import FileUpload from 'primevue/fileupload'
 import Image from 'primevue/image'
 import ConfirmDialog from 'primevue/confirmdialog'
 import Breadcrumb from 'primevue/breadcrumb'
+import Chart from 'primevue/chart'
+import Tag from 'primevue/tag'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -90,6 +92,8 @@ app.component('FileUpload', FileUpload)
 app.component('Image', Image)
 app.component('ConfirmDialog', ConfirmDialog)
 app.component('Breadcrumb', Breadcrumb)
+app.component('Chart', Chart)
+app.component('Tag', Tag)
 
 app.directive('ripple', Ripple)
 
