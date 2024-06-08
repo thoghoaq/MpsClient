@@ -30,6 +30,7 @@ import Chip from 'primevue/chip'
 import FileUpload from 'primevue/fileupload'
 import Image from 'primevue/image'
 import ConfirmDialog from 'primevue/confirmdialog'
+import Breadcrumb from 'primevue/breadcrumb'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -88,6 +89,7 @@ app.component('Chip', Chip)
 app.component('FileUpload', FileUpload)
 app.component('Image', Image)
 app.component('ConfirmDialog', ConfirmDialog)
+app.component('Breadcrumb', Breadcrumb)
 
 app.directive('ripple', Ripple)
 

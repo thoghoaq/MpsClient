@@ -108,7 +108,7 @@
               </InputGroupAddon>
               <Password
                 v-model="state.password"
-                placeholder="Password"
+                :placeholder="$t('Password')"
                 toggleMask
                 class="w-full"
                 @blur="v$.password.$touch"
@@ -140,6 +140,12 @@
             </router-link>
           </div>
           <Button :label="$t('Log in')" :loading="loading" @click="submitForm" />
+          <div class="mt-3">
+            <span>{{ $t("Don't have an account? ") }}</span>
+            <router-link to="/sign-up">
+              <Button :label="$t('Sign up')" link class="p-0 text-primary" />
+            </router-link>
+          </div>
         </div>
       </div>
     </div>

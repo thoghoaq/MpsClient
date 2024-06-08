@@ -1,5 +1,6 @@
 import Home from '../pages/Home/App.vue'
 import SignIn from '../pages/SignIn/App.vue'
+import SignUp from '../pages/SignUp/App.vue'
 import Staffs from '../pages/Admin/Staffs/App.vue'
 import StaffEdit from '../pages/Admin/Staffs/Edit/App.vue'
 import ShopOwners from '../pages/Admin/ShopOwners/App.vue'
@@ -9,6 +10,7 @@ import CustomerEdit from '../pages/Admin/Customers/Edit/App.vue'
 
 export const routes = [
   { path: '/sign-in', name: 'signIn', component: SignIn },
+  { path: '/sign-up', name: 'signUp', component: SignUp },
   { path: '/', name: 'home', component: Home },
   {
     path: '/admin',

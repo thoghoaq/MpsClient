@@ -5,10 +5,14 @@
   import { Theme } from 'src/stores/setting/types'
   import { appConfig } from 'src/stores'
   import { useAuthStore } from 'src/stores/auth'
-import { router } from 'src/router'
+  import { MenuItem } from 'primevue/menuitem'
+  import { useRouter } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
   const primeVue = usePrimeVue()
   const settingStore = useSettingStore()
   const authStore = useAuthStore()
+  const router = useRouter()
+  const { t } = useI18n()
 
   const props = defineProps({
     onToggleMenu: Function,
@@ -45,19 +49,88 @@ import { router } from 'src/router'
   const logout = function () {
     authStore.logout()
     router.push({
-      name: 'signIn'
+      name: 'signIn',
     })
+  }
+
+  const home = ref<MenuItem>({
+    icon: 'pi pi-home',
+  })
+
+  const getBreadcrum = function (path: string): MenuItem[] {
+    const items = path.split('/').filter((item) => item !== '')
+    return items.map((item) => {
+      return getMenuItem(item)
+    })
+  }
+
+  const getMenuItem = function (item: string): MenuItem {
+    switch (item) {
+      case 'admin':
+        return {
+          label: t('Administrator'),
+          class: "m-0"
+        }
+      case 'staffs':
+        return {
+          label: t('Manage Staffs'),
+          route: '/admin/staffs',
+          class: "m-0"
+        }
+      case 'customers':
+        return {
+          label: t('Manage Customers'),
+          route: '/admin/customers',
+          class: "m-0"
+        }
+      case 'shop-owners':
+        return {
+          label: t('Manage Shop Owners'),
+          route: '/admin/shop-owners',
+          class: "m-0"
+        }
+      case 'create':
+        return {
+          label: t('Create'),
+          class: "m-0"
+        }
+      default:
+        return {
+          label: item,
+          class: "m-0"
+        }
+    }
   }
 </script>
 <template>
   <div class="card w-full">
     <Menubar :model="items" class="border-0 border-noround md:h-6rem">
       <template #start>
-        <Button
-          icon="pi pi-bars"
-          class="p-button-rounded p-button-text"
-          @click="props.onToggleMenu"
-        />
+        <div class="flex align-items-center gap-2">
+          <Button
+            icon="pi pi-bars"
+            class="p-button-rounded p-button-text"
+            @click="props.onToggleMenu"
+          />
+          <Breadcrumb :model="getBreadcrum(router.currentRoute.value.fullPath)">
+            <template #item="{ item, props }">
+              <router-link
+                v-if="item.route"
+                :to="item.route"
+                v-slot="{ href, navigate }"
+                custom
+              >
+                <a v-ripple v-bind="props.action" @click="navigate">
+                  <span class="font-semibold">{{ item.label }}</span>
+                </a>
+              </router-link>
+              <a v-else v-ripple :target="item.target" v-bind="props.action">
+                <span class="font-semibold">{{ item.label }}</span>
+              </a>
+            </template>
+            <template #separator> <span class="font-semibold">/</span> </template>
+          </Breadcrumb>
+        </div>
       </template>
       <template #item="{ item, props, hasSubmenu, root }">
         <a v-ripple class="flex align-items-center" v-bind="props.action">
@@ -95,7 +168,11 @@ import { router } from 'src/router'
           />
           <Avatar
             :image="appConfig.loggedUser.data.photoUrl"
-            :label="appConfig.loggedUser.data.photoUrl ? undefined : appConfig.loggedUser.data.displayName[0]"
+            :label="
+              appConfig.loggedUser.data.photoUrl
+                ? undefined
+                : appConfig.loggedUser.data.displayName[0]
+            "
             class="cursor-pointer bg-primary-200 font-bold"
             shape="circle"
             @click="showProfile = true"

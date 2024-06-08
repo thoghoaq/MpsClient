@@ -1,10 +1,67 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-  const data = ref({
+  import { ref, reactive } from 'vue'
+  import useVuelidate from '@vuelidate/core'
+  import { required, email, minLength, sameAs } from '@vuelidate/validators'
+  import { useAuthStore } from '../../stores/auth'
+  import { router } from 'src/router'
+  import { useToastStore } from 'src/stores/toast'
+  import { useI18n } from 'vue-i18n'
+import { ERole } from 'src/stores/types'
+  const { t } = useI18n()
+  const authStore = useAuthStore()
+  const toast = useToastStore()
+  const state = reactive({
+    name: '',
     email: '',
     password: '',
+    asShopOwner: false,
     readTerm: false,
   })
+
+  const rules = {
+    name: {
+      required,
+    },
+    email: {
+      required,
+      email,
+    },
+    password: { required, minLength: minLength(6) },
+    asShopOwner: {},
+    readTerm: {
+      sameAs: sameAs(true)
+    },
+  }
+
+  const $v = useVuelidate(rules, state)
+
+  const submitForm = () => {
+    $v.value.$touch()
+    if (!$v.value.$invalid) {
+      loading.value = true
+      authStore.register(
+        state.email,
+        state.password,
+        state.name,
+        state.asShopOwner ? ERole.ShopOwner : ERole.Customer,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+      ).then((response) => {
+        if (response.success) {
+          toast.success(t('Register successfully'))
+          router.push('/')
+        } else {
+          toast.error(response.content)
+        }
+      }).finally(() => {
+        loading.value = false
+      })
+    }
+  }
+
+  const loading = ref(false)
 </script>
 <template>
   <div>
@@ -40,73 +97,110 @@
         class="border-1 surface-border surface-card border-round py-7 px-4 md:px-7 z-1"
       >
         <div class="mb-4">
-          <div class="text-900 text-xl font-bold mb-2">Register</div>
-          <span class="text-600 font-medium">Let's get started</span>
+          <div class="text-900 text-xl font-bold mb-2">
+            {{ $t('Register') }}
+          </div>
+          <span class="text-600 font-medium">{{
+            $t("Let's get started")
+          }}</span>
         </div>
         <div class="flex flex-column">
-          <InputGroup class="mb-4">
-            <InputGroupAddon>
-              <i class="pi pi-user"></i>
-            </InputGroupAddon>
-            <InputText
-              v-model="data.email"
-              placeholder="Name"
-              class="w-full"
-            />
-          </InputGroup>
-          <InputGroup class="mb-4">
-            <InputGroupAddon>
-              <i class="pi pi-envelope"></i>
-            </InputGroupAddon>
-            <InputText
-              v-model="data.email"
-              placeholder="Email"
-              class="w-full"
-            />
-          </InputGroup>
-          <InputGroup class="mb-4">
-            <InputGroupAddon>
-              <i class="pi pi-lock"></i>
-            </InputGroupAddon>
-            <Password
-              v-model="data.password"
-              placeholder="Password"
-              toggleMask
-              class="w-full"
-            />
-          </InputGroup>
-          <div class="mb-4 flex flex-wrap">
-            <Checkbox
-                v-model="data.readTerm"
-                input-id="readTerm"
+          <div class="mb-4 text-right">
+            <InputGroup>
+              <InputGroupAddon>
+                <i class="pi pi-user"></i>
+              </InputGroupAddon>
+              <InputText
+                v-model="state.name"
+                :placeholder="$t('Full Name')"
+                class="w-full"
+                @blur="$v.name.$touch"
+                :invalid="$v.name.$error"
+              />
+            </InputGroup>
+            <small class="p-error" v-if="$v.name.$error">{{
+              $t($v.name.$errors[0]?.$message?.toString())
+            }}</small>
+          </div>
+          <div class="mb-4 text-right">
+            <InputGroup>
+              <InputGroupAddon>
+                <i class="pi pi-envelope"></i>
+              </InputGroupAddon>
+              <InputText
+                v-model="state.email"
+                placeholder="Email"
+                class="w-full"
+                @blur="$v.email.$touch"
+                :invalid="$v.email.$error"
+              />
+            </InputGroup>
+            <small class="p-error" v-if="$v.email.$error">{{
+              $t($v.email.$errors[0]?.$message?.toString())
+            }}</small>
+          </div>
+          <div class="mb-4 text-right">
+            <InputGroup>
+              <InputGroupAddon>
+                <i class="pi pi-lock"></i>
+              </InputGroupAddon>
+              <Password
+                v-model="state.password"
+                :placeholder="$t('Password')"
+                toggleMask
+                class="w-full"
+                @blur="$v.password.$touch"
+                :invalid="$v.password.$error"
+              />
+            </InputGroup>
+            <small class="p-error" v-if="$v.password.$error">{{
+              $t($v.password.$errors[0]?.$message?.toString())
+            }}</small>
+          </div>
+          <div class="mb-4 flex flex-wrap gap-3">
+            <div>
+              <Checkbox
+                v-model="state.asShopOwner"
+                input-id="asShopOwner"
                 :binary="true"
                 class="mr-2"
               />
-            <label for="readTerm" class="text-900 font-medium mr-2">
-              I have read the </label
-            >
-            <router-link to="/" target="_blank" rel="noopener">
-              <Button
-                label="Terms and Conditions"
-                link
-                class="p-0 text-600 text-primary"
-              />
-            </router-link>
+              <label for="readTerm" class="text-900 font-medium mr-2">
+                {{ $t('Register as Shop Owner') }}
+              </label>
+            </div>
           </div>
-          <Button label="Sign Up" class="mb-2" />
+          <div class="mb-4 flex flex-wrap gap-3">
+            <div>
+              <Checkbox
+                v-model.trim="state.readTerm"
+                input-id="readTerm"
+                :binary="true"
+                class="mr-2"
+                :invalid="$v.readTerm.$error"
+                @change="$v.readTerm.$touch()"
+              />
+              <label for="readTerm" class="text-900 font-medium mr-2">
+                {{ $t('I have read the') }}
+              </label>
+              <router-link to="/" target="_blank" rel="noopener">
+                <Button
+                  :label="$t('Terms and Conditions')"
+                  link
+                  class="p-0 text-600 text-primary"
+                />
+              </router-link>
+            </div>
+          </div>
+          <Button :label="$t('Sign up')" class="mb-4" @click="submitForm" :loading="loading" />
           <span class="font-medium text-600">
             Already have an account?
-            <Button
-                label="Login"
-                link
-                class="p-0 font-semibold"
-              />
-            </span>
+            <router-link to="/sign-in"
+              ><Button label="Login" link class="p-0 font-semibold"
+            /></router-link>
+          </span>
         </div>
       </div>
     </div>
-    <button class="layout-config-button config-link" type="button">
-      <i class="pi pi-cog"></i>
-    </button>
   </div>
 </template>

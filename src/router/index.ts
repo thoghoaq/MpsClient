@@ -9,7 +9,7 @@ export const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-    const publicPages = ['/sign-in', '/register'];
+    const publicPages = ['/sign-in', '/sign-up'];
     const authRequired = !publicPages.includes(to.path);
     const authStore = useAuthStore();
     const isTokenExpiredOrInvalid = TokenHelper.isTokenExpiredOrInvalid(authStore.auth?.accessToken);
