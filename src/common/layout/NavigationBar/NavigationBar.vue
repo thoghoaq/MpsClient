@@ -34,9 +34,15 @@
       ],
     },
     {
-      label: 'Shop',
+      label: 'Seller Channel',
       visible: appConfig.loggedUser.isShopOwner,
       items: [
+      {
+          label: 'Manage Shops',
+          icon: 'pi pi-shop',
+          route: '/seller/shops',
+          visible: appConfig.loggedUser.isShopOwner,
+        },
         {
           label: 'Manage Products',
           icon: 'pi pi-table',

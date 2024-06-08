@@ -94,6 +94,17 @@
           label: t('Create'),
           class: "m-0"
         }
+      case 'seller':
+        return {
+          label: t('Seller Channel'),
+          class: "m-0"
+        }
+      case 'shops':
+        return {
+          label: t('Manage Shops'),
+          route: '/seller/shops',
+          class: "m-0"
+        }
       default:
         return {
           label: item,

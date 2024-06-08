@@ -1,12 +1,17 @@
 import Home from '../pages/Home/App.vue'
 import SignIn from '../pages/SignIn/App.vue'
 import SignUp from '../pages/SignUp/App.vue'
+
+/** Administrator */
 import Staffs from '../pages/Admin/Staffs/App.vue'
 import StaffEdit from '../pages/Admin/Staffs/Edit/App.vue'
 import ShopOwners from '../pages/Admin/ShopOwners/App.vue'
 import ShopOwnerEdit from '../pages/Admin/ShopOwners/Edit/App.vue'
 import Customers from '../pages/Admin/Customers/App.vue'
 import CustomerEdit from '../pages/Admin/Customers/Edit/App.vue'
+
+/** Seller */
+import Shops from '../pages/Seller/Shops/App.vue'
 
 export const routes = [
   { path: '/sign-in', name: 'signIn', component: SignIn },
@@ -27,4 +32,11 @@ export const routes = [
       { path: 'customers/:id', name: 'customerEdit', component: CustomerEdit },
     ],
   },
+  {
+    path: '/seller',
+    name: 'seller',
+    children: [
+      { path: 'shops', name: 'shops', component: Shops },
+    ]
+  }
 ]
