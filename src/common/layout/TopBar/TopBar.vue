@@ -94,8 +94,9 @@ import { router } from 'src/router'
             @click="showSettings = true"
           />
           <Avatar
-            image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
-            class="cursor-pointer"
+            :image="appConfig.loggedUser.data.photoUrl"
+            :label="appConfig.loggedUser.data.photoUrl ? undefined : appConfig.loggedUser.data.displayName[0]"
+            class="cursor-pointer bg-primary-200 font-bold"
             shape="circle"
             @click="showProfile = true"
           />

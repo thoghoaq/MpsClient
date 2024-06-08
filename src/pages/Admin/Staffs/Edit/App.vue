@@ -18,7 +18,7 @@
   const toast = useToastStore()
   const staffStore = useStaffStore()
 
-  const userId = route.params.id as string;
+  const userId = route.params.id as string | undefined;
   onMounted(() => {
     if (userId) {
       staffStore.fetchStaff(userId).then((response) => {
@@ -97,6 +97,7 @@
             identityCardBackPath: state.identityCardBack,
             certificatePath: state.certificate,
           },
+          undefined
         )
         .then((response) => {
           if (response.success) {
@@ -201,7 +202,7 @@
           </div>
           <div class="flex flex-column gap-2">
             <label for="email">{{ $t('Email') }}</label>
-            <InputText v-model="state.email" :invalid="v$.email.$error" :disabled="userId ? 'true' : 'false'"/>
+            <InputText v-model="state.email" :invalid="v$.email.$error" :disabled="userId ? true :  false"/>
             <small class="p-error" v-if="v$.email.$error">{{
               $t(v$.email.$errors[0]?.$message?.toString())
             }}</small>

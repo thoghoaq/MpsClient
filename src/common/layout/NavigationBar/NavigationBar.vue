@@ -54,7 +54,7 @@
 </script>
 <template>
   <div v-if="props.visible" class="card flex justify-content-center h-screen">
-    <Menu :model="items" class="w-full md:w-15rem border-0 border-noround">
+    <Menu :model="items" class="w-full md:w-16rem border-0 border-noround">
       <template #start>
         <span class="inline-flex align-items-center gap-1 px-2 py-4">
           <span class="font-medium text-xl font-semibold"
@@ -63,7 +63,7 @@
         </span>
       </template>
       <template #submenuheader="{ item }">
-        <span class="text-primary font-bold">{{ item.label ? $t(item.label?.toString()) : '' }}</span>
+        <div class="text-primary font-bold pt-2 mx-1">{{ item.label ? $t(item.label?.toString()) : '' }}</div>
       </template>
       <template #item="{ item, props }">
         <router-link
@@ -73,7 +73,7 @@
           custom
         >
           <a v-ripple :href="href" v-bind="props.action" @click="navigate">
-            <span :class="item.icon" />
+            <span :class="item.icon" class="pl-1" />
             <span class="ml-2">{{ item.label ? $t(item.label?.toString()) : '' }}</span>
             <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
             <span
@@ -90,7 +90,7 @@
           :target="item.target"
           v-bind="props.action"
         >
-          <span :class="item.icon" />
+          <span :class="item.icon" class="pl-1" />
           <span class="ml-2">{{ item.label ? $t(item.label?.toString()) : '' }}</span>
           <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
           <span

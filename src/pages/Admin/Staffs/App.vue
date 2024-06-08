@@ -7,9 +7,6 @@
   import DateTimeHelper from 'src/helpers/datetime-helper'
   import { useConfirm } from 'primevue/useconfirm'
   import { useI18n } from 'vue-i18n'
-  import { useApi } from 'src/stores/api'
-import { appConfig } from 'src/stores'
-  const api = useApi()
   const { t } = useI18n()
   const staffStore = useStaffStore()
   const toast = useToastStore()
@@ -156,6 +153,7 @@ import { appConfig } from 'src/stores'
                         ? undefined
                         : slotProps.data.fullName[0]
                     "
+                    class="font-bold"
                     shape="circle"
                     size="normal"
                   />
@@ -272,4 +270,3 @@ import { appConfig } from 'src/stores'
     </template>
   </Layout>
 </template>
-src/stores/admin/staff

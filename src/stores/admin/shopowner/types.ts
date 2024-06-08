@@ -1,0 +1,26 @@
+export interface ShopOwner {
+    userId:      number;
+    fullName:    string;
+    email:       string;
+    role:        string;
+    identityId:  string;
+    avatarPath:  string | null;
+    phoneNumber: string | null;
+    isActive:    boolean;
+    createdAt:   Date;
+    updatedAt:   Date | null;
+    userDevices: null;
+}
+
+export interface ShopOwnerData {
+
+}
+
+export interface ShopOwnerEdit {
+    userId: number;
+    fullName: string | undefined;
+    phoneNumber: string | undefined;
+    avatarPath: string | undefined;
+    shopOwnerData: ShopOwnerData | undefined;
+}
+
