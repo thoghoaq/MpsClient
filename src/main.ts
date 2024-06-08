@@ -29,8 +29,10 @@ import Column from 'primevue/column'
 import Chip from 'primevue/chip'
 import FileUpload from 'primevue/fileupload'
 import Image from 'primevue/image'
+import ConfirmDialog from 'primevue/confirmdialog'
 
 import ToastService from 'primevue/toastservice'
+import ConfirmationService from 'primevue/confirmationservice'
 import Ripple from 'primevue/ripple';
 
 import 'primevue/resources/primevue.min.css'
@@ -56,6 +58,7 @@ axios.defaults.headers.common['Accept-Language'] = 'vi-VN'
 
 app.use(PrimeVue)
 app.use(ToastService)
+app.use(ConfirmationService)
 app.use(pinia)
 app.use(router)
 app.use(i18n)
@@ -84,6 +87,7 @@ app.component('Column', Column)
 app.component('Chip', Chip)
 app.component('FileUpload', FileUpload)
 app.component('Image', Image)
+app.component('ConfirmDialog', ConfirmDialog)
 
 app.directive('ripple', Ripple)
 

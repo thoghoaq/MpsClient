@@ -50,5 +50,14 @@
   "Identity Card Number": "Số CCCD",
   "Identity Card Front": "Mặt trước CCCD",
   "Identity Card Back": "Mặt sau CCCD",
-  "Certificate": "Chứng chỉ"
+  "Certificate": "Chứng chỉ",
+  "Updated At": "Ngày sửa đổi",
+  "Edit": "Chỉnh sửa",
+  "Deactivate": "Vô hiệu hóa",
+  "Edit Staff": "Sửa thông tin nhân viên",
+  "Detail": "Chi tiết",
+  "Update Staff": "Cập nhật",
+  "Confirm": "Xác nhận",
+  "Are you sure you want to active/deactive this staff?": "Bạn có chắc chắn muốn vô hiệu hóa/ ngừng vô hiệu hóa nhân viên này không?",
+  "Active/Deactive Successfully": "Vô hiệu hóa/ Ngừng vô hiệu hóa thành công"
 }

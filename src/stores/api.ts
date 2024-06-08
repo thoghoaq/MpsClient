@@ -85,15 +85,44 @@ export const useApi = () => {
       })
   }
 
-  const put = async (url: string, data: any) => {
-    const response = await axios.put(url, {
-      headers: {
-        ...getDefaultHeaders,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-    return response
+  const put = async (url: string, data: any): Promise<APIResponse<any>> => {
+    let contentType = 'application/json'
+    let body: any = JSON.stringify(data)
+    if (data instanceof FormData) {
+      contentType = 'multipart/form-data'
+      body = data
+    }
+    return axios
+      .put(url, body, {
+        headers: {
+          ...getDefaultHeaders(),
+          'Content-Type': contentType,
+        },
+      })
+      .then((response) => {
+        return {
+          success: true,
+          content: response.data,
+          status: response.status,
+        }
+      })
+      .catch((error: AxiosError<any, any>) => {
+        if (error.response) {
+          return {
+            success: false,
+            content:
+              error.response.data['reason'] ||
+              error.response.data['message'] ||
+              error.response.data,
+            status: error.response.status,
+          }
+        }
+        return {
+          success: false,
+          content: error.message,
+          status: error.status,
+        }
+      })
   }
 
   const delele = async (url: string) => {

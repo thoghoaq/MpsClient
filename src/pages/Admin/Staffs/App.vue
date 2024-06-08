@@ -5,9 +5,17 @@
   import { useToastStore } from 'src/stores/toast'
   import { onMounted, ref } from 'vue'
   import DateTimeHelper from 'src/helpers/datetime-helper'
+  import { useConfirm } from 'primevue/useconfirm'
+  import { useI18n } from 'vue-i18n'
+  import { useApi } from 'src/stores/api'
+import { appConfig } from 'src/stores'
+  const api = useApi()
+  const { t } = useI18n()
   const staffStore = useStaffStore()
   const toast = useToastStore()
   const loading = ref(false)
+  const confirm = useConfirm()
+
   onMounted(() => {
     loading.value = true
     staffStore
@@ -43,20 +51,26 @@
       class: 'p-0',
       items: [
         {
-          label: 'Edit',
-          icon: 'pi pi-pencil',
+          label: 'Detail',
+          icon: 'pi pi-user',
           route: '/admin/staffs',
         },
         {
           label: 'Deactivate',
           icon: 'pi pi-lock',
           class: 'text-red-500',
+          command: () => {
+            confirmDeactive()
+          },
         },
       ],
     },
   ])
 
+  const menuId = ref()
+
   const toggle = (event: any) => {
+    menuId.value = event.currentTarget.id.replace('menu_', '')
     menu.value.toggle(event)
   }
 
@@ -65,10 +79,33 @@
   watch(query, (value) => {
     staffStore.searchStaffs(value)
   })
+
+  const confirmDeactive = () => {
+    confirm.require({
+      header: t('Confirm'),
+      icon: 'pi pi-exclamation-triangle',
+      message: t('Are you sure you want to active/deactive this staff?'),
+      rejectClass: 'p-button-secondary p-button-outlined',
+      rejectLabel: t('No'),
+      acceptLabel: t('Yes'),
+      acceptClass: 'p-button-danger',
+      accept: () => {
+        staffStore.activeOrDeactive(menuId.value)
+        .then((response) => {
+          if (response.success) {
+            toast.success(t('Active/Deactive Successfully'))
+          } else {
+            toast.error(response.content)
+          }
+        })
+      },
+    })
+  }
 </script>
 <template>
   <Layout>
     <template #page-content>
+      <ConfirmDialog></ConfirmDialog>
       <div class="mx-3">
         <Menubar class="border-0 mt-3 px-3">
           <template #start>
@@ -109,15 +146,23 @@
             :currentPageReportTemplate="`{first} ${$t('to')} {last} ${$t('of')} {totalRecords}`"
           >
             <template #empty> {{ $t('No staffs found.') }} </template>
-            <Column field="fullName" sortable :header="$t('Name')"></Column>
-            <Column :header="$t('Avatar')">
+            <Column field="fullName" sortable :header="$t('Full Name')">
               <template #body="slotProps">
-                <Avatar
-                  :src="slotProps.data.avatarPath"
-                  :label="slotProps.data.fullName[0]"
-                  shape="circle"
-                  size="normal"
-                />
+                <div class="flex align-items-center gap-2">
+                  <Avatar
+                    :image="slotProps.data.avatarPath"
+                    :label="
+                      slotProps.data.avatarPath
+                        ? undefined
+                        : slotProps.data.fullName[0]
+                    "
+                    shape="circle"
+                    size="normal"
+                  />
+                  <div>
+                    {{ slotProps.data.fullName }}
+                  </div>
+                </div>
               </template>
             </Column>
             <Column field="email" sortable :header="$t('Email')"></Column>
@@ -138,9 +183,9 @@
               sortable
               :header="$t('Phone Number')"
             ></Column>
-            <Column field="createdAt" sortable :header="$t('Created At')">
+            <Column field="createdAt" sortable :header="$t('Updated At')">
               <template #body="{ data }">
-                {{ DateTimeHelper.format(data.createdAt, 'datetime') }}
+                {{ DateTimeHelper.format(data.updatedAt, 'datetime') }}
               </template>
             </Column>
             <Column field="isActive" sortable :header="$t('Status')">
@@ -154,8 +199,8 @@
                 ></i>
               </template>
             </Column>
-            <Column>
-              <template #body="slotProps">
+            <Column field="userId">
+              <template #body="{ data }">
                 <Button
                   type="button"
                   text
@@ -163,13 +208,14 @@
                   @click="toggle"
                   aria-haspopup="true"
                   aria-controls="overlay_menu"
+                  :id="`menu_${data.userId}`"
                 />
                 <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
                   <template #item="{ item, props }">
                     <router-link
                       v-if="item.route"
                       v-slot="{ href, navigate }"
-                      :to="`${item.route}/${slotProps.data.userId}`"
+                      :to="`${item.route}/${menuId}`"
                       custom
                     >
                       <a

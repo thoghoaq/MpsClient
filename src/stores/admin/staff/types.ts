@@ -20,3 +20,11 @@ export interface StaffData {
     certificatePath:       string | undefined;
 }
 
+export interface StaffEdit {
+    userId: number;
+    fullName: string | undefined;
+    phoneNumber: string | undefined;
+    avatarPath: string | undefined;
+    staffData: StaffData | undefined;
+}
+

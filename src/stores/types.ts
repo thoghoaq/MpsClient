@@ -18,6 +18,9 @@ export interface AppConfig {
             login: string;
             all: string;
             register: string;
+            details: string;
+            update: string;
+            status: string;
         },
         image: {
             upload: string;

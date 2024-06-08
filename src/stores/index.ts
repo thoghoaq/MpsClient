@@ -47,6 +47,9 @@ export const appConfig : AppConfig = {
             login: getControllerUrl('login', controllers.account),
             all: getControllerUrl('all', controllers.account),
             register: getControllerUrl('register', controllers.account),
+            details: getControllerUrl('details', controllers.account),
+            update: getControllerUrl('update', controllers.account),
+            status: getControllerUrl('status', controllers.account),
         },
         image: {
             upload: getControllerUrl('upload', controllers.image)

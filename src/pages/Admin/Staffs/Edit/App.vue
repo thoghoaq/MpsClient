@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useToastStore } from 'src/stores/toast'
-  import { reactive, ref } from 'vue'
+  import { reactive, ref, onMounted } from 'vue'
   import { useApi } from 'src/stores/api'
   import { appConfig } from 'src/stores/index'
   import { EFileType } from 'src/stores/types'
@@ -9,10 +9,32 @@
   import { useAuthStore } from 'src/stores/auth'
   import { ERole } from 'src/stores/types'
   import { useI18n } from 'vue-i18n'
+  import { useRoute } from 'vue-router'
+  import { useStaffStore } from 'src/stores/admin/staff'
+  const route = useRoute()
   const { t } = useI18n()
   const authStore = useAuthStore()
   const api = useApi()
   const toast = useToastStore()
+  const staffStore = useStaffStore()
+
+  const userId = route.params.id as string;
+  onMounted(() => {
+    if (userId) {
+      staffStore.fetchStaff(userId).then((response) => {
+          const staff = response;
+          state.fullName = staff.fullName
+          state.email = staff.email
+          state.phoneNumber = staff.phoneNumber ?? ''
+          state.avatarFile = staff.avatarPath ?? ''
+          state.address = staff.address ?? ''
+          state.identityCardNumber = staff.identityCard ?? ''
+          state.identityCardFront = staff.identityCardFrontPath ?? ''
+          state.identityCardBack = staff.identityCardBackPath ?? ''
+          state.certificate = staff.certificatePath ?? ''
+        })
+    }
+  })
 
   const state = reactive({
     fullName: '',
@@ -50,7 +72,18 @@
     v$.value.$touch()
     if (!v$.value.$invalid) {
       loading.value = true
-      authStore
+      if (userId) {
+        updateStaff()
+      } else {
+        registerStaff()
+      }
+    } else {
+      toast.warning(t('Please check your input'))
+    }
+  }
+
+  const registerStaff = () => {
+    authStore
         .register(
           state.email,
           undefined,
@@ -73,9 +106,30 @@
           }
           loading.value = false
         })
-    } else {
-      toast.warning(t('Please check your input'))
-    }
+  }
+
+  const updateStaff = () => {
+    api.put(appConfig.api.account.update, {
+      userId: userId,
+      fullName: state.fullName,
+      email: state.email,
+      phoneNumber: state.phoneNumber,
+      avatarPath: state.avatarFile,
+      staffData: {
+        address: state.address,
+        identityCard: state.identityCardNumber,
+        identityCardFrontPath: state.identityCardFront,
+        identityCardBackPath: state.identityCardBack,
+        certificatePath: state.certificate
+      }
+    }).then((response) => {
+      if (response.success) {
+        toast.success(t('Update successfully'))
+      } else {
+        toast.error(response.content)
+      }
+      loading.value = false
+    })
   }
 
   const onUpload = async (event: any) => {
@@ -128,7 +182,7 @@
     <template #page-content>
       <div class="flex w-full gap-4 px-6 py-6">
         <div class="flex flex-column gap-2 md:w-14rem">
-          <h2>{{ $t('Create Staff') }}</h2>
+          <h2>{{ userId ? state.fullName ?? $t('Edit Staff') : $t('Create Staff') }}</h2>
           <router-link to="/admin/staffs">
             <Button
               icon="pi pi-arrow-left"
@@ -147,7 +201,7 @@
           </div>
           <div class="flex flex-column gap-2">
             <label for="email">{{ $t('Email') }}</label>
-            <InputText v-model="state.email" :invalid="v$.email.$error" />
+            <InputText v-model="state.email" :invalid="v$.email.$error" :disabled="userId ? 'true' : 'false'"/>
             <small class="p-error" v-if="v$.email.$error">{{
               $t(v$.email.$errors[0]?.$message?.toString())
             }}</small>
@@ -342,7 +396,7 @@
               </div>
             </div>
           <Button
-            :label="$t('Create Staff')"
+            :label="userId ? $t('Update Staff') : $t('Create Staff')"
             :loading="loading"
             @click="submitForm"
             class="p-button w-10rem"

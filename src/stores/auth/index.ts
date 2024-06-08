@@ -4,6 +4,8 @@ import { Auth } from './types'
 import { APIResponse } from '../types'
 import axios, { AxiosError } from 'axios'
 import { StaffData } from '../admin/staff/types'
+import { useApi } from '../api'
+const api = useApi()
 
 export const useAuthStore = defineStore({
   id: 'auth',
@@ -59,7 +61,7 @@ export const useAuthStore = defineStore({
       avatarPath: string | undefined,
       staffData: StaffData | undefined
     ): Promise<APIResponse<any>> {
-      return axios
+      return api
         .post(appConfig.api.account.register, {
           email: email,
           password: password,
@@ -69,25 +71,7 @@ export const useAuthStore = defineStore({
           staffData: staffData,
         })
         .then((response) => {
-          return {
-            success: true,
-            content: response.data,
-            status: response.status,
-          }
-        })
-        .catch((error: AxiosError<any, any>) => {
-          if (error.response) {
-            return {
-              success: false,
-              content: error.response.data['reason'],
-              status: error.response.status,
-            }
-          }
-          return {
-            success: false,
-            content: error.message,
-            status: error.status,
-          }
+          return response;
         })
     },
   },
