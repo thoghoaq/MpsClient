@@ -42,9 +42,9 @@ export const useShopOwnerStore = defineStore({
       })
     },
     async activeOrDeactive(userId: number) {
-      var shopOwner = this.shopOwners.find(s => s.userId == userId);
+      var shopOwner = this.shopOwners.find(s => s.id == userId);
       return api.put(appConfig.api.account.status, {
-        userId: shopOwner?.userId,
+        userId: shopOwner?.id,
         isActive: !shopOwner?.isActive,
       }).then((response) => {
         if (response.success) {

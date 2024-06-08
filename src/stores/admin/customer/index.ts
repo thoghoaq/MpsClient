@@ -42,9 +42,9 @@ export const useCustomerStore = defineStore({
       })
     },
     async activeOrDeactive(userId: number) {
-      var customer = this.customers.find(c => c.userId == userId);
+      var customer = this.customers.find(c => c.id == userId);
       return api.put(appConfig.api.account.status, {
-        userId: customer?.userId,
+        userId: customer?.id,
         isActive: !customer?.isActive,
       }).then((response) => {
         if (response.success) {

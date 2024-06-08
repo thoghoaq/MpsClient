@@ -202,7 +202,7 @@
                   @click="toggle"
                   aria-haspopup="true"
                   aria-controls="overlay_menu"
-                  :id="`menu_${data.userId}`"
+                  :id="`menu_${data.id}`"
                 />
                 <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
                   <template #item="{ item, props }">

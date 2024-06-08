@@ -1,5 +1,5 @@
 export interface ShopOwner {
-    userId:      number;
+    id:      number;
     fullName:    string;
     email:       string;
     role:        string;

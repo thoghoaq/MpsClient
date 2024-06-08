@@ -47,9 +47,9 @@ export const useStaffStore = defineStore({
       })
     },
     async activeOrDeactive(userId: number) {
-      var staff = this.staffs.find(staff => staff.userId == userId);
+      var staff = this.staffs.find(staff => staff.id == userId);
       return api.put(appConfig.api.account.status, {
-        userId: staff?.userId,
+        userId: staff?.id,
         isActive: !staff?.isActive,
       }).then((response) => {
         if (response.success) {
