@@ -1,5 +1,3 @@
-import moment from 'moment'
-
 export default class DateTimeHelper {
   static parse(date: string): Date {
     return new Date(date)
