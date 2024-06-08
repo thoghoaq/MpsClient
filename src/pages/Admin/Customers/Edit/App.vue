@@ -10,24 +10,24 @@
   import { ERole } from 'src/stores/types'
   import { useI18n } from 'vue-i18n'
   import { useRoute } from 'vue-router'
-  import { useShopOwnerStore } from 'src/stores/admin/shopowner'
+  import { useCustomerStore } from 'src/stores/admin/customer'
   const route = useRoute()
   const { t } = useI18n()
   const authStore = useAuthStore()
   const api = useApi()
   const toast = useToastStore()
-  const shopOwnerStore = useShopOwnerStore()
+  const customerStore = useCustomerStore()
 
-  const canEdit = ref(false)
-  const userId = route.params.id as string
+  const canEdit = ref(false);
+  const userId = route.params.id as string | undefined
   onMounted(() => {
     if (userId) {
-      shopOwnerStore.fetchShopOwner(userId).then((response) => {
-        const shopOwner = response
-        state.fullName = shopOwner.fullName
-        state.email = shopOwner.email
-        state.phoneNumber = shopOwner.phoneNumber ?? ''
-        state.avatarFile = shopOwner.avatarPath ?? ''
+      customerStore.fetchCustomer(userId).then((response) => {
+        const customer = response
+        state.fullName = customer.fullName
+        state.email = customer.email
+        state.phoneNumber = customer.phoneNumber ?? ''
+        state.avatarFile = customer.avatarPath ?? ''
       })
     }
   })
@@ -59,26 +59,26 @@
     if (!v$.value.$invalid) {
       loading.value = true
       if (userId) {
-        updateShopOwner()
+        updateCustomer()
       } else {
-        registerShopOwner()
+        registerCustomer()
       }
     } else {
       toast.warning(t('Please check your input'))
     }
   }
 
-  const registerShopOwner = () => {
+  const registerCustomer = () => {
     authStore
       .register(
         state.email,
         undefined,
         state.fullName,
-        ERole.ShopOwner,
+        ERole.Customer,
         state.avatarFile,
         undefined,
         undefined,
-        undefined,
+        {},
       )
       .then((response) => {
         if (response.success) {
@@ -90,7 +90,7 @@
       })
   }
 
-  const updateShopOwner = () => {
+  const updateCustomer = () => {
     api
       .put(appConfig.api.account.update, {
         userId: userId,
@@ -98,7 +98,7 @@
         email: state.email,
         phoneNumber: state.phoneNumber,
         avatarPath: state.avatarFile,
-        shopOwnerData: {},
+        customerData: {},
       })
       .then((response) => {
         if (response.success) {
@@ -144,12 +144,10 @@
         <div class="flex flex-column gap-2 md:w-14rem">
           <h2>
             {{
-              userId
-                ? state.fullName ?? $t('Edit Shop Owner')
-                : $t('Create Shop Owner')
+              userId ? state.fullName ?? $t('Edit Customer') : $t('Create Customer')
             }}
           </h2>
-          <router-link to="/admin/shop-owners">
+          <router-link to="/admin/customers">
             <Button
               icon="pi pi-arrow-left"
               :label="$t('Back')"
@@ -160,11 +158,7 @@
         <div class="flex flex-column gap-4 w-full">
           <div class="flex flex-column gap-2">
             <label for="fullName">{{ $t('Full Name') }}</label>
-            <InputText
-              v-model="state.fullName"
-              :invalid="v$.fullName.$error"
-              :disabled="!canEdit"
-            />
+            <InputText v-model="state.fullName" :invalid="v$.fullName.$error" :disabled="!canEdit"/>
             <small class="p-error" v-if="v$.fullName.$error">{{
               $t(v$.fullName.$errors[0]?.$message?.toString())
             }}</small>
@@ -182,7 +176,7 @@
           </div>
           <div class="flex flex-column gap-2">
             <label for="phoneNumber">{{ $t('Phone Number') }}</label>
-            <InputText v-model="state.phoneNumber" :disabled="!canEdit" />
+            <InputText v-model="state.phoneNumber" :disabled="!canEdit"/>
             <small class="p-error" v-if="v$.phoneNumber.$error">{{
               $t(v$.phoneNumber.$errors[0]?.$message?.toString())
             }}</small>
@@ -239,10 +233,10 @@
           </div>
           <Button
             v-if="canEdit"
-            :label="userId ? $t('Update Shop Owner') : $t('Create Shop Owner')"
+            :label="userId ? $t('Update Customer') : $t('Create Customer')"
             :loading="loading"
             @click="submitForm"
-            class="p-button w-13rem"
+            class="p-button w-10rem"
           ></Button>
         </div>
       </div>

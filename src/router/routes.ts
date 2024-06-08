@@ -5,6 +5,7 @@ import StaffEdit from '../pages/Admin/Staffs/Edit/App.vue'
 import ShopOwners from '../pages/Admin/ShopOwners/App.vue'
 import ShopOwnerEdit from '../pages/Admin/ShopOwners/Edit/App.vue'
 import Customers from '../pages/Admin/Customers/App.vue'
+import CustomerEdit from '../pages/Admin/Customers/Edit/App.vue'
 
 export const routes = [
   { path: '/sign-in', name: 'signIn', component: SignIn },
@@ -20,6 +21,8 @@ export const routes = [
       { path: 'shop-owners/create', name: 'shopOwnerCreate', component: ShopOwnerEdit },
       { path: 'shop-owners/:id', name: 'shopOwnerEdit', component: ShopOwnerEdit },
       { path: 'customers', name: 'customers', component: Customers },
+      { path: 'customers/create', name: 'customerCreate', component: CustomerEdit },
+      { path: 'customers/:id', name: 'customerEdit', component: CustomerEdit },
     ],
   },
 ]

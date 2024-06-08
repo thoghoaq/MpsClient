@@ -62,5 +62,10 @@
   "Active/Deactive Successfully": "Vô hiệu hóa/ Ngừng vô hiệu hóa thành công",
   "List of Shop Owners": "Danh sách chủ cửa hàng",
   "Add New Shop Owner": "Thêm chủ cửa hàng mới",
-  "Create Shop Owner": "Tạo chủ cửa hàng"
+  "Create Shop Owner": "Tạo chủ cửa hàng",
+  "No customers found.": "Không tìm thấy khách hàng nào.",
+  "List of Customers": "Danh sách khách hàng",
+  "Add New Customer": "Thêm khách hàng mới",
+  "Are you sure you want to active/deactive this customer?": "Bạn có chắc chắn muốn vô hiệu hóa/ ngừng vô hiệu hóa khách hàng này không?",
+  "No shop owners found.": "Không tìm thấy chủ cửa hàng nào."
 }

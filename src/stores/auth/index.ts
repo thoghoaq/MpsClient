@@ -6,6 +6,7 @@ import axios, { AxiosError } from 'axios'
 import { StaffData } from '../admin/staff/types'
 import { useApi } from '../api'
 import { ShopOwnerData } from '../admin/shopowner/types'
+import { CustomerData } from '../admin/customer/types'
 const api = useApi()
 
 export const useAuthStore = defineStore({
@@ -61,7 +62,8 @@ export const useAuthStore = defineStore({
       role: string,
       avatarPath: string | undefined,
       staffData: StaffData | undefined,
-      shopOwnerData: ShopOwnerData | undefined
+      shopOwnerData: ShopOwnerData | undefined,
+      customerData: CustomerData | undefined
     ): Promise<APIResponse<any>> {
       return api
         .post(appConfig.api.account.register, {
@@ -71,7 +73,8 @@ export const useAuthStore = defineStore({
           role: role,
           avatarPath: avatarPath,
           staffData: staffData,
-          shopOwnerData: shopOwnerData
+          shopOwnerData: shopOwnerData,
+          customerData: customerData
         })
         .then((response) => {
           return response;

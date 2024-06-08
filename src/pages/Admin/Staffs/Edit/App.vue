@@ -97,7 +97,8 @@
             identityCardBackPath: state.identityCardBack,
             certificatePath: state.certificate,
           },
-          undefined
+          undefined,
+          undefined,
         )
         .then((response) => {
           if (response.success) {

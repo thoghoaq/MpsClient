@@ -119,7 +119,7 @@
                   class="w-8rem sm:w-auto"
                 />
               </IconField>
-              <router-link to="/admin/shop-owners/create">
+              <router-link to="/admin/shop-owners/create" v-if="false">
                 <Button
                   icon="pi pi-plus"
                   :label="$t('Add New Shop Owner')"
