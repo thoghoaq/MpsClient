@@ -33,13 +33,13 @@ export const useApi = () => {
             content:
               error.response.data['reason'] ||
               error.response.data['message'] ||
-              error.response.data,
+              error.response.data || error.response.status,
             status: error.response.status,
           }
         }
         return {
           success: false,
-          content: error.message || 'Internal Server Error',
+          content: error.message || error.status,
           status: error.status,
         }
       })
@@ -74,13 +74,13 @@ export const useApi = () => {
             content:
               error.response.data['reason'] ||
               error.response.data['message'] ||
-              error.response.data,
+              error.response.data || error.response.status,
             status: error.response.status,
           }
         }
         return {
           success: false,
-          content: error.message || 'Internal Server Error',
+          content: error.message || error.status,
           status: error.status,
         }
       })
@@ -114,13 +114,13 @@ export const useApi = () => {
             content:
               error.response.data['reason'] ||
               error.response.data['message'] ||
-              error.response.data,
+              error.response.data || error.response.status,
             status: error.response.status,
           }
         }
         return {
           success: false,
-          content: error.message || 'Internal Server Error',
+          content: error.message || error.status,
           status: error.status,
         }
       })

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
-  import { useDataSourceStore } from 'src/stores/admin/datasource'
+  import { useDataSourceStore } from 'src/stores/datasource'
   import { useToastStore } from 'src/stores/toast'
   import { useI18n } from 'vue-i18n'
   import { TreeNode } from 'primevue/treenode'
@@ -47,6 +47,7 @@
           :rows="10"
           :rowsPerPageOptions="[5, 10, 25]"
           :tableProps="{ style: { minWidth: '50rem' } }"
+          removableSort
         >
           <template #header>
             <Menubar class="border-0">
@@ -68,7 +69,7 @@
               </template>
             </Menubar>
           </template>
-          <Column expander class="flex align-items-center">
+          <Column expander field="name" sortable class="flex align-items-center">
             <template #header>
               <span class="ml-6">{{ $t('Name') }}</span>
             </template>
@@ -140,3 +141,4 @@
     </template>
   </Layout>
 </template>
+src/stores/datasource

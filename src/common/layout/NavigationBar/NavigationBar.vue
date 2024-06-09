@@ -2,7 +2,8 @@
   import { MenuItem } from 'primevue/menuitem';
   import { appConfig } from 'src/stores';
   import { ref } from 'vue'
-
+  import { useRouter } from 'vue-router'
+  const router = useRouter()
   const props = defineProps({
     visible: Boolean,
     onVisibleChange: Function,
@@ -90,7 +91,7 @@
           :to="item.route"
           custom
         >
-          <a v-ripple :href="href" v-bind="props.action" @click="navigate">
+          <a v-ripple :href="href" v-bind="props.action" @click="navigate" :class="router.currentRoute.value.fullPath.match(item.route) ? 'bg-primary-100' : ''">
             <span :class="item.icon" class="pl-1" />
             <span class="ml-2">{{ item.label ? $t(item.label?.toString()) : '' }}</span>
             <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
@@ -107,6 +108,7 @@
           class="flex align-items-center"
           :target="item.target"
           v-bind="props.action"
+          :class="item.class"
         >
           <span :class="item.icon" class="pl-1" />
           <span class="ml-2">{{ item.label ? $t(item.label?.toString()) : '' }}</span>
