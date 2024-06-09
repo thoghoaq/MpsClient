@@ -79,5 +79,10 @@
   "Register successfully": "Đăng ký thành công",
   "Create": "Tạo mới",
   "Seller Channel": "Kênh bán hàng",
-  "Manage Shops": "Quản lý cửa hàng"
+  "Manage Shops": "Quản lý cửa hàng",
+  "Internal Server Error": "Lỗi máy chủ",
+  "Manage Product Categories": "Quản lý danh mục sản phẩm",
+  "List of Product Categories": "Danh sách danh mục sản phẩm",
+  "Update successfully": "Cập nhật thành công",
+  "Update failed": "Cập nhật thất bại"
 }

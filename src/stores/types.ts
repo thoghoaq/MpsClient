@@ -24,6 +24,10 @@ export interface AppConfig {
         },
         image: {
             upload: string;
+        },
+        datasource: {
+            categories: string;
+            category: string;
         }
     },
     loggedUser: User,

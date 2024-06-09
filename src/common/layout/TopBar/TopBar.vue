@@ -105,6 +105,12 @@
           route: '/seller/shops',
           class: "m-0"
         }
+      case 'product-categories':
+        return {
+          label: t('Manage Product Categories'),
+          route: '/admin/product-categories',
+          class: "m-0"
+        }
       default:
         return {
           label: item,

@@ -29,6 +29,7 @@ const getControllerUrl = function (action: string, controller: string) {
 const controllers = {
     account: '/account',
     image: '/image',
+    datasource: '/datasource',
 }
 
 const getLoggedUser = function () {
@@ -53,6 +54,10 @@ export const appConfig : AppConfig = {
         },
         image: {
             upload: getControllerUrl('upload', controllers.image)
+        },
+        datasource: {
+            categories: getControllerUrl('categories', controllers.datasource),
+            category: getControllerUrl('category', controllers.datasource),
         }
     },
     loggedUser: getLoggedUser(),

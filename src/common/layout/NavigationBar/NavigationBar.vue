@@ -31,6 +31,12 @@
           route: '/admin/customers',
           visible: appConfig.loggedUser.isAdminGroup,
         },
+        {
+          label: 'Manage Product Categories',
+          icon: 'pi pi-folder',
+          route: '/admin/product-categories',
+          visible: appConfig.loggedUser.isManagerGroup,
+        },
       ],
     },
     {

@@ -39,7 +39,7 @@ export const useApi = () => {
         }
         return {
           success: false,
-          content: error.message,
+          content: error.message || 'Internal Server Error',
           status: error.status,
         }
       })
@@ -67,6 +67,7 @@ export const useApi = () => {
         }
       })
       .catch((error: AxiosError<any, any>) => {
+        console.log(error)
         if (error.response) {
           return {
             success: false,
@@ -79,7 +80,7 @@ export const useApi = () => {
         }
         return {
           success: false,
-          content: error.message,
+          content: error.message || 'Internal Server Error',
           status: error.status,
         }
       })
@@ -119,7 +120,7 @@ export const useApi = () => {
         }
         return {
           success: false,
-          content: error.message,
+          content: error.message || 'Internal Server Error',
           status: error.status,
         }
       })

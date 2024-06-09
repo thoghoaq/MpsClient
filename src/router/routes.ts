@@ -9,6 +9,7 @@ import ShopOwners from '../pages/Admin/ShopOwners/App.vue'
 import ShopOwnerEdit from '../pages/Admin/ShopOwners/Edit/App.vue'
 import Customers from '../pages/Admin/Customers/App.vue'
 import CustomerEdit from '../pages/Admin/Customers/Edit/App.vue'
+import ProductCategories from '../pages/Admin/ProductCategories/App.vue'
 
 /** Seller */
 import Shops from '../pages/Seller/Shops/App.vue'
@@ -30,6 +31,7 @@ export const routes = [
       { path: 'customers', name: 'customers', component: Customers },
       { path: 'customers/create', name: 'customerCreate', component: CustomerEdit },
       { path: 'customers/:id', name: 'customerEdit', component: CustomerEdit },
+      { path: 'product-categories', name: 'productCategories', component: ProductCategories },
     ],
   },
   {
