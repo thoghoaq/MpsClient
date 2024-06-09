@@ -41,7 +41,7 @@ export const useAuthStore = defineStore({
           if (error.response) {
             return {
               success: false,
-              content: error.response.data['reason'] | error.response.data['message'] || error.response.data || 'Internal Server Error',
+              content: error.response.data['reason'] || error.response.data['message'] || error.response.data || error.response.status,
               status: error.response.status,
             }
           }
