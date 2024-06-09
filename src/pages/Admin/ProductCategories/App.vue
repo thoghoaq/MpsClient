@@ -3,6 +3,8 @@
   import { useDataSourceStore } from 'src/stores/admin/datasource'
   import { useToastStore } from 'src/stores/toast'
   import { useI18n } from 'vue-i18n'
+  import { TreeNode } from 'primevue/treenode'
+  import { TreeTableExpandedKeys } from 'primevue/treetable'
   const dataSourceStore = useDataSourceStore()
   const toast = useToastStore()
   const { t } = useI18n()
@@ -22,13 +24,24 @@
       }
     })
   }
+  const selectedKey = ref()
+
+  const expandedKeys = ref<TreeTableExpandedKeys>({})
+  const toggleExpand = (key: string) => {
+    let _expandedKeys = { ...expandedKeys.value }
+    _expandedKeys[key] = true
+    expandedKeys.value = _expandedKeys
+  }
 </script>
 <template>
   <Layout>
     <template #page-content>
       <div class="mx-3">
         <TreeTable
-          :value="dataSourceStore.getProductCategoryTree()"
+          v-model:selectionKeys="selectedKey"
+          v-model:expandedKeys="expandedKeys"
+          selection-mode="single"
+          :value="dataSourceStore.productCategoryTree"
           :resizableColumns="true"
           :paginator="true"
           :rows="10"
@@ -74,7 +87,54 @@
               </Inplace>
             </template>
           </Column>
-          <Column class="w-5rem"> </Column>
+          <Column class="w-5rem">
+            <template #header>
+              <Button
+                icon="pi pi-plus"
+                class="w-1rem h-1rem"
+                link
+                rounded
+                @click="
+                  dataSourceStore.appendChildToTree(
+                    `${dataSourceStore.productCategoryTree.length}`,
+                    <TreeNode>{
+                      key: `${dataSourceStore.productCategoryTree.length}`,
+                      data: {
+                        id: null,
+                        name: $t('New Category'),
+                        parentId: null,
+                      },
+                      children: [],
+                    },
+                    true,
+                  )
+                "
+              ></Button>
+            </template>
+            <template #body="{ node }">
+              <Button
+                v-if="(node.key.match(/-/g) || []).length < 2 && node.data.id"
+                icon="pi pi-plus"
+                class="w-1rem h-1rem"
+                link
+                rounded
+                @click="
+                  () => {
+                    dataSourceStore.appendChildToTree(node.key, <TreeNode>{
+                      key: `${node.key}-${node.children.length}`,
+                      data: {
+                        id: null,
+                        name: $t('New Category'),
+                        parentId: node.data.id,
+                        children: [],
+                      },
+                    })
+                    toggleExpand(node.key)
+                  }
+                "
+              ></Button>
+            </template>
+          </Column>
         </TreeTable>
       </div>
     </template>

@@ -34,6 +34,7 @@ import Breadcrumb from 'primevue/breadcrumb'
 import Chart from 'primevue/chart'
 import Tag from 'primevue/tag'
 import Inplace from 'primevue/inplace'
+import Dialog from 'primevue/dialog'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -96,6 +97,7 @@ app.component('Breadcrumb', Breadcrumb)
 app.component('Chart', Chart)
 app.component('Tag', Tag)
 app.component('Inplace', Inplace)
+app.component('Dialog', Dialog)
 
 app.directive('ripple', Ripple)
 
