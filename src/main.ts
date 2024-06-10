@@ -3,9 +3,10 @@ import './style.css'
 import App from './App.vue'
 import axios from 'axios'
 import { createPinia } from 'pinia'
-import PrimeVue, { usePrimeVue } from 'primevue/config'
+import PrimeVue from 'primevue/config'
 
 import Layout from './common/layout/Layout.vue'
+import ELayout from './common/e-layout/ELayout.vue'
 
 import Button from 'primevue/button'
 import Toast from 'primevue/toast'
@@ -69,6 +70,7 @@ app.use(router)
 app.use(i18n)
 
 app.component('Layout', Layout)
+app.component('ELayout', ELayout)
 
 app.component('Button', Button)
 app.component('Toast', Toast)
