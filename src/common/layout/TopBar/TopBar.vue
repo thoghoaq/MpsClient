@@ -69,52 +69,52 @@
       case 'admin':
         return {
           label: t('Administrator'),
-          class: "m-0"
+          class: 'm-0',
         }
       case 'staffs':
         return {
           label: t('Manage Staffs'),
           route: '/admin/staffs',
-          class: "m-0"
+          class: 'm-0',
         }
       case 'customers':
         return {
           label: t('Manage Customers'),
           route: '/admin/customers',
-          class: "m-0"
+          class: 'm-0',
         }
       case 'shop-owners':
         return {
           label: t('Manage Shop Owners'),
           route: '/admin/shop-owners',
-          class: "m-0"
+          class: 'm-0',
         }
       case 'create':
         return {
           label: t('Create'),
-          class: "m-0"
+          class: 'm-0',
         }
       case 'seller':
         return {
           label: t('Seller Channel'),
-          class: "m-0"
+          class: 'm-0',
         }
       case 'shops':
         return {
           label: t('Manage Shops'),
           route: '/seller/shops',
-          class: "m-0"
+          class: 'm-0',
         }
       case 'product-categories':
         return {
           label: t('Manage Product Categories'),
           route: '/admin/product-categories',
-          class: "m-0"
+          class: 'm-0',
         }
       default:
         return {
           label: item,
-          class: "m-0"
+          class: 'm-0',
         }
     }
   }
@@ -145,7 +145,9 @@
                 <span class="font-semibold">{{ item.label }}</span>
               </a>
             </template>
-            <template #separator> <span class="font-semibold">/</span> </template>
+            <template #separator>
+              <span class="font-semibold">/</span>
+            </template>
           </Breadcrumb>
         </div>
       </template>
@@ -256,4 +258,3 @@
     </Sidebar>
   </div>
 </template>
-src/stores/settingsrc/stores/setting/types

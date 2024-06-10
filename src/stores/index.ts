@@ -30,6 +30,7 @@ const controllers = {
     account: '/account',
     image: '/image',
     datasource: '/datasource',
+    seller: '/seller'
 }
 
 const getLoggedUser = function () {
@@ -58,6 +59,9 @@ export const appConfig : AppConfig = {
         datasource: {
             categories: getControllerUrl('categories', controllers.datasource),
             category: getControllerUrl('category', controllers.datasource),
+        },
+        seller: {
+            shops: getControllerUrl('shops', controllers.seller),
         }
     },
     loggedUser: getLoggedUser(),

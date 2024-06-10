@@ -28,6 +28,9 @@ export interface AppConfig {
         datasource: {
             categories: string;
             category: string;
+        },
+        seller: {
+            shops: string;
         }
     },
     loggedUser: User,
