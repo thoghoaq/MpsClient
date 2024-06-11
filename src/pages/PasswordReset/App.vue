@@ -6,22 +6,21 @@
   import { router } from 'src/router'
   import { useToastStore } from 'src/stores/toast'
   import { useI18n } from 'vue-i18n'
+  import { useApi } from 'src/stores/api'
+import { appConfig } from 'src/stores'
   const { t } = useI18n()
   const authStore = useAuthStore()
   const toast = useToastStore()
+  const api = useApi()
   const state = reactive({
     email: '',
-    password: '',
-    rememberMe: false,
   })
 
   const rules = {
     email: {
       required,
       email,
-    },
-    password: { required, minLength: minLength(6) },
-    rememberMe: {},
+    }
   }
 
   const v$ = useVuelidate(rules, state)
@@ -30,10 +29,10 @@
     v$.value.$touch()
     if (!v$.value.$invalid) {
       loading.value = true
-      authStore.login(state.email, state.password).then((response) => {
+      api.post(appConfig.api.account.sendPasswordResetEmail, { email: state.email }).then((response) => {
         if (response.success) {
-          router.push({ name: 'home' })
-          toast.success(t('Logged in successfully'))
+          toast.success(t('Password reset email sent successfully'))
+          router.push({ name: 'signIn' })
         } else {
           toast.error(response.content)
         }
@@ -78,9 +77,9 @@
         class="border-1 surface-border surface-card border-round py-7 px-4 md:px-7 z-1"
       >
         <div class="mb-4">
-          <div class="text-900 text-xl font-bold mb-2">{{ $t('Log in') }}</div>
+          <div class="text-900 text-xl font-bold mb-2">{{ $t('Reset password') }}</div>
           <span class="text-600 font-medium">{{
-            $t('Please enter your details')
+            $t('Please enter your email')
           }}</span>
         </div>
         <div class="flex flex-column">
@@ -101,49 +100,11 @@
               $t(v$.email.$errors[0]?.$message?.toString())
             }}</small>
           </div>
-          <div class="mb-4 text-right">
-            <InputGroup>
-              <InputGroupAddon>
-                <i class="pi pi-lock"></i>
-              </InputGroupAddon>
-              <Password
-                v-model="state.password"
-                :placeholder="$t('Password')"
-                toggleMask
-                class="w-full"
-                @blur="v$.password.$touch"
-                :invalid="v$.password.$error"
-              />
-            </InputGroup>
-            <small class="p-error" v-if="v$.password.$error">{{
-              $t(v$.password.$errors[0]?.$message?.toString())
-            }}</small>
-          </div>
-          <div class="mb-4 flex flex-wrap gap-3">
-            <div>
-              <Checkbox
-                v-model="state.rememberMe"
-                input-id="rememberMe"
-                :binary="true"
-                class="mr-2"
-              />
-              <label for="rememberMe" class="text-900 font-medium mr-8">
-                {{ $t('Remember me') }}
-              </label>
-            </div>
-            <router-link to="/password-reset">
-              <Button
-                :label="$t('Reset password')"
-                link
-                class="p-0 text-600 text-primary"
-              />
-            </router-link>
-          </div>
-          <Button :label="$t('Log in')" :loading="loading" @click="submitForm" />
+          <Button :label="$t('Reset password')" :loading="loading" @click="submitForm" />
           <div class="mt-3">
-            <span>{{ $t("Don't have an account? ") }}</span>
-            <router-link to="/sign-up">
-              <Button :label="$t('Sign up')" link class="p-0 text-primary" />
+            <span>{{ $t("Return back to page ") }}</span>
+            <router-link to="/sign-in">
+              <Button :label="$t('Log in')" link class="p-0 text-primary" />
             </router-link>
           </div>
         </div>

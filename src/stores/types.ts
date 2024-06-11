@@ -21,6 +21,7 @@ export interface AppConfig {
             details: string;
             update: string;
             status: string;
+            sendPasswordResetEmail: string;
         },
         image: {
             upload: string;
