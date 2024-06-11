@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { MenuItem } from 'primevue/menuitem';
-  import { appConfig } from 'src/stores';
+  import { MenuItem } from 'primevue/menuitem'
+  import { appConfig } from 'src/stores'
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
   const router = useRouter()
@@ -44,15 +44,25 @@
       label: 'Seller Channel',
       visible: appConfig.loggedUser.isShopOwner,
       items: [
-      {
+        {
           label: 'Manage Shops',
           icon: 'pi pi-shop',
           route: '/seller/shops',
           visible: appConfig.loggedUser.isShopOwner,
         },
+      ],
+    },
+  ])
+
+  const sellerItems = ref<MenuItem[]>([
+    {
+      label: 'Manage Shop',
+      visible: appConfig.loggedUser.isShopOwner,
+      items: [
         {
           label: 'Manage Products',
           icon: 'pi pi-table',
+          route: '/shop/products',
           visible: appConfig.loggedUser.isShopOwner,
         },
         {
@@ -68,21 +78,41 @@
       ],
     },
   ])
+
+  const backToHome = function () {
+    appConfig.loggedUser.shopManaging = undefined
+    router.push('/')
+  }
 </script>
 <template>
   <div v-if="props.visible" class="card flex justify-content-center h-screen">
-    <Menu :model="items" class="w-full md:w-16rem border-0 border-noround">
+    <Menu
+      :model="appConfig.loggedUser.shopManaging ? sellerItems : items"
+      class="w-full md:w-16rem border-0 border-noround"
+    >
       <template #start>
-        <router-link to="/">
-          <span class="inline-flex align-items-center gap-1 px-2 py-4">
-            <span class="font-medium text-xl font-semibold"
-              >SMPS<span class="text-primary">Admin</span></span
-            >
-          </span>
-        </router-link>
+        <span class="flex align-items-center">
+           <Button v-if="appConfig.loggedUser.shopManaging" class="h-2rem mx-2" outlined @click="backToHome">
+              <i class="pi pi-home"></i>
+           </Button>
+          <router-link to="/">
+            <span class="inline-flex align-items-center gap-1 px-2 py-4">
+              <span
+                v-if="appConfig.loggedUser.shopManaging"
+                class="font-medium text-xl font-semibold"
+                >{{ appConfig.loggedUser.shopManaging.shopName }}</span
+              >
+              <span v-else class="font-medium text-xl font-semibold"
+                >SMPS<span class="text-primary">Admin</span></span
+              >
+            </span>
+          </router-link>
+        </span>
       </template>
       <template #submenuheader="{ item }">
-        <div class="text-primary font-bold pt-2 mx-1">{{ item.label ? $t(item.label?.toString()) : '' }}</div>
+        <div class="text-primary font-bold pt-2 mx-1">
+          {{ item.label ? $t(item.label?.toString()) : '' }}
+        </div>
       </template>
       <template #item="{ item, props }">
         <router-link
@@ -91,9 +121,21 @@
           :to="item.route"
           custom
         >
-          <a v-ripple :href="href" v-bind="props.action" @click="navigate" :class="router.currentRoute.value.fullPath.match(item.route) ? 'bg-primary-100' : ''">
+          <a
+            v-ripple
+            :href="href"
+            v-bind="props.action"
+            @click="navigate"
+            :class="
+              router.currentRoute.value.fullPath.match(item.route)
+                ? 'bg-primary-100'
+                : ''
+            "
+          >
             <span :class="item.icon" class="pl-1" />
-            <span class="ml-2">{{ item.label ? $t(item.label?.toString()) : '' }}</span>
+            <span class="ml-2">{{
+              item.label ? $t(item.label?.toString()) : ''
+            }}</span>
             <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
             <span
               v-if="item.shortcut"
@@ -111,7 +153,9 @@
           :class="item.class"
         >
           <span :class="item.icon" class="pl-1" />
-          <span class="ml-2">{{ item.label ? $t(item.label?.toString()) : '' }}</span>
+          <span class="ml-2">{{
+            item.label ? $t(item.label?.toString()) : ''
+          }}</span>
           <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
           <span
             v-if="item.shortcut"

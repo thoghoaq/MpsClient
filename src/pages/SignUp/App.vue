@@ -194,9 +194,9 @@ import { ERole } from 'src/stores/types'
           </div>
           <Button :label="$t('Sign up')" class="mb-4" @click="submitForm" :loading="loading" />
           <span class="font-medium text-600">
-            Already have an account?
+            {{$t('Already have an account?')}}
             <router-link to="/sign-in"
-              ><Button label="Login" link class="p-0 font-semibold"
+              ><Button :label="$t('Login')" link class="p-0 font-semibold"
             /></router-link>
           </span>
         </div>

@@ -1,3 +1,5 @@
+import { Shop } from "../seller/shop/types";
+
 export type Auth = {
     accessToken: string;
     user: User;
@@ -12,7 +14,8 @@ export type User = {
     isManagerGroup: boolean;
     isCustomer: boolean;
     isShopOwner: boolean;
-    data: Data
+    data: Data;
+    shopManaging: Shop | undefined;
 };
 
 type Data = {

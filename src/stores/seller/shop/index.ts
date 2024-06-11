@@ -19,5 +19,8 @@ export const useShopStore = defineStore({
           return response
         })
     },
+    initShopManagement(shopId: number) {
+      appConfig.loggedUser.shopManaging = this.shops.find((shop) => shop.id === shopId)
+    }
   },
 })

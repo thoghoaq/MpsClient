@@ -13,6 +13,7 @@ import ProductCategories from '../pages/Admin/ProductCategories/App.vue'
 
 /** Seller */
 import Shops from '../pages/Seller/Shops/App.vue'
+import Products from '../pages/Seller/Products/App.vue'
 
 export const routes = [
   { path: '/sign-in', name: 'signIn', component: SignIn },
@@ -38,7 +39,14 @@ export const routes = [
     path: '/seller',
     name: 'seller',
     children: [
-      { path: 'shops', name: 'shops', component: Shops },
+      { path: 'shops', name: 'shops', component: Shops }, 
+    ]
+  },
+  {
+    path: '/shop',
+    name: 'shop',
+    children: [
+      { path: 'products', name: 'products', component: Products }
     ]
   }
 ]

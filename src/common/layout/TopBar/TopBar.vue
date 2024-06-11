@@ -111,6 +111,17 @@
           route: '/admin/product-categories',
           class: 'm-0',
         }
+      case 'products':
+        return {
+          label: t('Manage Products'),
+          route: '/shop/products',
+          class: 'm-0',
+        }
+      case 'shop':
+        return {
+          label: t('Manage Shop'),
+          class: 'm-0',
+        }
       default:
         return {
           label: item,

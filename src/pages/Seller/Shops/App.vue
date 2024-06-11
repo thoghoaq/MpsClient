@@ -2,7 +2,9 @@
   import { onMounted } from 'vue'
   import { useShopStore } from 'src/stores/seller/shop'
   import { Shop } from 'src/stores/seller/shop/types';
+  import { useRouter } from 'vue-router';
   const shopStore = useShopStore()
+  const router = useRouter()
 
   onMounted(() => {
     shopStore.fetchShops()
@@ -15,6 +17,11 @@
 
   const getStatus = function(shop: Shop) {
     return shop.isActive ? 'Openning' : 'Closing'
+  }
+
+  const initShopManagement = function(shop: Shop) {
+    shopStore.initShopManagement(shop.id)
+    router.push('/shop/products')
   }
 </script>
 <template>
@@ -46,7 +53,7 @@
                 </div>
               </div>
               <div class="mt-3 lg:mt-0">
-                <Button :label="$t('Manage')" icon="pi pi-cog"></Button>
+                <Button :label="$t('Manage')" icon="pi pi-cog" @click="initShopManagement(shop)"></Button>
               </div>
             </div>
           </div>
