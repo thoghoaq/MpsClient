@@ -98,6 +98,8 @@
       },
     })
   }
+
+  const selectedKey = ref()
 </script>
 <template>
   <Layout>
@@ -131,6 +133,8 @@
         </Menubar>
         <div class="card mt-1">
           <DataTable
+            v-model:selection="selectedKey"
+            dataKey="id"
             :value="staffStore.staffs"
             :loading="false"
             removableSort
@@ -160,6 +164,13 @@
                   <div>
                     {{ slotProps.data.fullName }}
                   </div>
+                </div>
+              </template>
+            </Column>
+            <Column field="staff.staffCode" sortable :header="$t('Staff Code')">
+              <template #body="slotProps">
+                <div class="flex align-items-center gap-2">
+                  <div>{{ slotProps.data.staff?.staffCode }}</div>
                 </div>
               </template>
             </Column>

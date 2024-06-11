@@ -98,6 +98,8 @@
       },
     })
   }
+
+  const selectedKey = ref()
 </script>
 <template>
   <Layout>
@@ -131,6 +133,8 @@
         </Menubar>
         <div class="card mt-1">
           <DataTable
+            v-model:selection="selectedKey"
+            data-key="id"
             :value="customerStore.customers"
             :loading="false"
             removableSort

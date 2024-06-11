@@ -10,6 +10,7 @@ export interface Staff {
     createdAt:   Date;
     updatedAt:   Date | null;
     userDevices: null;
+    staff: StaffData | null;
 }
 
 export interface StaffData {
