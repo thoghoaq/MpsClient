@@ -181,7 +181,12 @@
               sortable
               :header="$t('Phone Number')"
             ></Column>
-            <Column field="createdAt" sortable :header="$t('Updated At')">
+            <Column field="createdAt" sortable :header="$t('Created At')">
+              <template #body="{ data }">
+                {{ DateTimeHelper.format(data.createdAt, 'datetime') }}
+              </template>
+            </Column>
+            <Column field="updatedAt" sortable :header="$t('Updated At')">
               <template #body="{ data }">
                 {{ DateTimeHelper.format(data.updatedAt, 'datetime') }}
               </template>
