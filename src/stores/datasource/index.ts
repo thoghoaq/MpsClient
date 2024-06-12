@@ -21,6 +21,15 @@ export const useDataSourceStore = defineStore({
         return response
       })
     },
+    async searchProductCategories(filter: string | undefined) {
+      return api.get(appConfig.appendUrl(appConfig.api.datasource.categories, { filter })).then((response) => {
+        if (response.success) {
+          this.productCategories = response.content
+          this.productCategoryTree = this.getProductCategoryTree()
+        }
+        return response
+      })
+    },
     getProductCategoryTree() {
       return this.productCategories.map((category, index) => {
         return <TreeNode>{

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, watch } from 'vue'
   import { useDataSourceStore } from 'src/stores/datasource'
   import { useToastStore } from 'src/stores/toast'
   import { useI18n } from 'vue-i18n'
@@ -32,6 +32,10 @@
     _expandedKeys[key] = true
     expandedKeys.value = _expandedKeys
   }
+
+  watch(query, (value) => {
+    dataSourceStore.searchProductCategories(value)
+  })
 </script>
 <template>
   <Layout>
