@@ -1,12 +1,13 @@
 <script setup lang="ts">
   import { ref, reactive } from 'vue'
   import useVuelidate from '@vuelidate/core'
-  import { required, email, minLength, sameAs } from '@vuelidate/validators'
+  import { required, email, minLength, sameAs, helpers } from '@vuelidate/validators'
   import { useAuthStore } from '../../stores/auth'
   import { router } from 'src/router'
   import { useToastStore } from 'src/stores/toast'
   import { useI18n } from 'vue-i18n'
-import { ERole } from 'src/stores/types'
+  import { ERole } from 'src/stores/types'
+  const fullName = helpers.regex(/^[\p{L}\p{M}]+([\p{L}\p{M} '-]*[\p{L}\p{M}]+)*$/u)
   const { t } = useI18n()
   const authStore = useAuthStore()
   const toast = useToastStore()
@@ -21,12 +22,13 @@ import { ERole } from 'src/stores/types'
   const rules = {
     name: {
       required,
+      fullName: helpers.withMessage('FullName is not valid', fullName)
     },
     email: {
       required,
       email,
     },
-    password: { required, minLength: minLength(6) },
+    password: { required, minLength: minLength(8) },
     asShopOwner: {},
     readTerm: {
       sameAs: sameAs(true)
