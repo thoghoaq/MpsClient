@@ -98,5 +98,13 @@
   "Please enter your email": "Vui lòng nhập email của bạn",
   "Return back to page ": "Quay trở lại trang ",
   "Password reset email sent successfully": "Email đặt lại mật khẩu đã được gửi thành công",
-  "FullName is not valid": "Tên không hợp lệ"
+  "FullName is not valid": "Tên không hợp lệ",
+  "Download": "Tải xuống",
+  "Export Staffs": "Tải xuống danh sách nhân viên",
+  "Import Staffs": "Nhập danh sách nhân viên",
+  "Imported successfully": "Nhập thành công",
+  "Value inserted / updated": "Giá trị đã được thêm / cập nhật",
+  "Row": "Dòng",
+  "Result": "Kết quả",
+  "Message": "Thông báo"
 }

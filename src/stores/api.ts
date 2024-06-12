@@ -33,7 +33,8 @@ export const useApi = () => {
             content:
               error.response.data['reason'] ||
               error.response.data['message'] ||
-              error.response.data || error.response.status,
+              error.response.data ||
+              error.response.status,
             status: error.response.status,
           }
         }
@@ -74,7 +75,8 @@ export const useApi = () => {
             content:
               error.response.data['reason'] ||
               error.response.data['message'] ||
-              error.response.data || error.response.status,
+              error.response.data ||
+              error.response.status,
             status: error.response.status,
           }
         }
@@ -114,7 +116,8 @@ export const useApi = () => {
             content:
               error.response.data['reason'] ||
               error.response.data['message'] ||
-              error.response.data || error.response.status,
+              error.response.data ||
+              error.response.status,
             status: error.response.status,
           }
         }
@@ -133,10 +136,47 @@ export const useApi = () => {
     return response
   }
 
+  const getFile = async (url: string): Promise<APIResponse<any>> => {
+    return axios
+      .get(url, {
+        headers: {
+          ...getDefaultHeaders(),
+          'Content-Type': 'application/octet-stream',
+        },
+        responseType: 'blob',
+      })
+      .then((response) => {
+        return {
+          success: true,
+          content: response.data,
+          status: response.status,
+        }
+      })
+      .catch((error: AxiosError<any, any>) => {
+        if (error.response) {
+          return {
+            success: false,
+            content:
+              error.response.data['reason'] ||
+              error.response.data['message'] ||
+              error.response.data ||
+              error.response.status,
+            status: error.response.status,
+          }
+        }
+        return {
+          success: false,
+          content: error.message || error.status,
+          status: error.status,
+        }
+      })
+  }
+
   return {
     get,
     post,
     put,
     delele,
+    getFile
   }
 }

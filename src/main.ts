@@ -40,6 +40,7 @@ import Dialog from 'primevue/dialog'
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
 import Ripple from 'primevue/ripple';
+import Tooltip from 'primevue/tooltip';
 
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
@@ -102,5 +103,6 @@ app.component('Inplace', Inplace)
 app.component('Dialog', Dialog)
 
 app.directive('ripple', Ripple)
+app.directive('tooltip', Tooltip)
 
 app.mount('#app')

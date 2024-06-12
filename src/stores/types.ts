@@ -22,6 +22,10 @@ export interface AppConfig {
             update: string;
             status: string;
             sendPasswordResetEmail: string;
+            staffs: {
+                export: string;
+                import: string;
+            }
         },
         image: {
             upload: string;
@@ -49,4 +53,15 @@ export enum EFileType {
     UserAvatars = 1,
     ProductImages = 2,
     General = 3
+}
+
+type ImportResult = {
+    row: number;
+    isSuccess: boolean;
+    message: string | undefined;
+}
+
+export type ImportResponse = {
+    message: string | undefined;
+    results: ImportResult[];
 }

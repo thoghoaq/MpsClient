@@ -7,11 +7,15 @@
   import DateTimeHelper from 'src/helpers/datetime-helper'
   import { useConfirm } from 'primevue/useconfirm'
   import { useI18n } from 'vue-i18n'
+  import { useApi } from 'src/stores/api'
+  import { appConfig } from 'src/stores'
+  import { ImportResponse } from 'src/stores/types'
   const { t } = useI18n()
   const staffStore = useStaffStore()
   const toast = useToastStore()
   const loading = ref(false)
   const confirm = useConfirm()
+  const api = useApi()
 
   onMounted(() => {
     loading.value = true
@@ -87,8 +91,7 @@
       acceptLabel: t('Yes'),
       acceptClass: 'p-button-danger',
       accept: () => {
-        staffStore.activeOrDeactive(menuId.value)
-        .then((response) => {
+        staffStore.activeOrDeactive(menuId.value).then((response) => {
           if (response.success) {
             toast.success(t('Active/Deactive Successfully'))
           } else {
@@ -100,11 +103,100 @@
   }
 
   const selectedKey = ref()
+
+  const exportLoading = ref(false)
+  const exportStaffs = () => {
+    exportLoading.value = true
+    api
+      .getFile(
+        appConfig.appendUrl(appConfig.api.account.staffs.export, {
+          filter: query.value,
+        }),
+      )
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.content]))
+        const link = document.createElement('a')
+        link.href
+        link.setAttribute('href', url)
+        link.setAttribute('download', 'staffs.xlsx')
+        link.click()
+      })
+      .finally(() => {
+        exportLoading.value = false
+      })
+  }
+
+  const importLoading = ref(false)
+  const importStaffs = () => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = '.xlsx'
+    input.onchange = (event) => {
+      const files = (event.target as HTMLInputElement).files
+      const file = files ? files[0] : null
+      if (file) {
+        importLoading.value = true
+        const formData = new FormData()
+        formData.append('file', file)
+        api
+          .post(appConfig.api.account.staffs.import, formData)
+          .then((response) => {
+            if (response.success) {
+              importResult.value = response.content
+              isShowImportResult.value = true
+              staffStore.searchStaffs(query.value)
+            } else {
+              toast.error(response.content)
+            }
+          })
+          .finally(() => {
+            importLoading.value = false
+          })
+      }
+    }
+    input.click()
+  }
+
+  const importResult = ref<ImportResponse>()
+  const isShowImportResult = ref(false)
 </script>
 <template>
   <Layout>
     <template #page-content>
       <ConfirmDialog></ConfirmDialog>
+      <Dialog
+        v-model:visible="isShowImportResult"
+        modal
+        :header="importResult?.message ?? $t('Imported successfully')"
+        :style="{ width: '50rem' }"
+        :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+      >
+        <DataTable
+          :value="importResult?.results"
+          showGridlines
+        >
+          <Column field="row" :header="$t('Row')" header-class="w-3rem" class="text-center"></Column>
+          <Column field="isSuccess" :header="$t('Result')" header-class="w-6rem" class="text-center">
+            <template #body="{ data }">
+              <span
+                :class="{
+                  'text-green-500': data.isSuccess,
+                  'text-red-500': !data.isSuccess,
+                }"
+                ><i :class="{
+                  'pi pi-check-circle': data.isSuccess,
+                  'pi pi-times-circle': !data.isSuccess,
+                }"></i></span
+              >
+            </template>
+          </Column>
+          <Column field="message" :header="$t('Message')">
+            <template #body="{ data }">
+              <span>{{ data.message ?? $t("Value inserted / updated") }}</span>
+            </template>
+          </Column>
+        </DataTable>
+      </Dialog>
       <div class="mx-3">
         <Menubar class="border-0 mt-3 px-3">
           <template #start>
@@ -112,6 +204,22 @@
           </template>
           <template #end>
             <div class="flex align-items-center gap-2">
+              <Button
+                icon="pi pi-download"
+                aria-label="Download"
+                outlined
+                v-tooltip.top="$t('Export Staffs')"
+                :loading="exportLoading"
+                @click="exportStaffs"
+              />
+              <Button
+                icon="pi pi-upload"
+                aria-label="Upload"
+                outlined
+                v-tooltip.top="$t('Import Staffs')"
+                :loading="importLoading"
+                @click="importStaffs"
+              />
               <IconField iconPosition="left">
                 <InputIcon class="pi pi-search"> </InputIcon>
                 <InputText
@@ -177,10 +285,15 @@
             <Column field="email" sortable :header="$t('Email')"></Column>
             <Column :header="$t('Role')">
               <template #body="slotProps">
-                <Tag severity="contrast" v-for="role in (slotProps.data.role as string)
+                <Tag
+                  severity="contrast"
+                  v-for="role in (slotProps.data.role as string)
                     .split(',')
-                    .filter((x) => x.trim() != '')" :value="role" class="mr-1"
-                  :class="getRoleClass(role)"></Tag>
+                    .filter((x) => x.trim() != '')"
+                  :value="role"
+                  class="mr-1"
+                  :class="getRoleClass(role)"
+                ></Tag>
               </template>
             </Column>
             <Column

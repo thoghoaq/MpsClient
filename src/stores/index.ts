@@ -53,6 +53,10 @@ export const appConfig : AppConfig = {
             update: getControllerUrl('update', controllers.account),
             status: getControllerUrl('status', controllers.account),
             sendPasswordResetEmail: getControllerUrl('send-password-reset-email', controllers.account),
+            staffs: {
+                export: getControllerUrl('staffs/export', controllers.account),
+                import: getControllerUrl('staffs/import', controllers.account),
+            }
         },
         image: {
             upload: getControllerUrl('upload', controllers.image)
