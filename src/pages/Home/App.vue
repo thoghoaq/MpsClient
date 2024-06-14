@@ -11,7 +11,7 @@
       <div></div>
     </template>
   </Layout>
-  <ELayout>
+  <ELayout v-else>
     <template #page-content>
       <div></div>
     </template>

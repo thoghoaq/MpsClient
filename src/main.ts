@@ -37,6 +37,8 @@ import Tag from 'primevue/tag'
 import Inplace from 'primevue/inplace'
 import Dialog from 'primevue/dialog'
 import Textarea from 'primevue/textarea'
+import InputNumber from 'primevue/inputnumber'
+import Slider from 'primevue/slider'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -103,6 +105,8 @@ app.component('Tag', Tag)
 app.component('Inplace', Inplace)
 app.component('Dialog', Dialog)
 app.component('Textarea', Textarea)
+app.component('InputNumber', InputNumber)
+app.component('Slider', Slider)
 
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)

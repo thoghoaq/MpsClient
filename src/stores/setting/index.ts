@@ -9,6 +9,9 @@ const savedTheme = themeInfo
   ? JSON.parse(themeInfo)
   : { theme: 'aura-light-indigo', scheme: 'Light' }
 
+const savedScale = localStorage.getItem('scale') ? parseInt(localStorage.getItem('scale')!) : 14;
+document.documentElement.style.fontSize = savedScale + 'px';
+
 export const useSettingStore = defineStore({
   id: 'setting',
   state: () => ({
@@ -17,6 +20,7 @@ export const useSettingStore = defineStore({
     colorSchemes: colorSchemes,
     currentScheme: savedTheme.scheme,
     dark: savedTheme.scheme == 'Dark',
+    scale: savedScale,
   }),
   actions: {
     changeTheme(theme: string, scheme?: string) {
@@ -32,6 +36,10 @@ export const useSettingStore = defineStore({
       localStorage.setItem('language', language);
       axios.defaults.headers.common['Accept-Language'] = accept;
       appConfig.language = accept;
+    },
+    changeScale(scale: number) {
+      document.documentElement.style.fontSize = scale + 'px';
+      localStorage.setItem('scale', scale.toString());
     }
   },
 })
