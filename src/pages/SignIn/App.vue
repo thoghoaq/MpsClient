@@ -20,7 +20,7 @@
       required,
       email,
     },
-    password: { required, minLength: minLength(6) },
+    password: { required, minLength: minLength(8) },
     rememberMe: {},
   }
 
@@ -110,6 +110,7 @@
                 v-model="state.password"
                 :placeholder="$t('Password')"
                 toggleMask
+                :feedback="false"
                 class="w-full"
                 @blur="v$.password.$touch"
                 :invalid="v$.password.$error"
