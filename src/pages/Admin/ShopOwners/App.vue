@@ -170,10 +170,12 @@
             <Column field="email" sortable :header="$t('Email')"></Column>
             <Column :header="$t('Role')">
               <template #body="slotProps">
-                <Tag severity="contrast" v-for="role in (slotProps.data.role as string)
-                    .split(',')
-                    .filter((x) => x.trim() != '')" :value="role" class="mr-1"
-                  :class="getRoleClass(role)"></Tag>
+                <div class="flex gap-1">
+                  <Tag severity="contrast" v-for="role in (slotProps.data.role as string)
+                      .split(',')
+                      .filter((x) => x.trim() != '')" :value="role"
+                    :class="getRoleClass(role)"></Tag>
+                </div>
               </template>
             </Column>
             <Column

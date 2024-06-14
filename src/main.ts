@@ -36,6 +36,7 @@ import Chart from 'primevue/chart'
 import Tag from 'primevue/tag'
 import Inplace from 'primevue/inplace'
 import Dialog from 'primevue/dialog'
+import Textarea from 'primevue/textarea'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -101,6 +102,7 @@ app.component('Chart', Chart)
 app.component('Tag', Tag)
 app.component('Inplace', Inplace)
 app.component('Dialog', Dialog)
+app.component('Textarea', Textarea)
 
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)

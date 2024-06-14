@@ -15,12 +15,13 @@ import ProductCategories from '../pages/Admin/ProductCategories/App.vue'
 /** Seller */
 import Shops from '../pages/Seller/Shops/App.vue'
 import Products from '../pages/Seller/Products/App.vue'
+import ShopsCreate from '../pages/Seller/Shops/Edit/App.vue'
 
 export const routes = [
+  { path: '/', name: 'home', component: Home },
   { path: '/sign-in', name: 'signIn', component: SignIn },
   { path: '/sign-up', name: 'signUp', component: SignUp },
   { path: '/password-reset', name: 'signOut', component: PasswordReset },
-  { path: '/', name: 'home', component: Home },
   {
     path: '/admin',
     name: 'admin',
@@ -42,6 +43,7 @@ export const routes = [
     name: 'seller',
     children: [
       { path: 'shops', name: 'shops', component: Shops }, 
+      { path: 'shops/create', name: 'shopsCreate', component: ShopsCreate },
     ]
   },
   {

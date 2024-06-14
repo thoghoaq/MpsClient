@@ -27,7 +27,23 @@
 <template>
   <Layout>
     <template #page-content>
-      <div v-for="shop in shopStore.shops" class="border-1 border-round-md m-4 p-1">
+      <Menubar class="border-0 m-2 px-3">
+          <template #start>
+            <h3>{{ $t('Your Shops') }}</h3>
+          </template>
+          <template #end>
+            <div class="flex align-items-center gap-2">
+              <router-link to="/seller/shops/create">
+                <Button
+                  icon="pi pi-plus"
+                  :label="$t('Request New Shop')"
+                  outlined
+                ></Button>
+              </router-link>
+            </div>
+          </template>
+        </Menubar>
+      <div v-for="shop in shopStore.shops" class="border-1 border-round-md mx-4 p-1">
           <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
             <div class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
               <i class="pi pi-map-marker mr-2"></i>
