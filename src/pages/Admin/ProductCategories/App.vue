@@ -84,7 +84,7 @@
                 @close="updateProductCategory(node.data)"
               >
                 <template #display>
-                  {{ node.data.name }}
+                  <span :class="(node.key.match(/-/g) || []).length < 1 ? 'font-semibold' : ''">{{ node.data.name }}</span>
                 </template>
                 <template #content>
                   <InputText v-model="node.data.name" autofocus />

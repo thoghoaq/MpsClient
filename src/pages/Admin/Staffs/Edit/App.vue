@@ -196,21 +196,21 @@
         <div class="flex flex-column gap-4 w-full">
           <div class="flex flex-column gap-2">
             <label for="fullName">{{ $t('Full Name') }}</label>
-            <InputText v-model="state.fullName" :invalid="v$.fullName.$error" />
+            <InputText v-model="state.fullName" :invalid="v$.fullName.$error" @blur="v$.fullName.$touch"/>
             <small class="p-error" v-if="v$.fullName.$error">{{
               $t(v$.fullName.$errors[0]?.$message?.toString())
             }}</small>
           </div>
           <div class="flex flex-column gap-2">
             <label for="email">{{ $t('Email') }}</label>
-            <InputText v-model="state.email" :invalid="v$.email.$error" :disabled="userId ? true :  false"/>
+            <InputText v-model="state.email" :invalid="v$.email.$error" @blur="v$.email.$touch" :disabled="userId ? true :  false"/>
             <small class="p-error" v-if="v$.email.$error">{{
               $t(v$.email.$errors[0]?.$message?.toString())
             }}</small>
           </div>
           <div class="flex flex-column gap-2">
             <label for="phoneNumber">{{ $t('Phone Number') }}</label>
-            <InputText v-model="state.phoneNumber" />
+            <InputText v-model="state.phoneNumber" @blur="v$.phoneNumber.$touch"/>
             <small class="p-error" v-if="v$.phoneNumber.$error">{{
               $t(v$.phoneNumber.$errors[0]?.$message?.toString())
             }}</small>

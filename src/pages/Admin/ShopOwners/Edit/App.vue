@@ -164,6 +164,7 @@
               v-model="state.fullName"
               :invalid="v$.fullName.$error"
               :disabled="!canEdit"
+              @blur="v$.fullName.$touch"
             />
             <small class="p-error" v-if="v$.fullName.$error">{{
               $t(v$.fullName.$errors[0]?.$message?.toString())
@@ -175,6 +176,7 @@
               v-model="state.email"
               :invalid="v$.email.$error"
               :disabled="(userId ? true : false) && !canEdit"
+              @blur="v$.email.$touch"
             />
             <small class="p-error" v-if="v$.email.$error">{{
               $t(v$.email.$errors[0]?.$message?.toString())
@@ -182,7 +184,7 @@
           </div>
           <div class="flex flex-column gap-2">
             <label for="phoneNumber">{{ $t('Phone Number') }}</label>
-            <InputText v-model="state.phoneNumber" :disabled="!canEdit" />
+            <InputText v-model="state.phoneNumber" :disabled="!canEdit" @blur="v$.phoneNumber.$touch"/>
             <small class="p-error" v-if="v$.phoneNumber.$error">{{
               $t(v$.phoneNumber.$errors[0]?.$message?.toString())
             }}</small>
