@@ -1,3 +1,4 @@
+import { User } from "./auth/types";
 import { AppConfig } from "./types";
 
 const getAppPath = function () {
@@ -39,7 +40,13 @@ const getLoggedUser = function () {
     if (auth) {
         return JSON.parse(auth)["user"];
     }
-    return null;
+    return <User>{
+        isManagerGroup: false,
+        isAdminGroup: false,
+        isShopOwner: false,
+        isCustomer: false,
+        isGuest: true,
+    };
 }
 
 export const appConfig : AppConfig = {

@@ -148,6 +148,7 @@
           @click="showSettings = true"
         />
         <Avatar
+          v-if="!appConfig.loggedUser.isGuest"
           :image="appConfig.loggedUser.data.photoUrl"
           :label="
             appConfig.loggedUser.data.photoUrl
@@ -157,6 +158,13 @@
           class="cursor-pointer bg-primary-200 font-bold"
           shape="circle"
           @click="showProfile = true"
+        />
+        <Button
+          v-else
+          icon="pi pi-user"
+          class="p-button-rounded p-button-text w-10rem"
+          :label="$t('Log in')"
+          @click="router.push({ name: 'signIn' })"
         />
       </div>
     </div>

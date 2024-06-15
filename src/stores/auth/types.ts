@@ -14,6 +14,7 @@ export type User = {
     isManagerGroup: boolean;
     isCustomer: boolean;
     isShopOwner: boolean;
+    isGuest: boolean;
     data: Data;
     shopManaging: Shop | undefined;
 };

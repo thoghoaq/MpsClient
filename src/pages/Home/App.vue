@@ -1,5 +1,18 @@
 <script setup lang="ts">
+  import { onMounted } from 'vue'
   import { appConfig } from 'src/stores'
+  import { useRouter } from 'vue-router'
+  const router = useRouter()
+  onMounted(() => {
+    if (
+      appConfig.loggedUser.isShopOwner &&
+      !appConfig.loggedUser.shopManaging
+    ) {
+      router.push({ name: 'shops' })
+    } else if (appConfig.loggedUser.isManagerGroup) {
+      router.push({ name: 'staffs' })
+    }
+  })
 </script>
 <template>
   <Layout
