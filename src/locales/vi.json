@@ -107,5 +107,22 @@
   "Row": "Dòng",
   "Result": "Kết quả",
   "Message": "Thông báo",
-  "Scale": "Kích thước"
+  "Scale": "Kích thước",
+  "Publish": "Xuất bản",
+  "Shop Name": "Tên cửa hàng",
+  "District": "Quận/Huyện",
+  "City": "Tỉnh/Thành phố",
+  "Description": "Mô tả",
+  "Request New Shop": "Đăng ký cửa hàng mới",
+  "Select a category": "Chọn một danh mục",
+  "Category": "Danh mục",
+  "Create Product": "Tạo sản phẩm",
+  "Add Product": "Thêm sản phẩm",
+  "Stock": "Số lượng",
+  "Your Shops": "Cửa hàng của bạn",
+  "Your Products": "Sản phẩm của bạn",
+  "Product Name": "Tên sản phẩm",
+  "Product Code": "Mã sản phẩm",
+  "Product SKU": "Mã SKU",
+  "Price": "Giá"
 }

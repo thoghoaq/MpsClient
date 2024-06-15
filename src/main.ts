@@ -39,6 +39,9 @@ import Dialog from 'primevue/dialog'
 import Textarea from 'primevue/textarea'
 import InputNumber from 'primevue/inputnumber'
 import Slider from 'primevue/slider'
+import FloatLabel from 'primevue/floatlabel'
+import Editor from 'primevue/editor'
+import TreeSelect from 'primevue/treeselect'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -107,6 +110,9 @@ app.component('Dialog', Dialog)
 app.component('Textarea', Textarea)
 app.component('InputNumber', InputNumber)
 app.component('Slider', Slider)
+app.component('FloatLabel', FloatLabel)
+app.component('Editor', Editor)
+app.component('TreeSelect', TreeSelect)
 
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)

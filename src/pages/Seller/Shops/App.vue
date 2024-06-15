@@ -43,7 +43,7 @@
             </div>
           </template>
         </Menubar>
-      <div v-for="shop in shopStore.shops" class="border-1 border-round-md mx-4 p-1">
+      <div v-for="shop in shopStore.shops" class="border-1 border-round-md mx-4 p-1 mb-4">
           <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
             <div class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
               <i class="pi pi-map-marker mr-2"></i>

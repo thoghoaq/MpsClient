@@ -118,6 +118,12 @@
         }
     }
   }
+
+  const scale = ref(settingStore.scale)
+
+  watch(scale, (value) => {
+    settingStore.changeScale(value);
+  })
 </script>
 <template>
   <div class="card w-full bg-primary-reverse">
@@ -187,6 +193,14 @@
           />
           <label :for="scheme" class="ml-2">{{ $t(scheme) }}</label>
         </div>
+      </div>
+      <div class="mb-5">
+        <h3 class="mb-3">{{ $t('Scale') }}</h3>
+        <div class="flex align-items-center justify-content-between">
+          <Button icon="pi pi-minus font-bold" link @click="() => {if (scale > 12) scale = scale - 1}"></Button>
+          <Slider v-model="scale" :min="12" :max="16" :step="1" class="w-10rem" />
+          <Button icon="pi pi-plus font-bold" link @click="() => {if (scale < 16) scale = scale + 1}"></Button>
+          </div>
       </div>
       <div>
         <h3 class="mb-3">{{ $t('Language') }}</h3>

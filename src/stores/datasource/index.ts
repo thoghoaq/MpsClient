@@ -34,6 +34,7 @@ export const useDataSourceStore = defineStore({
       return this.productCategories.map((category, index) => {
         return <TreeNode>{
           key: `${index}`,
+          label: category.name,
           data: {
             id: category.id,
             name: category.name,
@@ -42,6 +43,7 @@ export const useDataSourceStore = defineStore({
           children: category.children.map((child, i) => {
             return <TreeNode>{
               key: `${index}-${i}`,
+              label: child.name,
               data: {
                 id: child.id,
                 name: child.name,
@@ -50,6 +52,7 @@ export const useDataSourceStore = defineStore({
               children: child.children.map((child2, i2) => {
                 return <TreeNode>{
                   key: `${index}-${i}-${i2}`,
+                  label: child2.name,
                   data: {
                     id: child2.id,
                     name: child2.name,

@@ -36,6 +36,11 @@ export interface AppConfig {
         },
         seller: {
             shops: string;
+            shop: string;
+        },
+        shop: {
+            product: string;
+            products: string;
         }
     },
     loggedUser: User,

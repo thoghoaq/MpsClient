@@ -16,6 +16,7 @@ import ProductCategories from '../pages/Admin/ProductCategories/App.vue'
 import Shops from '../pages/Seller/Shops/App.vue'
 import Products from '../pages/Seller/Products/App.vue'
 import ShopsCreate from '../pages/Seller/Shops/Edit/App.vue'
+import ProductsCreate from '../pages/Seller/Products/Edit/App.vue'
 
 export const routes = [
   { path: '/', name: 'home', component: Home },
@@ -50,7 +51,8 @@ export const routes = [
     path: '/shop',
     name: 'shop',
     children: [
-      { path: 'products', name: 'products', component: Products }
+      { path: 'products', name: 'products', component: Products },
+      { path: 'products/create', name: 'productsCreate', component: ProductsCreate }
     ]
   }
 ]

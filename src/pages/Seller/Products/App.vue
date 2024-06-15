@@ -108,12 +108,33 @@
 <template>
   <Layout>
     <template #page-content>
+      <Menubar class="border-0 m-2 px-3">
+        <template #start>
+          <h3>{{ $t('Your Products') }}</h3>
+        </template>
+        <template #end>
+          <div class="flex align-items-center gap-2">
+            <router-link to="/shop/products/create">
+              <Button
+                icon="pi pi-plus"
+                :label="$t('Add Product')"
+                outlined
+              ></Button>
+            </router-link>
+          </div>
+        </template>
+      </Menubar>
       <div class="card m-3">
-        <DataTable :value="products" stripedRows showGridlines tableStyle="min-width: 50rem">
-            <Column field="code" header="Code"></Column>
-            <Column field="name" header="Name"></Column>
-            <Column field="category" header="Category"></Column>
-            <Column field="quantity" header="Quantity"></Column>
+        <DataTable
+          :value="products"
+          stripedRows
+          showGridlines
+          tableStyle="min-width: 50rem"
+        >
+          <Column field="code" header="Code"></Column>
+          <Column field="name" header="Name"></Column>
+          <Column field="category" header="Category"></Column>
+          <Column field="quantity" header="Quantity"></Column>
         </DataTable>
       </div>
     </template>
