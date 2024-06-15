@@ -59,18 +59,22 @@
           stripedRows
           showGridlines
           tableStyle="min-width: 50rem"
+          removable-sort
+          paginator :rows="10" :rowsPerPageOptions="[5, 10, 20, 50]"
         >
           <Column
             field="productCode"
             :header="$t('Product Code')"
             class="w-12rem"
+            sortable
           ></Column>
           <Column
             field="productSKU"
             :header="$t('Product SKU')"
             class="w-20rem"
+            sortable
           ></Column>
-          <Column field="name" :header="$t('Name')"></Column>
+          <Column field="name" :header="$t('Name')" sortable></Column>
           <Column :header="$t('Image')">
             <template #body="slotProps">
               <Image
@@ -82,15 +86,15 @@
               />
             </template>
           </Column>
-          <Column field="category.name" :header="$t('Category')"></Column>
-          <Column field="brand.name" :header="$t('Brand')"></Column>
-          <Column field="price" :header="$t('Price')">
+          <Column field="category.name" :header="$t('Category')" sortable></Column>
+          <Column field="brand.name" :header="$t('Brand')" sortable></Column>
+          <Column field="price" :header="$t('Price')" sortable>
             <template #body="slotProps">
               {{ formatCurrency(slotProps.data.price) }}
             </template>
           </Column>
-          <Column field="stock" :header="$t('Stock')"></Column>
-          <Column field="isActive" :header="$t('Status')">
+          <Column field="stock" :header="$t('Stock')" sortable></Column>
+          <Column field="isActive" :header="$t('Status')" sortable>
             <template #body="{ data }">
               <i
                 class="pi"

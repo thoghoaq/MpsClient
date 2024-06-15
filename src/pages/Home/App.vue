@@ -26,7 +26,9 @@
   </Layout>
   <ELayout v-else>
     <template #page-content>
-      <div></div>
+      <div class="flex">
+        <Category></Category>
+      </div>
     </template>
   </ELayout>
 </template>

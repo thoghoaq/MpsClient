@@ -10,13 +10,10 @@
 <template>
   <header></header>
   <main>
-    <div class="flex flex-column w-full h-screen">
-      <ETopBar :on-toggle-menu="toggleMenu" />
-      <div class="flex h-full">
-        <ENavigationBar :visible="visible" />
-        <div class="bg-primary-reverse overflow-auto w-full m-3 border-round">
+    <div class="overflow-auto h-screen">
+      <ETopBar :on-toggle-menu="toggleMenu" class="sticky top-0 z-1"/>
+      <div>
           <slot name="page-content"></slot>
-        </div>
       </div>
     </div>
   </main>

@@ -7,6 +7,7 @@ import PrimeVue from 'primevue/config'
 
 import Layout from './common/layout/Layout.vue'
 import ELayout from './common/e-layout/ELayout.vue'
+import Category from './common/e-layout/Category/Category.vue'
 
 import Button from 'primevue/button'
 import Toast from 'primevue/toast'
@@ -79,6 +80,7 @@ app.use(i18n)
 
 app.component('Layout', Layout)
 app.component('ELayout', ELayout)
+app.component('Category', Category)
 
 app.component('Button', Button)
 app.component('Toast', Toast)
