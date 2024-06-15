@@ -18,6 +18,7 @@
     productImages: <string[]>[],
     category: <any>null,
     stock: 0,
+    brand: <any>null,
   })
   const rules = {
     productName: { required },
@@ -28,6 +29,7 @@
     productImages: {},
     category: { required },
     stock: { required },
+    brand: {},
   }
   const $v = useVuelidate(rules, state)
   const toast = useToastStore()
@@ -36,6 +38,7 @@
 
   onMounted(() => {
     dataSourceStore.fetchProductCategories()
+    dataSourceStore.fetchProductBrands()
   })
 
   const onUpload = async (event: any) => {
@@ -75,11 +78,15 @@
 
   const getCategoryNode = (key: string) => {
     var keyTree = key.split('-')
-    const parent = dataSourceStore.productCategoryTree.find((item) => item.key == keyTree[0])
+    const parent = dataSourceStore.productCategoryTree.find(
+      (item) => item.key == keyTree[0],
+    )
     if (keyTree.length == 1) {
       return parent
     }
-    const child = parent?.children?.find((item) => item.key == `${keyTree[0]}-${keyTree[1]}`)
+    const child = parent?.children?.find(
+      (item) => item.key == `${keyTree[0]}-${keyTree[1]}`,
+    )
     if (keyTree.length == 2) {
       return child
     }
@@ -99,23 +106,24 @@
     loading.value = true
     const categoryId = getCategoryNode(Object.keys(state.category)[0])?.data.id
     const data = {
-        shopId: appConfig.loggedUser.shopManaging?.id,
-        name: state.productName,
-        price: state.price,
-        code: state.productCode,
-        sku: state.productSKU,
-        description: state.description,
-        images: state.productImages.map((image) => {
-          imagePath: image
-        }),
-        categoryId: categoryId,
-        stock: state.stock,
-      }
+      shopId: appConfig.loggedUser.shopManaging?.id,
+      name: state.productName,
+      price: state.price,
+      productCode: state.productCode,
+      productSKU: state.productSKU,
+      description: state.description,
+      images: state.productImages.map((image) => {
+        return { imagePath: image }
+      }),
+      categoryId: categoryId,
+      brandId: state.brand?.id,
+      stock: state.stock,
+    }
     api
       .post(appConfig.api.shop.product, data)
       .then((res) => {
         if (res.success) {
-          toast.success(res.content["message"])
+          toast.success(res.content['message'])
         } else {
           toast.error(res.content)
         }
@@ -308,6 +316,27 @@
                 />
                 <small class="p-error" v-if="$v.category.$error">{{
                   $t($v.category.$errors[0]?.$message?.toString())
+                }}</small>
+              </div>
+            </div>
+            <div class="border-1 surface-border border-round">
+              <span
+                class="text-900 font-bold block border-bottom-1 surface-border p-3"
+                >{{ $t('Brand') }}</span
+              >
+              <div class="p-3 flex flex-column gap-2">
+                <Dropdown
+                  v-model="state.brand"
+                  :options="dataSourceStore.productBrands"
+                  :placeholder="$t('Select a brand')"
+                  filter
+                  showClear
+                  optionLabel="name"
+                  class="w-full"
+                  :invalid="$v.brand.$error"
+                />
+                <small class="p-error" v-if="$v.brand.$error">{{
+                  $t($v.brand.$errors[0]?.$message?.toString())
                 }}</small>
               </div>
             </div>

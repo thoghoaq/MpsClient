@@ -33,6 +33,7 @@ export interface AppConfig {
         datasource: {
             categories: string;
             category: string;
+            brands: string;
         },
         seller: {
             shops: string;

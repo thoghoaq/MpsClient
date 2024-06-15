@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ProductCategory } from './types'
+import { ProductBrand, ProductCategory } from './types'
 import { useApi } from 'src/stores/api'
 import { appConfig } from 'src/stores'
 import { TreeNode } from 'primevue/treenode'
@@ -10,6 +10,7 @@ export const useDataSourceStore = defineStore({
   state: () => ({
     productCategories: <ProductCategory[]>[],
     productCategoryTree: <TreeNode[]>[],
+    productBrands: <ProductBrand[]>[],
   }),
   actions: {
     async fetchProductCategories() {
@@ -85,6 +86,14 @@ export const useDataSourceStore = defineStore({
       } else {
         this.productCategoryTree.push(child)
       }
+    },
+    async fetchProductBrands() {
+      return api.get(appConfig.api.datasource.brands).then((response) => {
+        if (response.success) {
+          this.productBrands = response.content
+        }
+        return response
+      })
     },
   },
 })

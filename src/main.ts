@@ -42,6 +42,7 @@ import Slider from 'primevue/slider'
 import FloatLabel from 'primevue/floatlabel'
 import Editor from 'primevue/editor'
 import TreeSelect from 'primevue/treeselect'
+import SpeedDial from 'primevue/speeddial'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -113,6 +114,7 @@ app.component('Slider', Slider)
 app.component('FloatLabel', FloatLabel)
 app.component('Editor', Editor)
 app.component('TreeSelect', TreeSelect)
+app.component('SpeedDial', SpeedDial)
 
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)

@@ -124,5 +124,8 @@
   "Product Name": "Tên sản phẩm",
   "Product Code": "Mã sản phẩm",
   "Product SKU": "Mã SKU",
-  "Price": "Giá"
+  "Price": "Giá",
+  "Brand": "Hãng",
+  "Select a brand": "Chọn một hãng",
+  "Image": "Ảnh"
 }
