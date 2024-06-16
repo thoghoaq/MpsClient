@@ -19,3 +19,8 @@ body {
 .bg-noir-500 {
   background-color: #020617;
 }
+
+.required::after {
+  content: " *";
+  color: var(--red-500);
+}

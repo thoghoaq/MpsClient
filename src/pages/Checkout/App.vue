@@ -83,7 +83,7 @@
               {{ $t('CHECK OUT INFORMATION') }}
             </div>
             <div class="flex flex-column gap-2">
-              <label for="fullName">{{ $t('Full Name') }}</label>
+              <label class="required" for="fullName">{{ $t('Full Name') }}</label>
               <InputText
                 v-model="state.fullName"
                 :invalid="v$.fullName.$error"
@@ -95,7 +95,7 @@
               }}</small>
             </div>
             <div class="flex flex-column gap-2">
-              <label for="address">{{ $t('Address') }}</label>
+              <label class="required" for="address">{{ $t('Address') }}</label>
               <InputText
                 v-model="state.address"
                 :invalid="v$.address.$error"
@@ -107,7 +107,7 @@
               }}</small>
             </div>
             <div class="flex flex-column gap-2">
-              <label for="phoneNumber">{{ $t('Phone Number') }}</label>
+              <label class="required" for="phoneNumber">{{ $t('Phone Number') }}</label>
               <InputText
                 v-model="state.phoneNumber"
                 :invalid="v$.phoneNumber.$error"
@@ -119,7 +119,7 @@
               }}</small>
             </div>
             <div class="flex flex-column gap-2">
-              <label for="email">{{ $t('Email') }}</label>
+              <label class="required" for="email">{{ $t('Email') }}</label>
               <InputText
                 v-model="state.email"
                 :invalid="v$.email.$error"

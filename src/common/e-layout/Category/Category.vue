@@ -21,7 +21,7 @@
   >
     <Column
       field="name"
-      header="PARTS & ACCESSORIES"
+      :header="$t('PARTS & ACCESSORIES')"
       header-class="bg-primary"
       expander
     ></Column>
