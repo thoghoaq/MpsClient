@@ -2,7 +2,6 @@
   import { onMounted } from 'vue'
   import { appConfig } from 'src/stores'
   import { useRouter } from 'vue-router'
-  import ProductList from './ProductList/ProductList.vue'
   const router = useRouter()
   onMounted(() => {
     if (
@@ -12,6 +11,8 @@
       router.push({ name: 'shops' })
     } else if (appConfig.loggedUser.isManagerGroup) {
       router.push({ name: 'staffs' })
+    } else {
+      router.push({ name: 'eProducts' })
     }
   })
 </script>
@@ -25,9 +26,9 @@
       <div></div>
     </template>
   </Layout>
-  <ELayout :hide-category="true" v-else>
+  <ELayout v-else>
     <template #page-content>
-      <ProductList></ProductList>
+      <div></div>
     </template>
   </ELayout>
 </template>

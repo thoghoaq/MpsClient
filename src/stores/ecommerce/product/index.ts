@@ -8,7 +8,7 @@ const api = useApi()
 export const useEProductStore = defineStore({
   id: 'ecommerce-product',
   state: () => ({
-    products: <Product[]>[],
+    products: <Product[]>[]
   }),
   actions: {
     async fetchProducts() {
@@ -19,5 +19,12 @@ export const useEProductStore = defineStore({
           return response
         })
     },
+    async fetchProductDetails(id: string) {
+      return api
+        .get(`${appConfig.api.ecommerce.products}/${id}`)
+        .then((response) => {
+          return response
+        })
+    }
   },
 })

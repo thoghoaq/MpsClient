@@ -24,9 +24,15 @@
 
   const getMenuItem = function (item: string): MenuItem {
     switch (item) {
-      case 'admin':
+      case 'ecommerce':
         return {
-          label: t('Administrator'),
+          label: t('HOME'),
+          class: 'm-0',
+        }
+      case 'products':
+        return {
+          label: t('PARTS & ACCESSORIES'),
+          route: '/ecommerce/products',
           class: 'm-0',
         }
       default:
@@ -36,56 +42,44 @@
         }
     }
   }
-
-  const home = ref({
-    icon: 'pi pi-home',
-    label: t('HOME'),
-    route: '/',
-  })
 </script>
 <template>
   <header></header>
   <main>
-    <div class="overflow-auto h-screen">
-      <ETopBar :on-toggle-menu="toggleMenu" class="sticky top-0 z-1" />
-      <div>
-        <div class="flex">
-          <Category v-if="props.hideCategory"></Category>
-          <div class="flex flex-column h-screen w-full m-3">
-            <div class="bg-primary-reverse border-round mb-3">
-              <Breadcrumb
-                :home="home"
-                :model="getBreadcrum(router.currentRoute.value.fullPath)"
-              >
-                <template #item="{ item, props }">
-                  <router-link
-                    v-if="item.route"
-                    :to="item.route"
-                    v-slot="{ href, navigate }"
-                    custom
-                  >
-                    <a v-ripple v-bind="props.action" @click="navigate">
-                      <span class="font-semibold">{{ item.label }}</span>
-                    </a>
-                  </router-link>
-                  <a
-                    v-else
-                    v-ripple
-                    :target="item.target"
-                    v-bind="props.action"
-                  >
-                    <span class="font-semibold">{{ item.label }}</span>
+    <div>
+      <ETopBar :on-toggle-menu="toggleMenu" />
+      <div class="flex">
+        <Category v-if="!props.hideCategory"></Category>
+        <div class="flex flex-column m-3 w-full">
+          <div class="bg-primary-reverse border-round mb-3">
+            <Breadcrumb
+              :model="getBreadcrum(router.currentRoute.value.fullPath)"
+            >
+              <template #item="{ item, props }">
+                <router-link
+                  v-if="item.route"
+                  :to="item.route"
+                  v-slot="{ href, navigate }"
+                  custom
+                >
+                  <a v-ripple v-bind="props.action" @click="navigate">
+                    <span class="font-semibold cursor-pointer">{{
+                      item.label
+                    }}</span>
                   </a>
-                </template>
-                <template #separator>
-                  <span class="font-semibold">/</span>
-                </template>
-              </Breadcrumb>
-            </div>
-            <div class="bg-primary-reverse h-full overflow-auto border-round">
-              <slot name="page-content"></slot>
-            </div>
+                </router-link>
+                <a v-else v-ripple :target="item.target" v-bind="props.action">
+                  <span class="font-semibold cursor-pointer">{{
+                    item.label
+                  }}</span>
+                </a>
+              </template>
+              <template #separator>
+                <span class="font-semibold">/</span>
+              </template>
+            </Breadcrumb>
           </div>
+          <slot name="page-content"></slot>
         </div>
       </div>
     </div>

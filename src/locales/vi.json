@@ -119,6 +119,7 @@
   "Create Product": "Tạo sản phẩm",
   "Add Product": "Thêm sản phẩm",
   "Stock": "Số lượng",
+  "Quantity": "Số lượng",
   "Your Shops": "Cửa hàng của bạn",
   "Your Products": "Sản phẩm của bạn",
   "Product Name": "Tên sản phẩm",
@@ -128,5 +129,10 @@
   "Brand": "Hãng",
   "Select a brand": "Chọn một hãng",
   "Image": "Ảnh",
-  "HOME": "TRANG CHỦ"
+  "HOME": "TRANG CHỦ",
+  "Product Description": "Mô tả sản phẩm",
+  "Guarantee Information": "Thông tin bảo hành",
+  "Guarantee Guideline.": "Hướng dẫn bảo hành.",
+  "View detail": "Xem chi tiết",
+  "Provisional": "Tạm tính"
 }

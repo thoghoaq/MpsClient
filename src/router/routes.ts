@@ -18,6 +18,10 @@ import Products from '../pages/Seller/Products/App.vue'
 import ShopsCreate from '../pages/Seller/Shops/Edit/App.vue'
 import ProductsCreate from '../pages/Seller/Products/Edit/App.vue'
 
+/** Ecommerce */
+import EProducts from '../pages/Ecommerce/Products/App.vue'
+import EProductDetails from '../pages/Ecommerce/ProductDetails/App.vue'
+
 export const routes = [
   { path: '/', name: 'home', component: Home },
   { path: '/sign-in', name: 'signIn', component: SignIn },
@@ -31,28 +35,60 @@ export const routes = [
       { path: 'staffs/create', name: 'staffCreate', component: StaffEdit },
       { path: 'staffs/:id', name: 'staffEdit', component: StaffEdit },
       { path: 'shop-owners', name: 'shopOwners', component: ShopOwners },
-      { path: 'shop-owners/create', name: 'shopOwnerCreate', component: ShopOwnerEdit },
-      { path: 'shop-owners/:id', name: 'shopOwnerEdit', component: ShopOwnerEdit },
+      {
+        path: 'shop-owners/create',
+        name: 'shopOwnerCreate',
+        component: ShopOwnerEdit,
+      },
+      {
+        path: 'shop-owners/:id',
+        name: 'shopOwnerEdit',
+        component: ShopOwnerEdit,
+      },
       { path: 'customers', name: 'customers', component: Customers },
-      { path: 'customers/create', name: 'customerCreate', component: CustomerEdit },
+      {
+        path: 'customers/create',
+        name: 'customerCreate',
+        component: CustomerEdit,
+      },
       { path: 'customers/:id', name: 'customerEdit', component: CustomerEdit },
-      { path: 'product-categories', name: 'productCategories', component: ProductCategories },
+      {
+        path: 'product-categories',
+        name: 'productCategories',
+        component: ProductCategories,
+      },
     ],
   },
   {
     path: '/seller',
     name: 'seller',
     children: [
-      { path: 'shops', name: 'shops', component: Shops }, 
+      { path: 'shops', name: 'shops', component: Shops },
       { path: 'shops/create', name: 'shopsCreate', component: ShopsCreate },
-    ]
+    ],
   },
   {
     path: '/shop',
     name: 'shop',
     children: [
       { path: 'products', name: 'products', component: Products },
-      { path: 'products/create', name: 'productsCreate', component: ProductsCreate }
-    ]
-  }
+      {
+        path: 'products/create',
+        name: 'productsCreate',
+        component: ProductsCreate,
+      },
+    ],
+  },
+  {
+    path: '/ecommerce',
+    name: 'ecommerce',
+    children: [
+      { path: 'products', name: 'eProducts', component: EProducts },
+      {
+        path: 'products/:id',
+        name: 'eProductDetails',
+        component: EProductDetails,
+      },
+    ],
+  },
 ]
