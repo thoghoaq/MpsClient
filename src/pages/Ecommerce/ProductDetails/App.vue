@@ -6,6 +6,8 @@
   import { useToastStore } from 'src/stores/toast'
   import NumberHelper from 'src/helpers/number-helper'
   import { useCartStore } from 'src/stores/cart'
+  import { useI18n } from 'vue-i18n'
+  const { t } = useI18n()
   const route = useRoute()
   const id = route.params.id as string
   const toast = useToastStore()
@@ -47,7 +49,7 @@
       quantity: quantity.value,
       stock: product.stock,
     })
-    toast.success('Add to cart successfully')
+    toast.success(t('Add to cart successfully'))
   }
 
   watch(quantity, (value) => {
@@ -176,7 +178,10 @@
                   severity="danger"
                   :label="$t('BUY NOW')"
                   class="w-full mt-3"
-                  @click="() => toast.success('Add to cart successfully')"
+                  @click="() => {
+                     productDetails && addToCart(productDetails)
+                      $router.push({ name: 'checkout' })
+                  }"
                 />
               </div>
             </div>

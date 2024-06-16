@@ -91,7 +91,7 @@
             severity="contrast"
             :label="$t('CHECKOUT')"
             class="w-full mt-3"
-            @click=""
+            @click="$router.push({ name: 'checkout' })"
           />
         </div>
       </div>

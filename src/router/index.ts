@@ -15,7 +15,8 @@ router.beforeEach(async (to) => {
     '/password-reset',
     '/',
     '/ecommerce/products',
-    '/cart'
+    '/cart',
+    '/cart/checkout'
   ]
 
   const isPublicPage = (path: any) => {

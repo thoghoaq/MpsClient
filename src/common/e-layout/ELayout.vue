@@ -38,8 +38,16 @@
       case 'cart':
         return {
           label: t('CART'),
+          route: '/cart',
           class: 'm-0',
         }
+      case 'checkout': {
+        return {
+          label: t('CHECKOUT'),
+          class: 'm-0',
+          route: '/cart/checkout',
+        }
+      }
       default:
         return {
           label: item,

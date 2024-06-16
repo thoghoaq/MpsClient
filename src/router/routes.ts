@@ -22,6 +22,7 @@ import ProductsCreate from '../pages/Seller/Products/Edit/App.vue'
 import EProducts from '../pages/Ecommerce/Products/App.vue'
 import EProductDetails from '../pages/Ecommerce/ProductDetails/App.vue'
 import Cart from '../pages/Cart/App.vue'
+import Checkout from '../pages/Checkout/App.vue'
 
 export const routes = [
   { path: '/', name: 'home', component: Home },
@@ -93,4 +94,5 @@ export const routes = [
     ],
   },
   { path: '/cart', name: 'cart', component: Cart },
+  { path: '/cart/checkout', name: 'checkout', component: Checkout }
 ]

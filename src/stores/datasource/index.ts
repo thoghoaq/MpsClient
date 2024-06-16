@@ -6,7 +6,7 @@ import { TreeNode } from 'primevue/treenode'
 const api = useApi()
 
 export const useDataSourceStore = defineStore({
-  id: 'dataSourceStore',
+  id: 'data-source',
   state: () => ({
     productCategories: <ProductCategory[]>[],
     productCategoryTree: <TreeNode[]>[],
