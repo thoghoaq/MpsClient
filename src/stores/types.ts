@@ -42,6 +42,9 @@ export interface AppConfig {
         shop: {
             product: string;
             products: string;
+        },
+        ecommerce: {
+            products: string;
         }
     },
     loggedUser: User,

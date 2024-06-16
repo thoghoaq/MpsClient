@@ -2,6 +2,7 @@
   import { onMounted } from 'vue'
   import { appConfig } from 'src/stores'
   import { useRouter } from 'vue-router'
+  import ProductList from './ProductList/ProductList.vue'
   const router = useRouter()
   onMounted(() => {
     if (
@@ -24,11 +25,9 @@
       <div></div>
     </template>
   </Layout>
-  <ELayout v-else>
+  <ELayout :hide-category="true" v-else>
     <template #page-content>
-      <div class="flex">
-        <Category></Category>
-      </div>
+      <ProductList></ProductList>
     </template>
   </ELayout>
 </template>

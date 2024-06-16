@@ -33,6 +33,7 @@ const controllers = {
     datasource: '/datasource',
     seller: '/seller',
     shop: '/shop',
+    ecommerce: '/ecommerce',
 }
 
 const getLoggedUser = function () {
@@ -81,6 +82,9 @@ export const appConfig : AppConfig = {
         shop: {
             product: getControllerUrl('product', controllers.shop),
             products: getControllerUrl('products', controllers.shop),
+        },
+        ecommerce: {
+            products: getControllerUrl('products', controllers.ecommerce),
         }
     },
     loggedUser: getLoggedUser(),

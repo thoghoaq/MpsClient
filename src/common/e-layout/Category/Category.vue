@@ -17,7 +17,7 @@
   :value="dataSourceStore.productCategoryTree"
     v-model:selectionKeys="selectedKey"
     selection-mode="single"
-    class="w-16rem overflow-auto border-round m-3"
+    class="w-16rem overflow-auto border-round my-3 ml-3"
   >
     <Column
       field="name"
