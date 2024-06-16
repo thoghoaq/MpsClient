@@ -35,6 +35,11 @@
           route: '/ecommerce/products',
           class: 'm-0',
         }
+      case 'cart':
+        return {
+          label: t('CART'),
+          class: 'm-0',
+        }
       default:
         return {
           label: item,

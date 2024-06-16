@@ -8,6 +8,8 @@
   import { MenuItem } from 'primevue/menuitem'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import { useCartStore } from 'src/stores/cart'
+  const cartStore = useCartStore()
   const primeVue = usePrimeVue()
   const settingStore = useSettingStore()
   const authStore = useAuthStore()
@@ -122,7 +124,7 @@
   const scale = ref(settingStore.scale)
 
   watch(scale, (value) => {
-    settingStore.changeScale(value);
+    settingStore.changeScale(value)
   })
 </script>
 <template>
@@ -130,7 +132,7 @@
     <div
       class="flex h-10rem align-items-center justify-content-between mx-3 gap-3"
     >
-      <router-link to="/" custom>
+      <router-link to="/" style="text-decoration: none;">
         <div class="flex align-items-center gap-3 mx-4">
           <Button link label="SMPS" class="text-lg">
             <h1>SMPS</h1>
@@ -142,6 +144,13 @@
         <InputText :placeholder="$t('Search Product')" class="w-full" />
       </IconField>
       <div class="flex align-items-center gap-3 mx-2">
+        <Button
+          icon="pi pi-shopping-cart"
+          class="p-button-rounded p-button-text"
+          @click="$router.push({ name: 'cart' })"
+          :badge="cartStore.items.length > 0 ? `${cartStore.items.length}` : undefined"
+          badge-class="p-badge-danger p-badge-rounded p-badge-no-gutter"
+        />
         <Button
           icon="pi pi-cog"
           class="p-button-rounded p-button-text"
@@ -205,10 +214,32 @@
       <div class="mb-5">
         <h3 class="mb-3">{{ $t('Scale') }}</h3>
         <div class="flex align-items-center justify-content-between">
-          <Button icon="pi pi-minus font-bold" link @click="() => {if (scale > 12) scale = scale - 1}"></Button>
-          <Slider v-model="scale" :min="12" :max="16" :step="1" class="w-10rem" />
-          <Button icon="pi pi-plus font-bold" link @click="() => {if (scale < 16) scale = scale + 1}"></Button>
-          </div>
+          <Button
+            icon="pi pi-minus font-bold"
+            link
+            @click="
+              () => {
+                if (scale > 12) scale = scale - 1
+              }
+            "
+          ></Button>
+          <Slider
+            v-model="scale"
+            :min="12"
+            :max="16"
+            :step="1"
+            class="w-10rem"
+          />
+          <Button
+            icon="pi pi-plus font-bold"
+            link
+            @click="
+              () => {
+                if (scale < 16) scale = scale + 1
+              }
+            "
+          ></Button>
+        </div>
       </div>
       <div>
         <h3 class="mb-3">{{ $t('Language') }}</h3>
@@ -235,3 +266,4 @@
     </Sidebar>
   </div>
 </template>
+src/stores/cart
