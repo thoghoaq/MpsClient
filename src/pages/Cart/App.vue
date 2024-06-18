@@ -2,8 +2,10 @@
   import { computed } from 'vue'
   import { useCartStore } from 'src/stores/cart'
   import NumberHelper from 'src/helpers/number-helper'
+  import { useToastStore } from 'src/stores/toast';
   const cartStore = useCartStore()
   const isCartEmpty = computed(() => cartStore.items.length === 0)
+  const toast = useToastStore()
 </script>
 <template>
   <ELayout :hide-category="true">
@@ -11,6 +13,15 @@
       <div class="bg-primary-reverse grid grid-nogutter p-5 gap-5 border-round">
         <div class="flex flex-column gap-5 col">
           <DataTable v-if="!isCartEmpty" :value="cartStore.items">
+            <Column field="selected" class="w-3rem">
+              <template #body="{ data }">
+                <Checkbox
+                  v-model="data.selected"
+                  :binary="true"
+                  @update:model-value="cartStore.updateCart"
+                />
+              </template>
+            </Column>
             <Column field="name" :header="$t('PRODUCT')">
               <template #body="{ data }">
                 <div class="flex gap-3 align-items-center">
@@ -91,7 +102,13 @@
             severity="contrast"
             :label="$t('CHECKOUT')"
             class="w-full mt-3"
-            @click="$router.push({ name: 'checkout' })"
+            @click="() => {
+              if (cartStore.items.filter((item) => item.selected).length > 0) {
+                $router.push({ name: 'checkout' })
+              } else {
+                toast.warning($t('Please select at least one product'))
+              }
+            }"
           />
         </div>
       </div>

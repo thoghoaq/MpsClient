@@ -53,7 +53,7 @@
       ).then((response) => {
         if (response.success) {
           toast.success(t('Register successfully'))
-          router.push('/')
+          router.push('/sign-in')
         } else {
           toast.error(response.content)
         }

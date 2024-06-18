@@ -2,6 +2,8 @@ import { Shop } from "../seller/shop/types";
 
 export type Auth = {
     accessToken: string;
+    refreshToken: string;
+    expiresIn: string;
     user: User;
 };
 

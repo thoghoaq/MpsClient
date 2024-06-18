@@ -47,6 +47,7 @@ import SpeedDial from 'primevue/speeddial'
 import Card from 'primevue/card'
 import Galleria from 'primevue/galleria'
 import Divider from 'primevue/divider'
+import ProgressSpinner from 'primevue/progressspinner'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -123,6 +124,7 @@ app.component('SpeedDial', SpeedDial)
 app.component('Card', Card)
 app.component('Galleria', Galleria)
 app.component('Divider', Divider)
+app.component('ProgressSpinner', ProgressSpinner)
 
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)

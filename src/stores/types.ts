@@ -16,6 +16,7 @@ export interface AppConfig {
     api: {
         account: {
             login: string;
+            refresh: string;
             all: string;
             register: string;
             details: string;
@@ -45,6 +46,7 @@ export interface AppConfig {
         },
         ecommerce: {
             products: string;
+            checkout: string;
         }
     },
     loggedUser: User,
@@ -62,6 +64,10 @@ export enum EFileType {
     UserAvatars = 1,
     ProductImages = 2,
     General = 3
+}
+
+export enum EPaymentMethod {
+    VnPay = 1,
 }
 
 type ImportResult = {

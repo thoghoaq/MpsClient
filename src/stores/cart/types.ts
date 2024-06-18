@@ -9,4 +9,32 @@ export interface CartItem {
     price: number;
     name: string;
     imageUrl: string | null;
+    selected: boolean;
+    shopId: number;
+}
+
+export interface CheckoutRequest {
+    customerName:  string;
+    address:       string;
+    email:         string;
+    phoneNumber:   string;
+    note:          string;
+    items:         CheckoutItem[];
+    discount:      number;
+    paymentMethod: number;
+}
+
+export interface CheckoutItem {
+    productId:   number;
+    productName: string;
+    price:       number;
+    quantity:    number;
+    discount:    number;
+    shopId: number;
+}
+
+export interface CheckoutResponse {
+    orderId: number;
+    paymentId: number;
+    paymentUrl: string;
 }

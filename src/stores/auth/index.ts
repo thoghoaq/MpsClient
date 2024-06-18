@@ -24,6 +24,8 @@ export const useAuthStore = defineStore({
         .then((response) => {
           this.auth = {
             accessToken: response.data['accessToken'],
+            refreshToken: response.data['refreshToken'],
+            expiresIn: response.data['expiresIn'],
             user: response.data['user'],
           }
           //store token in local storage
@@ -81,5 +83,35 @@ export const useAuthStore = defineStore({
           return response;
         })
     },
+    async refresh() {
+      if (!this.auth) return;
+      return api
+        .post(appConfig.api.account.refresh, {
+          refreshToken: this.auth?.refreshToken,
+        })
+        .then((response) => {
+          this.auth!.accessToken = response.content['accessToken']
+          this.auth!.refreshToken = response.content['refreshToken']
+          this.auth!.expiresIn = response.content['expiresIn']
+          localStorage.setItem('auth', JSON.stringify(this.auth))
+          axios.defaults.headers.common['Authorization'] =
+            `Bearer ${this.auth?.accessToken}`
+          return response;
+        })
+        .catch((error: AxiosError<any, any>) => {
+          if (error.response) {
+            return {
+              success: false,
+              content: error.response.data['reason'] || error.response.data['message'] || error.response.data || error.response.status,
+              status: error.response.status,
+            }
+          }
+          return {
+            success: false,
+            content: error.message || 'Internal Server Error',
+            status: error.status,
+          }
+        })
+    }
   },
 })

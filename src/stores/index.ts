@@ -56,6 +56,7 @@ export const appConfig : AppConfig = {
     api: {
         account: {
             login: getControllerUrl('login', controllers.account),
+            refresh: getControllerUrl('refresh', controllers.account),
             all: getControllerUrl('all', controllers.account),
             register: getControllerUrl('register', controllers.account),
             details: getControllerUrl('details', controllers.account),
@@ -85,6 +86,7 @@ export const appConfig : AppConfig = {
         },
         ecommerce: {
             products: getControllerUrl('products', controllers.ecommerce),
+            checkout: getControllerUrl('checkout', controllers.ecommerce),
         }
     },
     loggedUser: getLoggedUser(),

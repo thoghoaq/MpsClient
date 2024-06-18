@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { reactive, ref } from 'vue'
+  import { reactive, ref, onMounted } from 'vue'
   import useVuelidate from '@vuelidate/core'
   import { required, email } from '@vuelidate/validators'
   import { useCartStore } from 'src/stores/cart'
@@ -7,16 +7,20 @@
   import NumberHelper from 'src/helpers/number-helper'
   import { useI18n } from 'vue-i18n'
   import { useToastStore } from 'src/stores/toast'
+  import { appConfig } from 'src/stores'
+  import { EPaymentMethod } from 'src/stores/types'
+  import { useRouter } from 'vue-router'
   const toast = useToastStore()
   const { t } = useI18n()
   const cartStore = useCartStore()
+  const router = useRouter()
   const state = reactive({
-    fullName: '',
+    fullName: appConfig.loggedUser.data.displayName,
     address: '',
     phoneNumber: '',
-    email: '',
+    email: appConfig.loggedUser.data.email,
     note: '',
-    paymentMethod: '',
+    paymentMethod: <any>null,
     voucherCode: '',
   })
 
@@ -33,41 +37,67 @@
   const v$ = useVuelidate(rules, state)
 
   const orderItems = ref(<any>[])
-  orderItems.value = cartStore.items.map((item: CartItem) => {
-    return {
-      product: `${item.name} x${item.quantity}`,
-      provisional: NumberHelper.formatCurrency(item.quantity * item.price),
-      productClass: '',
-      provisionalClass: 'font-semibold',
-    }
-  })
-  orderItems.value = orderItems.value.concat([
-    {
-      product: t('Discount'),
-      provisional: '',
-      productClass: 'font-semibold',
-      provisionalClass: 'font-semibold',
-    },
-    {
-      product: t('VAT'),
-      provisional: '',
-      productClass: 'font-semibold',
-      provisionalClass: 'font-semibold',
-    },
-    {
-      product: t('Total'),
-      provisional: NumberHelper.formatCurrency(cartStore.calculateTotal()),
-      productClass: 'font-semibold',
-      provisionalClass: 'font-semibold',
-    },
-  ])
 
-  const paymentMethods = ref([{ label: 'VNPay', value: 'vnPay' }])
+  onMounted(() => {
+    orderItems.value = cartStore.items
+      .filter((item) => item.selected)
+      .map((item: CartItem) => {
+        return {
+          product: `${item.name} x${item.quantity}`,
+          provisional: NumberHelper.formatCurrency(item.quantity * item.price),
+          productClass: '',
+          provisionalClass: 'font-semibold',
+        }
+      })
+    orderItems.value = orderItems.value.concat([
+      {
+        product: t('Discount'),
+        provisional: '',
+        productClass: 'font-semibold',
+        provisionalClass: 'font-semibold',
+      },
+      {
+        product: t('VAT'),
+        provisional: '',
+        productClass: 'font-semibold',
+        provisionalClass: 'font-semibold',
+      },
+      {
+        product: t('Total'),
+        provisional: NumberHelper.formatCurrency(cartStore.calculateTotal()),
+        productClass: 'font-semibold',
+        provisionalClass: 'font-semibold',
+      },
+    ])
+  })
+
+  const paymentMethods = ref([
+    { label: EPaymentMethod.VnPay.toString(), value: EPaymentMethod.VnPay },
+  ])
 
   const submitOrder = function () {
     v$.value.$touch()
     if (!v$.value.$error) {
-      toast.success(t('Order successfully'))
+      cartStore
+        .checkout(
+          state.address,
+          state.fullName,
+          state.email,
+          state.phoneNumber,
+          state.note,
+          state.paymentMethod.value,
+          0,
+        )
+        .then((response) => {
+          if (response.success) {
+            router.push({
+              name: 'vnPay',
+              query: { paymentUrl: response.content['paymentUrl'] },
+            })
+          } else {
+            toast.error(response.content)
+          }
+        })
     }
   }
 </script>
@@ -83,7 +113,9 @@
               {{ $t('CHECK OUT INFORMATION') }}
             </div>
             <div class="flex flex-column gap-2">
-              <label class="required" for="fullName">{{ $t('Full Name') }}</label>
+              <label class="required" for="fullName">{{
+                $t('Full Name')
+              }}</label>
               <InputText
                 v-model="state.fullName"
                 :invalid="v$.fullName.$error"
@@ -107,7 +139,9 @@
               }}</small>
             </div>
             <div class="flex flex-column gap-2">
-              <label class="required" for="phoneNumber">{{ $t('Phone Number') }}</label>
+              <label class="required" for="phoneNumber">{{
+                $t('Phone Number')
+              }}</label>
               <InputText
                 v-model="state.phoneNumber"
                 :invalid="v$.phoneNumber.$error"
@@ -204,7 +238,11 @@
               </template>
             </Column>
           </DataTable>
-          <Button :label="$t('PLACE ORDER')" class="mx-3" @click="submitOrder" />
+          <Button
+            :label="$t('PLACE ORDER')"
+            class="mx-3"
+            @click="submitOrder"
+          />
         </div>
       </div>
     </template>

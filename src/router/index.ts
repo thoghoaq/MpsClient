@@ -15,8 +15,7 @@ router.beforeEach(async (to) => {
     '/password-reset',
     '/',
     '/ecommerce/products',
-    '/cart',
-    '/cart/checkout'
+    '/cart'
   ]
 
   const isPublicPage = (path: any) => {
@@ -35,7 +34,14 @@ router.beforeEach(async (to) => {
     authStore.auth?.accessToken,
   )
   if ((authRequired && !authStore.auth?.user) || isTokenExpiredOrInvalid) {
-    authStore.logout()
-    return '/sign-in'
+    if (isTokenExpiredOrInvalid && authStore.auth) {
+      const result = await authStore.refresh()
+      if (!result?.success) {
+        authStore.logout()
+        return '/sign-in'
+      }
+    } else {
+      return '/sign-in'
+    }
   }
 })

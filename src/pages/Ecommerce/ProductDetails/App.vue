@@ -48,6 +48,8 @@
       imageUrl: product.images[0]?.imagePath,
       quantity: quantity.value,
       stock: product.stock,
+      selected: false,
+      shopId: product.shopId,
     })
     toast.success(t('Add to cart successfully'))
   }

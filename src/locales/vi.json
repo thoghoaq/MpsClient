@@ -167,5 +167,7 @@
   "Voucher code": "Mã giảm giá",
   "Apply": "Áp dụng",
   "Enter your voucher code": "Nhập mã giảm giá của bạn",
-  "PLACE ORDER": "ĐẶT HÀNG"
+  "PLACE ORDER": "ĐẶT HÀNG",
+  "Please select at least one product": "Vui lòng chọn ít nhất một sản phẩm",
+  "Redirecting to VnPay...": "Đang chuyển hướng đến VnPay..."
 }
