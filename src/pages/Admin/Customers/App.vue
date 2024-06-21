@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { watch } from 'vue'
-  import { MenuItem } from 'primevue/menuitem'
   import { useCustomerStore } from 'src/stores/admin/customer'
   import { useToastStore } from 'src/stores/toast'
   import { onMounted, ref } from 'vue'
@@ -43,7 +42,7 @@
   }
 
   const menu = ref()
-  const items = ref<MenuItem[]>([
+  const items = ref<any>([
     {
       class: 'p-0',
       items: [

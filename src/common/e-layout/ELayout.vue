@@ -2,7 +2,6 @@
   import { ref } from 'vue'
   import ETopBar from './TopBar/ETopBar.vue'
   import { useI18n } from 'vue-i18n'
-  import { MenuItem } from 'primevue/menuitem'
   import { useRouter } from 'vue-router'
   const router = useRouter()
   const { t } = useI18n()
@@ -15,7 +14,7 @@
     visible.value = !visible.value
   }
 
-  const getBreadcrum = function (path: string): MenuItem[] {
+  const getBreadcrum = function (path: string): any[] {
     const items = path.split('/').filter((item) => item !== '')
     return items.map((item) => {
       if (item.startsWith('vnpay-return')) {
@@ -28,7 +27,7 @@
     })
   }
 
-  const getMenuItem = function (item: string): MenuItem {
+  const getMenuItem = function (item: string): any {
     switch (item) {
       case 'ecommerce':
         return {

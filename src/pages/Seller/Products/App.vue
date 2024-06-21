@@ -17,6 +17,7 @@
         {
           label: 'Detail',
           icon: 'pi pi-box',
+          route: '/shop/products'
         },
         {
           label: 'Deactivate',

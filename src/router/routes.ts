@@ -17,6 +17,7 @@ import Shops from '../pages/Seller/Shops/App.vue'
 import Products from '../pages/Seller/Products/App.vue'
 import ShopsCreate from '../pages/Seller/Shops/Edit/App.vue'
 import ProductsCreate from '../pages/Seller/Products/Edit/App.vue'
+import ProductEdit from '../pages/Seller/Products/Edit/App.vue'
 
 /** Ecommerce */
 import EProducts from '../pages/Ecommerce/Products/App.vue'
@@ -81,6 +82,11 @@ export const routes = [
         name: 'productsCreate',
         component: ProductsCreate,
       },
+      {
+        path: 'products/:id',
+        name: 'productEdit',
+        component: ProductEdit,
+      }
     ],
   },
   {

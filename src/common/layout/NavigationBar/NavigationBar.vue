@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { MenuItem } from 'primevue/menuitem'
   import { appConfig } from 'src/stores'
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
@@ -9,7 +8,7 @@
     onVisibleChange: Function,
   })
 
-  const items = ref<MenuItem[]>([
+  const items = ref<any[]>([
     {
       label: 'Administrator',
       visible: appConfig.loggedUser.isManagerGroup,
@@ -54,7 +53,7 @@
     },
   ])
 
-  const sellerItems = ref<MenuItem[]>([
+  const sellerItems = ref<any[]>([
     {
       label: 'Manage Shop',
       visible: appConfig.loggedUser.isShopOwner,

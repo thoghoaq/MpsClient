@@ -75,6 +75,27 @@ export const useDataSourceStore = defineStore({
         return response
       })
     },
+    getCategoryFromTree(id: number) {
+      const findCategory = (node: TreeNode): TreeNode | undefined => {
+        if (node.data.id === id) {
+          return node
+        }
+        if (node.children) {
+          for (let i = 0; i < node.children.length; i++) {
+            const found = findCategory(node.children[i])
+            if (found) {
+              return found
+            }
+          }
+        }
+      }
+      for (let i = 0; i < this.productCategoryTree.length; i++) {
+        const found = findCategory(this.productCategoryTree[i])
+        if (found) {
+          return found
+        }
+      }
+    },
     appendChildToTree(key: string, child: TreeNode, root?: boolean) {
       if (!root) {
         const keys = key.split('-')

@@ -8,13 +8,17 @@
   import { EFileType } from 'src/stores/types'
   import { useDataSourceStore } from 'src/stores/datasource'
   import { useI18n } from 'vue-i18n'
+  import { useRoute } from 'vue-router'
+  import { Product } from 'src/stores/seller/product/types'
+  const route = useRoute()
   const { t } = useI18n()
+  const productId = route.params.id as string | undefined
   const state = reactive({
     productName: '',
-    price: null,
+    price: <any>null,
     productCode: '',
     productSKU: '',
-    description: '',
+    description: <any>'<p>Hello</p>',
     productImages: <string[]>[],
     category: <any>null,
     stock: 0,
@@ -37,8 +41,43 @@
   const dataSourceStore = useDataSourceStore()
 
   onMounted(() => {
-    dataSourceStore.fetchProductCategories()
     dataSourceStore.fetchProductBrands()
+    dataSourceStore.fetchProductCategories().then(() => {
+      if (productId) {
+        api
+          .get(
+            appConfig.appendUrl(appConfig.api.shop.product, {
+              id: productId,
+              shopId: appConfig.loggedUser.shopManaging?.id,
+            }),
+          )
+          .then((res) => {
+            if (res.success) {
+              const product = res.content as Product
+              state.productName = product.name
+              state.price = product.price
+              state.productCode = product.productCode
+              state.productSKU = product.productSKU
+              state.description = product.description
+              state.productImages = product.images.map(
+                (image: any) => image.imagePath,
+              )
+              const categoryKey = dataSourceStore.getCategoryFromTree(
+                product.categoryId,
+              )?.key
+              state.category = {
+                [categoryKey as string]: true,
+              }
+              state.stock = product.stock
+              state.brand = dataSourceStore.productBrands.find(
+                (item) => item.id == product.brandId,
+              )
+            } else {
+              toast.error(res.content)
+            }
+          })
+      }
+    })
   })
 
   const onUpload = async (event: any) => {
@@ -106,6 +145,7 @@
     loading.value = true
     const categoryId = getCategoryNode(Object.keys(state.category)[0])?.data.id
     const data = {
+      id: productId,
       shopId: appConfig.loggedUser.shopManaging?.id,
       name: state.productName,
       price: state.price,
@@ -119,18 +159,33 @@
       brandId: state.brand?.id,
       stock: state.stock,
     }
-    api
-      .post(appConfig.api.shop.product, data)
-      .then((res) => {
-        if (res.success) {
-          toast.success(res.content['message'])
-        } else {
-          toast.error(res.content)
-        }
-      })
-      .finally(() => {
-        loading.value = false
-      })
+    if (productId) {
+      api
+        .put(appConfig.api.shop.product, data)
+        .then((res) => {
+          if (res.success) {
+            toast.success(res.content['message'])
+          } else {
+            toast.error(res.content)
+          }
+        })
+        .finally(() => {
+          loading.value = false
+        })
+    } else {
+      api
+        .post(appConfig.api.shop.product, data)
+        .then((res) => {
+          if (res.success) {
+            toast.success(res.content['message'])
+          } else {
+            toast.error(res.content)
+          }
+        })
+        .finally(() => {
+          loading.value = false
+        })
+    }
   }
 </script>
 <template>
@@ -313,6 +368,7 @@
                   :placeholder="$t('Select a category')"
                   class="w-full"
                   :invalid="$v.category.$error"
+                  v-on:update:model-value="console.log(state.category)"
                 />
                 <small class="p-error" v-if="$v.category.$error">{{
                   $t($v.category.$errors[0]?.$message?.toString())
@@ -361,7 +417,7 @@
             <div class="flex justify-content-between gap-3">
               <Button
                 icon="pi pi-plus"
-                :label="$t('Publish')"
+                :label="productId ? $t('Update') : $t('Publish')"
                 :loading="loading"
                 @click="publish"
               ></Button>

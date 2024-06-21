@@ -5,7 +5,6 @@
   import { Theme } from 'src/stores/setting/types'
   import { appConfig } from 'src/stores'
   import { useAuthStore } from 'src/stores/auth'
-  import { MenuItem } from 'primevue/menuitem'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { useCartStore } from 'src/stores/cart'
@@ -55,18 +54,18 @@
     })
   }
 
-  const home = ref<MenuItem>({
+  const home = ref<any>({
     icon: 'pi pi-home',
   })
 
-  const getBreadcrum = function (path: string): MenuItem[] {
+  const getBreadcrum = function (path: string): any[] {
     const items = path.split('/').filter((item) => item !== '')
     return items.map((item) => {
       return getMenuItem(item)
     })
   }
 
-  const getMenuItem = function (item: string): MenuItem {
+  const getMenuItem = function (item: string): any {
     switch (item) {
       case 'admin':
         return {
