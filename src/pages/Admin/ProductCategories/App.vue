@@ -3,6 +3,9 @@
   import { useDataSourceStore } from 'src/stores/datasource'
   import { useToastStore } from 'src/stores/toast'
   import { useI18n } from 'vue-i18n'
+  import { useConfirm } from 'primevue/useconfirm'
+
+  const confirm = useConfirm()
   const dataSourceStore = useDataSourceStore()
   const toast = useToastStore()
   const { t } = useI18n()
@@ -34,10 +37,36 @@
   watch(query, (value) => {
     dataSourceStore.searchProductCategories(value)
   })
+
+  const confirmDelete = (event: any, id: number | null, node?: any) => {
+    confirm.require({
+      target: event.currentTarget,
+      message: t('Are you sure you want to delete this category?'),
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: t('Yes'),
+      rejectLabel: t('No'),
+      acceptClass: 'p-button-danger',
+      rejectClass: 'p-button-text',
+      accept: () => {
+        if (id == null && node != null) {
+          dataSourceStore.removeChildFromTree(node)
+          return
+        }
+        dataSourceStore.deleteProductCategory(id!).then((response) => {
+          if (response.success) {
+            toast.success(response.content["message"])
+          } else {
+            toast.error(response.content)
+          }
+        })
+      }
+    })
+  }
 </script>
 <template>
   <Layout>
     <template #page-content>
+      <ConfirmPopup></ConfirmPopup>
       <div class="mx-3">
         <TreeTable
           v-model:selectionKeys="selectedKey"
@@ -71,7 +100,12 @@
               </template>
             </Menubar>
           </template>
-          <Column expander field="name" sortable class="flex align-items-center">
+          <Column
+            expander
+            field="name"
+            sortable
+            class="flex align-items-center"
+          >
             <template #header>
               <span class="ml-6">{{ $t('Name') }}</span>
             </template>
@@ -82,7 +116,14 @@
                 @close="updateProductCategory(node.data)"
               >
                 <template #display>
-                  <span :class="(node.key.match(/-/g) || []).length < 1 ? 'font-semibold' : ''">{{ node.data.name }}</span>
+                  <span
+                    :class="
+                      (node.key.match(/-/g) || []).length < 1
+                        ? 'font-semibold'
+                        : ''
+                    "
+                    >{{ node.data.name }}</span
+                  >
                 </template>
                 <template #content>
                   <InputText v-model="node.data.name" autofocus />
@@ -115,27 +156,36 @@
               ></Button>
             </template>
             <template #body="{ node }">
-              <Button
-                v-if="(node.key.match(/-/g) || []).length < 2 && node.data.id"
-                icon="pi pi-plus"
-                class="w-1rem h-1rem"
-                link
-                rounded
-                @click="
-                  () => {
-                    dataSourceStore.appendChildToTree(node.key, {
-                      key: `${node.key}-${node.children.length}`,
-                      data: {
-                        id: null,
-                        name: $t('New Category'),
-                        parentId: node.data.id,
-                        children: [],
-                      },
-                    })
-                    toggleExpand(node.key)
-                  }
-                "
-              ></Button>
+              <div class="flex gap-3 justify-content-end">
+                <Button
+                  v-if="(node.key.match(/-/g) || []).length < 2 && node.data.id"
+                  icon="pi pi-plus"
+                  class="w-1rem h-1rem"
+                  link
+                  rounded
+                  @click="
+                    () => {
+                      dataSourceStore.appendChildToTree(node.key, {
+                        key: `${node.key}-${node.children.length}`,
+                        data: {
+                          id: null,
+                          name: $t('New Category'),
+                          parentId: node.data.id,
+                          children: [],
+                        },
+                      })
+                      toggleExpand(node.key)
+                    }
+                  "
+                ></Button>
+                <Button
+                  icon="pi pi-times text-red-500"
+                  class="w-1rem h-1rem"
+                  link
+                  rounded
+                  @click="confirmDelete($event, node.data.id, node)"
+                ></Button>
+              </div>
             </template>
           </Column>
         </TreeTable>

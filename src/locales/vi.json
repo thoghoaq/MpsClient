@@ -181,5 +181,8 @@
   "Your order is failed. Please try again. Reason: ": "Đơn hàng của bạn thất bại. Vui lòng thử lại. Lý do: ",
   "Sorry!" : "Xin lỗi!",
   "PAYMENT RESULT": "KẾT QUẢ THANH TOÁN",
-  "Update": "Cập nhật"
+  "Update": "Cập nhật",
+  "Are you sure you want to delete this category?": "Bạn có chắc chắn muốn xóa danh mục này không?",
+  "Yes": "Có",
+  "No": "Không"
 }

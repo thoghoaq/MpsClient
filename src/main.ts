@@ -48,6 +48,7 @@ import Card from 'primevue/card'
 import Galleria from 'primevue/galleria'
 import Divider from 'primevue/divider'
 import ProgressSpinner from 'primevue/progressspinner'
+import ConfirmPopup from 'primevue/confirmpopup'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -125,6 +126,7 @@ app.component('Card', Card)
 app.component('Galleria', Galleria)
 app.component('Divider', Divider)
 app.component('ProgressSpinner', ProgressSpinner)
+app.component('ConfirmPopup', ConfirmPopup)
 
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)

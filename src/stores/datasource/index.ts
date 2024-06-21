@@ -23,13 +23,17 @@ export const useDataSourceStore = defineStore({
       })
     },
     async searchProductCategories(filter: string | undefined) {
-      return api.get(appConfig.appendUrl(appConfig.api.datasource.categories, { filter })).then((response) => {
-        if (response.success) {
-          this.productCategories = response.content
-          this.productCategoryTree = this.getProductCategoryTree()
-        }
-        return response
-      })
+      return api
+        .get(
+          appConfig.appendUrl(appConfig.api.datasource.categories, { filter }),
+        )
+        .then((response) => {
+          if (response.success) {
+            this.productCategories = response.content
+            this.productCategoryTree = this.getProductCategoryTree()
+          }
+          return response
+        })
     },
     getProductCategoryTree() {
       return this.productCategories.map((category, index) => {
@@ -68,12 +72,14 @@ export const useDataSourceStore = defineStore({
       })
     },
     async saveProductCategory(data: any) {
-      return api.post(appConfig.api.datasource.category, data).then((response) => {
-        if (response.success) {
-          this.fetchProductCategories()
-        }
-        return response
-      })
+      return api
+        .post(appConfig.api.datasource.category, data)
+        .then((response) => {
+          if (response.success) {
+            this.fetchProductCategories()
+          }
+          return response
+        })
     },
     getCategoryFromTree(id: number) {
       const findCategory = (node: TreeNode): TreeNode | undefined => {
@@ -107,6 +113,34 @@ export const useDataSourceStore = defineStore({
       } else {
         this.productCategoryTree.push(child)
       }
+    },
+    removeChildFromTree(node: TreeNode) {
+      const keys = node.key!.split('-')
+      let parent = this.productCategoryTree[parseInt(keys[0])]
+      if (keys.length === 1) {
+        this.productCategoryTree.splice(parseInt(keys[0]), 1)
+        return
+      }
+      for (let i = 1; i < keys.length - 1; i++) {
+        parent = parent.children![parseInt(keys[i])]
+      }
+      parent.children!.splice(parseInt(keys[keys.length - 1]), 1)
+    },
+    async deleteProductCategory(id: number | null) {
+      if (!id) {
+        return { success: false, content: 'Invalid ID' }
+      }
+      return api
+        .delete(`${appConfig.api.datasource.category}/${id}`)
+        .then((response) => {
+          if (response.success) {
+            const node = this.getCategoryFromTree(id!)
+            if (node) {
+              this.removeChildFromTree(node)
+            }
+          }
+          return response
+        })
     },
     async fetchProductBrands() {
       return api.get(appConfig.api.datasource.brands).then((response) => {

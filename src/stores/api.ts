@@ -129,11 +129,36 @@ export const useApi = () => {
       })
   }
 
-  const delele = async (url: string) => {
-    const response = await axios.delete(url, {
-      headers: getDefaultHeaders(),
-    })
-    return response
+  const Delete = async (url: string) => {
+    return axios
+      .delete(url, {
+        headers: getDefaultHeaders(),
+      })
+      .then((response) => {
+        return {
+          success: true,
+          content: response.data,
+          status: response.status,
+        }
+      })
+      .catch((error: AxiosError<any, any>) => {
+        if (error.response) {
+          return {
+            success: false,
+            content:
+              error.response.data['reason'] ||
+              error.response.data['message'] ||
+              error.response.data ||
+              error.response.status,
+            status: error.response.status,
+          }
+        }
+        return {
+          success: false,
+          content: error.message || error.status,
+          status: error.status,
+        }
+      })
   }
 
   const getFile = async (url: string): Promise<APIResponse<any>> => {
@@ -176,7 +201,7 @@ export const useApi = () => {
     get,
     post,
     put,
-    delele,
-    getFile
+    delete: Delete,
+    getFile,
   }
 }
