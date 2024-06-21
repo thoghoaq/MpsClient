@@ -34,6 +34,7 @@ const controllers = {
     seller: '/seller',
     shop: '/shop',
     ecommerce: '/ecommerce',
+    payment: '/payment',
 }
 
 const getLoggedUser = function () {
@@ -87,6 +88,9 @@ export const appConfig : AppConfig = {
         ecommerce: {
             products: getControllerUrl('products', controllers.ecommerce),
             checkout: getControllerUrl('checkout', controllers.ecommerce),
+        },
+        payment: {
+            details: getControllerUrl('details', controllers.payment),
         }
     },
     loggedUser: getLoggedUser(),

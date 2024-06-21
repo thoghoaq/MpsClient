@@ -169,5 +169,16 @@
   "Enter your voucher code": "Nhập mã giảm giá của bạn",
   "PLACE ORDER": "ĐẶT HÀNG",
   "Please select at least one product": "Vui lòng chọn ít nhất một sản phẩm",
-  "Redirecting to VnPay...": "Đang chuyển hướng đến VnPay..."
+  "Redirecting to VnPay...": "Đang chuyển hướng đến VnPay...",
+  "Thanks!": "Cảm ơn!",
+  "Successful Order": "Đặt hàng thành công",
+  "Your order is on the way. It'll be shipped. We'll inform you.": "Đơn hàng của bạn đang được xử lý. Chúng tôi sẽ thông báo cho bạn.",
+  "Order number:": "Mã đơn hàng:",
+  "Shipping Address": "Địa chỉ giao hàng",
+  "Processing": "Đang xử lý",
+  "Summary": "Tóm tắt",
+  "Failed Order": "Đặt hàng thất bại",
+  "Your order is failed. Please try again. Reason: ": "Đơn hàng của bạn thất bại. Vui lòng thử lại. Lý do: ",
+  "Sorry!" : "Xin lỗi!",
+  "PAYMENT RESULT": "KẾT QUẢ THANH TOÁN"
 }

@@ -12,7 +12,7 @@
   <ELayout>
     <template #page-content>
       <div class="bg-primary-reverse overflow-auto border-round">
-        <div class="grid gap-5 m-5">
+        <div class="grid gap-5 m-5 justify-content-center">
           <ProductItem
             v-for="product in eProductStore.products"
             :product="product"

@@ -3,8 +3,6 @@
   import { useDataSourceStore } from 'src/stores/datasource'
   import { useToastStore } from 'src/stores/toast'
   import { useI18n } from 'vue-i18n'
-  import { TreeNode } from 'primevue/treenode'
-  import { TreeTableExpandedKeys } from 'primevue/treetable'
   const dataSourceStore = useDataSourceStore()
   const toast = useToastStore()
   const { t } = useI18n()
@@ -26,7 +24,7 @@
   }
   const selectedKey = ref()
 
-  const expandedKeys = ref<TreeTableExpandedKeys>({})
+  const expandedKeys = ref<any>({})
   const toggleExpand = (key: string) => {
     let _expandedKeys = { ...expandedKeys.value }
     _expandedKeys[key] = true
@@ -102,7 +100,7 @@
                 @click="
                   dataSourceStore.appendChildToTree(
                     `${dataSourceStore.productCategoryTree.length}`,
-                    <TreeNode>{
+                    {
                       key: `${dataSourceStore.productCategoryTree.length}`,
                       data: {
                         id: null,
@@ -125,7 +123,7 @@
                 rounded
                 @click="
                   () => {
-                    dataSourceStore.appendChildToTree(node.key, <TreeNode>{
+                    dataSourceStore.appendChildToTree(node.key, {
                       key: `${node.key}-${node.children.length}`,
                       data: {
                         id: null,

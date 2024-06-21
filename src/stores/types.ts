@@ -47,6 +47,9 @@ export interface AppConfig {
         ecommerce: {
             products: string;
             checkout: string;
+        },
+        payment: {
+            details: string;
         }
     },
     loggedUser: User,

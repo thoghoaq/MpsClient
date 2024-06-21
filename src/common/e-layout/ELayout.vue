@@ -18,6 +18,12 @@
   const getBreadcrum = function (path: string): MenuItem[] {
     const items = path.split('/').filter((item) => item !== '')
     return items.map((item) => {
+      if (item.startsWith('vnpay-return')) {
+        return {
+          label: t('PAYMENT RESULT'),
+          class: 'm-0',
+        }
+      }
       return getMenuItem(item)
     })
   }
