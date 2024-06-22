@@ -59,6 +59,12 @@
       visible: appConfig.loggedUser.isShopOwner,
       items: [
         {
+          label: 'Orders',
+          icon: 'pi pi-shopping-bag',
+          route: '/shop/orders',
+          visible: appConfig.loggedUser.isShopOwner,
+        },
+        {
           label: 'Manage Products',
           icon: 'pi pi-table',
           route: '/shop/products',
@@ -127,7 +133,7 @@
             @click="navigate"
             :class="
               router.currentRoute.value.fullPath.match(item.route)
-                ? 'bg-primary-100'
+                ? 'bg-primary-100 text-0'
                 : ''
             "
           >

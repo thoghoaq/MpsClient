@@ -121,6 +121,12 @@
           label: t('Manage Shop'),
           class: 'm-0',
         }
+      case 'orders':
+        return {
+          label: t('Orders'),
+          route: '/shop/orders',
+          class: 'm-0',
+        }
       default:
         return {
           label: item,

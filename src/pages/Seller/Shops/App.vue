@@ -21,7 +21,7 @@
 
   const initShopManagement = function(shop: Shop) {
     shopStore.initShopManagement(shop.id)
-    router.push('/shop/products')
+    router.push('/shop/orders')
   }
 </script>
 <template>

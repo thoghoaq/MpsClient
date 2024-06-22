@@ -84,6 +84,10 @@ export const appConfig : AppConfig = {
         shop: {
             product: getControllerUrl('product', controllers.shop),
             products: getControllerUrl('products', controllers.shop),
+            orders: getControllerUrl('orders', controllers.shop),
+            order: {
+                status: getControllerUrl('order/status', controllers.shop), 
+            }
         },
         ecommerce: {
             products: getControllerUrl('products', controllers.ecommerce),

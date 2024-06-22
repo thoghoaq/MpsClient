@@ -43,6 +43,10 @@ export interface AppConfig {
         shop: {
             product: string;
             products: string;
+            orders: string;
+            order: {
+                status: string;
+            }
         },
         ecommerce: {
             products: string;
@@ -71,6 +75,16 @@ export enum EFileType {
 
 export enum EPaymentMethod {
     VnPay = 1,
+}
+
+export enum OrderStatus {
+    Pending = 1,
+    Processing = 2,
+    Delivered = 3,
+    Cancelled = 4,
+    Returned = 5,
+    Refunded = 6,
+    Completed = 7
 }
 
 type ImportResult = {

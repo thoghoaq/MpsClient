@@ -185,5 +185,19 @@
   "Are you sure you want to delete this category?": "Bạn có chắc chắn muốn xóa danh mục này không?",
   "Yes": "Có",
   "No": "Không",
-  "No.": "STT"
+  "No.": "STT",
+  "Orders": "Đơn hàng",
+  "Number": "Số",
+  "Customer": "Khách hàng",
+  "Order Date": "Ngày đặt hàng",
+  "Payment Method": "PTTT",
+  "Note": "Ghi chú",
+  "Your Orders": "Đơn hàng của bạn",
+  "Pending": "Chờ thanh toán",
+  "Delivered": "Đã giao hàng",
+  "Returned": "Đã trả hàng",
+  "Refunded": "Đã hoàn tiền",
+  "Completed": "Hoàn thành",
+  "Cancelled": "Đã hủy",
+  "All": "Tất cả"
 }
