@@ -192,9 +192,17 @@
   <Layout>
     <template #page-content>
       <div class="card p-4">
-        <span class="block text-900 font-bold text-xl mb-5 mt-3">{{
-          $t('Create Product')
-        }}</span>
+        <div class="flex gap-3 align-items-center mb-6">
+          <span class="text-900 font-bold text-xl">{{
+            productId ? state.productName : $t('Create Product')
+          }}</span>
+          <Button
+            icon="pi pi-arrow-left"
+            text
+            :label="$t('Back')"
+            @click="$router.back()"
+          ></Button>
+        </div>
         <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
           <div class="col-12 lg:col-8">
             <div class="grid formgrid">
@@ -215,7 +223,7 @@
                   }}</small>
                 </div>
               </div>
-              <div class="col-12 lg:col-4 field mb-5">
+              <div class="col-12 lg:col-12 field mb-5">
                 <div class="flex flex-column gap-2">
                   <FloatLabel>
                     <InputNumber
@@ -233,40 +241,6 @@
                   </FloatLabel>
                   <small class="p-error" v-if="$v.price.$error">{{
                     $t($v.price.$errors[0]?.$message?.toString())
-                  }}</small>
-                </div>
-              </div>
-              <div class="col-12 lg:col-4 field mb-5">
-                <div class="flex flex-column gap-2">
-                  <FloatLabel>
-                    <InputText
-                      class="w-full"
-                      id="productCode"
-                      v-model="state.productCode"
-                      :invalid="$v.productCode.$error"
-                      @blur="$v.productCode.$touch"
-                    />
-                    <label for="productCode">{{ $t('Product Code') }}</label>
-                  </FloatLabel>
-                  <small class="p-error" v-if="$v.productCode.$error">{{
-                    $t($v.productCode.$errors[0]?.$message?.toString())
-                  }}</small>
-                </div>
-              </div>
-              <div class="col-12 lg:col-4 field mb-5">
-                <div class="flex flex-column gap-2">
-                  <FloatLabel>
-                    <InputText
-                      class="w-full"
-                      id="productSKU"
-                      v-model="state.productSKU"
-                      :invalid="$v.productSKU.$error"
-                      @blur="$v.productSKU.$touch"
-                    />
-                    <label for="productSKU">{{ $t('Product SKU') }}</label>
-                  </FloatLabel>
-                  <small class="p-error" v-if="$v.productSKU.$error">{{
-                    $t($v.productSKU.$errors[0]?.$message?.toString())
                   }}</small>
                 </div>
               </div>

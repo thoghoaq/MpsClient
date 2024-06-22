@@ -63,18 +63,6 @@
           removable-sort
           paginator :rows="10" :rowsPerPageOptions="[5, 10, 20, 50]"
         >
-          <Column
-            field="productCode"
-            :header="$t('Product Code')"
-            class="w-12rem"
-            sortable
-          ></Column>
-          <Column
-            field="productSKU"
-            :header="$t('Product SKU')"
-            class="w-20rem"
-            sortable
-          ></Column>
           <Column field="name" :header="$t('Name')" sortable></Column>
           <Column :header="$t('Image')">
             <template #body="slotProps">

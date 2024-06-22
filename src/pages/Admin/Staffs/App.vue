@@ -254,6 +254,13 @@
             :currentPageReportTemplate="`{first} ${$t('to')} {last} ${$t('of')} {totalRecords}`"
           >
             <template #empty> {{ $t('No staffs found.') }} </template>
+            <Column field="staff.staffCode" sortable :header="$t('Staff Code')">
+              <template #body="slotProps">
+                <div class="flex align-items-center gap-2">
+                  <div>{{ slotProps.data.staff?.staffCode }}</div>
+                </div>
+              </template>
+            </Column>
             <Column field="fullName" sortable :header="$t('Full Name')">
               <template #body="slotProps">
                 <div class="flex align-items-center gap-2">
@@ -271,13 +278,6 @@
                   <div>
                     {{ slotProps.data.fullName }}
                   </div>
-                </div>
-              </template>
-            </Column>
-            <Column field="staff.staffCode" sortable :header="$t('Staff Code')">
-              <template #body="slotProps">
-                <div class="flex align-items-center gap-2">
-                  <div>{{ slotProps.data.staff?.staffCode }}</div>
                 </div>
               </template>
             </Column>
