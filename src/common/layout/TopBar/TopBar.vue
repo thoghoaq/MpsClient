@@ -214,7 +214,7 @@
                 ? undefined
                 : appConfig.loggedUser.data.displayName[0]
             "
-            class="cursor-pointer bg-primary-200 font-bold"
+            class="cursor-pointer bg-primary font-bold text-0"
             shape="circle"
             @click="showProfile = true"
           />

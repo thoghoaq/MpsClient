@@ -133,7 +133,7 @@
             @click="navigate"
             :class="
               router.currentRoute.value.fullPath.match(item.route)
-                ? 'bg-primary-100 text-0'
+                ? 'bg-primary text-0'
                 : ''
             "
           >

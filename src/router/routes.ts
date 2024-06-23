@@ -27,6 +27,7 @@ import Cart from '../pages/Cart/App.vue'
 import Checkout from '../pages/Checkout/App.vue'
 import VnPay from '../pages/VnPay/Redirect/App.vue'
 import VnPayReturn from '../pages/VnPay/Return/App.vue'
+import EOrders from '../pages/Order/App.vue'
 
 export const routes = [
   { path: '/', name: 'home', component: Home },
@@ -110,5 +111,8 @@ export const routes = [
   { path: '/cart', name: 'cart', component: Cart },
   { path: '/cart/checkout', name: 'checkout', component: Checkout },
   { path: '/vnpay', name: 'vnPay', component: VnPay },
-  { path: '/vnpay-return', name: 'vnPayReturn', component: VnPayReturn }
+  { path: '/vnpay-return', name: 'vnPayReturn', component: VnPayReturn },
+  {
+    path: '/orders', name: 'eOrders', component: EOrders
+  }
 ]

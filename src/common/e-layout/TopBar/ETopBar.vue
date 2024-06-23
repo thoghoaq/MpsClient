@@ -255,12 +255,22 @@
       <div>
         <div class="font-bold text-lg mb-2">{{ $t('Hello') }}</div>
         <div class="mb-4">{{ appConfig.loggedUser.data.displayName }}</div>
-        <Button severity="danger" class="w-full" outlined @click="logout">
-          <i class="pi pi-power-off px-2"></i>
-          <div class="flex flex-column text-left m-3">
-            <span>{{ $t('Sign Out') }}</span>
-          </div>
-        </Button>
+        <div class="flex flex-column gap-3">
+          <router-link to="/orders">
+            <Button severity="primary" class="w-full" outlined>
+              <i class="pi pi-shopping-bag px-2"></i>
+              <div class="flex flex-column text-left m-3">
+                <span>{{ $t('Your Orders') }}</span>
+              </div>
+            </Button>
+          </router-link>
+          <Button severity="danger" class="w-full" outlined @click="logout">
+            <i class="pi pi-power-off px-2"></i>
+            <div class="flex flex-column text-left m-3">
+              <span>{{ $t('Sign Out') }}</span>
+            </div>
+          </Button>
+        </div>
       </div>
     </Sidebar>
   </div>
