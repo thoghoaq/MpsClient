@@ -16,8 +16,6 @@
   const state = reactive({
     productName: '',
     price: <any>null,
-    productCode: '',
-    productSKU: '',
     description: <any>'<p>Hello</p>',
     productImages: <string[]>[],
     category: <any>null,
@@ -27,8 +25,6 @@
   const rules = {
     productName: { required },
     price: { required },
-    productCode: { required },
-    productSKU: { required },
     description: {},
     productImages: {},
     category: { required },
@@ -56,8 +52,6 @@
               const product = res.content as Product
               state.productName = product.name
               state.price = product.price
-              state.productCode = product.productCode
-              state.productSKU = product.productSKU
               state.description = product.description
               state.productImages = product.images.map(
                 (image: any) => image.imagePath,
@@ -149,8 +143,6 @@
       shopId: appConfig.loggedUser.shopManaging?.id,
       name: state.productName,
       price: state.price,
-      productCode: state.productCode,
-      productSKU: state.productSKU,
       description: state.description,
       images: state.productImages.map((image) => {
         return { imagePath: image }
