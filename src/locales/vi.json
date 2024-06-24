@@ -199,5 +199,10 @@
   "Refunded": "Đã hoàn tiền",
   "Completed": "Hoàn thành",
   "Cancelled": "Đã hủy",
-  "All": "Tất cả"
+  "All": "Tất cả",
+  "Order Number": "Mã đơn hàng",
+  "Archive Order": "Lưu trữ đơn hàng",
+  "Return": "Trả hàng",
+  "View Invoice": "Xem hóa đơn",
+  "Write a Review": "Viết đánh giá"
 }
