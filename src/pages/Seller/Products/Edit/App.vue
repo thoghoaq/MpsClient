@@ -16,7 +16,7 @@
   const state = reactive({
     productName: '',
     price: <any>null,
-    description: <any>'<p>Hello</p>',
+    description: <any>'',
     productImages: <string[]>[],
     category: <any>null,
     stock: 0,
