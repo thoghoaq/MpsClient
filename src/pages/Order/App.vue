@@ -15,25 +15,25 @@
         return {
           severity: 'warning',
           label: status.name,
-          class: 'text-yellow-500'
+          class: 'text-yellow-500',
         }
       case 2:
         return {
           severity: 'info',
           label: status.name,
-          class: 'text-primary-500'
+          class: 'text-primary-500',
         }
       case 4:
         return {
           severity: 'danger',
           label: status.name,
-          class: 'text-red-500'
+          class: 'text-red-500',
         }
       default:
         return {
           severity: 'secondary',
           label: status.name,
-          class: 'bg-secondary'
+          class: 'bg-secondary',
         }
     }
   }
@@ -46,7 +46,7 @@
           class="flex flex-column md:flex-row justify-content-between align-items-center mb-4"
         >
           <div class="flex flex-column text-center md:text-left">
-            <span class="text-900 text-2xl mb-2">{{ $t('Your Orders') }}</span>
+            <span class="text-900 text-2xl mb-2 font-bold">{{ $t('Your Orders') }}</span>
           </div>
           <span
             class="p-input-icon-right mt-5 mb-2 md:mt-0 md:mb-0 w-full lg:w-25rem"
@@ -57,6 +57,7 @@
           /></span>
         </div>
         <div
+          v-if="eOrderStore.orders.length > 0"
           v-for="order in eOrderStore.orders"
           :key="order.id"
           class="surface-card grid grid-nogutter border-round shadow-2 mb-6 ng-star-inserted"
@@ -147,7 +148,10 @@
                   border-radius: 2.5rem;
                 "
               >
-                <span :class="`p-2 ${getStatusDisplay(order.orderStatus).class}`">{{ $t(getStatusDisplay(order.orderStatus).label) }}</span>
+                <span
+                  :class="`p-2 ${getStatusDisplay(order.orderStatus).class}`"
+                  >{{ $t(getStatusDisplay(order.orderStatus).label) }}</span
+                >
               </div>
               <p-divider
                 class="p-element w-full block lg:hidden surface-border ng-star-inserted"
@@ -166,21 +170,39 @@
               tabindex="0"
               class="cursor-pointer py-4 flex flex-column md:flex-row text-center justify-content-center align-items-center text-primary hover:bg-primary hover:text-0 transition-duration-150 w-full"
               style="border-bottom-left-radius: 6px"
-              ><i class="pi pi-folder mr-2 mb-2 md:mb-1"></i>{{  $t('Archive Order') }}</a
+              ><i class="pi pi-folder mr-2 mb-2 md:mb-1"></i
+              >{{ $t('Archive Order') }}</a
             ><a
               tabindex="0"
               class="cursor-pointer py-4 flex flex-column md:flex-row text-center justify-content-center align-items-center text-primary hover:bg-primary hover:text-0 transition-duration-150 w-full"
-              ><i class="pi pi-refresh mr-2 mb-2 md:mb-1"></i>{{ $t('Return') }}</a
+              ><i class="pi pi-refresh mr-2 mb-2 md:mb-1"></i
+              >{{ $t('Return') }}</a
             ><a
               tabindex="0"
               class="cursor-pointer py-4 flex flex-column md:flex-row text-center justify-content-center align-items-center text-primary hover:bg-primary hover:text-0 transition-duration-150 w-full"
-              ><i class="pi pi-file mr-2 mb-2 md:mb-1"></i>{{ $t('View Invoice') }}</a
+              ><i class="pi pi-file mr-2 mb-2 md:mb-1"></i
+              >{{ $t('View Invoice') }}</a
             ><a
               tabindex="0"
               class="cursor-pointer py-4 flex flex-column md:flex-row text-center justify-content-center align-items-center text-primary hover:bg-primary hover:text-0 transition-duration-150 w-full"
               style="border-bottom-right-radius: 6px"
-              ><i class="pi pi-comment mr-2 mb-2 md:mb-1"></i>{{ $t('Write a Review') }}</a
+              ><i class="pi pi-comment mr-2 mb-2 md:mb-1"></i
+              >{{ $t('Write a Review') }}</a
             >
+          </div>
+        </div>
+        <div v-else>
+          <div class="text-center">
+            <h2>{{ $t('Your order is empty') }}</h2>
+            <p>{{ $t('Please buy some products to continue') }}</p>
+          </div>
+          <div class="flex gap-3">
+            <Button
+              icon="pi pi-arrow-left"
+              :label="$t('View products')"
+              outlined
+              @click="$router.push('/ecommerce/products')"
+            />
           </div>
         </div>
       </div>

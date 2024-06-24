@@ -53,6 +53,12 @@
           route: '/cart/checkout',
         }
       }
+      case 'orders': {
+        return {
+          label: t('ORDERS'),
+          class: 'm-0',
+        }
+      }
       default:
         return {
           label: item,
