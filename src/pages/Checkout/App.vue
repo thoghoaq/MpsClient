@@ -72,7 +72,7 @@
   })
 
   const paymentMethods = ref([
-    { label: EPaymentMethod.VnPay.toString(), value: EPaymentMethod.VnPay },
+    { label: "VnPay", value: EPaymentMethod.VnPay },
   ])
 
   const submitOrder = function () {
@@ -212,7 +212,7 @@
           <Dropdown
             v-model="state.paymentMethod"
             :options="paymentMethods"
-            optionLabel="label"
+            option-label="label"
             class="mx-3"
             :placeholder="$t('Payment method')"
             :invalid="v$.paymentMethod.$error"

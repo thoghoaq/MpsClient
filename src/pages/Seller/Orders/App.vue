@@ -22,12 +22,12 @@
         orderStore.fetchOrders()
       },
     },
-    {
-      label: t('Pending'),
-      command: () => {
-        orderStore.filterOrders(1)
-      },
-    },
+    // {
+    //   label: t('Pending'),
+    //   command: () => {
+    //     orderStore.filterOrders(1)
+    //   },
+    // },
     {
       label: t('Processing'),
       command: () => {

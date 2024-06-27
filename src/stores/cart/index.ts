@@ -1,5 +1,10 @@
 import { defineStore } from 'pinia'
-import { CartItem, CheckoutItem, CheckoutRequest, CheckoutResponse } from './types'
+import {
+  CartItem,
+  CheckoutItem,
+  CheckoutRequest,
+  CheckoutResponse,
+} from './types'
 import { useApi } from '../api'
 import { appConfig } from '..'
 const api = useApi()
@@ -18,6 +23,7 @@ export const useCartStore = defineStore({
       const item = this.items.find((item) => item.id === product.id)
       if (item) {
         item.quantity += product.quantity
+        if (product.selected) item.selected = true
       } else {
         this.items.push(product)
       }

@@ -40,7 +40,7 @@
     })
   })
 
-  const addToCart = function (product: Product) {
+  const addToCart = function (product: Product, selected?: boolean) {
     cartStore.addProduct({
       id: product.id,
       name: product.name,
@@ -48,7 +48,7 @@
       imageUrl: product.images[0]?.imagePath,
       quantity: quantity.value,
       stock: product.stock,
-      selected: false,
+      selected: selected ?? false,
       shopId: product.shopId,
     })
     toast.success(t('Add to cart successfully'))
@@ -135,14 +135,20 @@
                   <Avatar
                     :image="productDetails?.shop?.avatar"
                     shape="circle"
+                    size="large"
                   ></Avatar>
-                  <span class="font-bold">{{
+                  <span class="font-bold text-xl">{{
                     productDetails?.shop?.shopName
                   }}</span>
                 </div>
                 <Divider></Divider>
                 <div class="flex flex-column mb-3">
-                  <div class="font-semibold mb-2">{{ $t('Quantity') }}</div>
+                  <div class="flex gap-3">
+                    <div class="font-semibold mb-2">{{ $t('Quantity') }}</div>
+                    <div class="text-500">
+                      {{ `(${productDetails?.stock} ${$t('items available')})` }}
+                    </div>
+                  </div>
                   <InputNumber
                     v-model="quantity"
                     showButtons
@@ -180,10 +186,12 @@
                   severity="danger"
                   :label="$t('BUY NOW')"
                   class="w-full mt-3"
-                  @click="() => {
-                     productDetails && addToCart(productDetails)
+                  @click="
+                    () => {
+                      productDetails && addToCart(productDetails, true)
                       $router.push({ name: 'checkout' })
-                  }"
+                    }
+                  "
                 />
               </div>
             </div>
