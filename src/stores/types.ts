@@ -41,6 +41,7 @@ export interface AppConfig {
             shop: string;
         },
         shop: {
+            base: string;
             product: string;
             products: string;
             orders: string;

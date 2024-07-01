@@ -11,6 +11,7 @@ import ShopOwnerEdit from '../pages/Admin/ShopOwners/Edit/App.vue'
 import Customers from '../pages/Admin/Customers/App.vue'
 import CustomerEdit from '../pages/Admin/Customers/Edit/App.vue'
 import ProductCategories from '../pages/Admin/ProductCategories/App.vue'
+import RefundRevenue from '../pages/Admin/RefundRevenue/App.vue'
 
 /** Seller */
 import Shops from '../pages/Seller/Shops/App.vue'
@@ -67,6 +68,17 @@ export const routes = [
     ],
   },
   {
+    path: '/business',
+    name: 'business',
+    children: [
+      {
+        path: 'refund',
+        name: 'refund',
+        component: RefundRevenue,
+      },
+    ],
+  },
+  {
     path: '/seller',
     name: 'seller',
     children: [
@@ -92,8 +104,8 @@ export const routes = [
       {
         path: 'orders',
         name: 'orders',
-        component: Orders
-      }
+        component: Orders,
+      },
     ],
   },
   {
@@ -113,6 +125,8 @@ export const routes = [
   { path: '/vnpay', name: 'vnPay', component: VnPay },
   { path: '/vnpay-return', name: 'vnPayReturn', component: VnPayReturn },
   {
-    path: '/orders', name: 'eOrders', component: EOrders
-  }
+    path: '/orders',
+    name: 'eOrders',
+    component: EOrders,
+  },
 ]

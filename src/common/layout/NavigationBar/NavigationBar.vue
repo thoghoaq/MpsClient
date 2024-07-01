@@ -40,6 +40,18 @@
       ],
     },
     {
+      label: 'Business',
+      visible: appConfig.loggedUser.isManagerGroup,
+      items: [
+      {
+          label: 'Refund Revenue',
+          icon: 'pi pi-paypal',
+          route: '/business/refund',
+          visible: appConfig.loggedUser.isManagerGroup,
+        },
+      ]
+    },
+    {
       label: 'Seller Channel',
       visible: appConfig.loggedUser.isShopOwner,
       items: [

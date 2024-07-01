@@ -223,6 +223,7 @@
                       id="price"
                       v-model="state.price"
                       :minFractionDigits="2"
+                      :min="1000"
                       mode="currency"
                       currency="VND"
                       locale="vi-VN"

@@ -50,6 +50,7 @@ import Divider from 'primevue/divider'
 import ProgressSpinner from 'primevue/progressspinner'
 import ConfirmPopup from 'primevue/confirmpopup'
 import TabMenu from 'primevue/tabmenu'
+import Calendar from 'primevue/calendar'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -62,6 +63,7 @@ import 'primeflex/primeflex.css'
 import { router } from './router'
 import { createI18n } from 'vue-i18n'
 import { messages, defaultLocale } from './locales'
+import vi from 'src/locales/prime/vi.json'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -77,7 +79,9 @@ const i18n = createI18n({
 axios.defaults.baseURL = import.meta.env.VITE_API_URL
 axios.defaults.headers.common['Accept-Language'] = 'vi-VN'
 
-app.use(PrimeVue)
+app.use(PrimeVue, {
+    locale: vi,
+})
 app.use(ToastService)
 app.use(ConfirmationService)
 app.use(pinia)
@@ -129,6 +133,7 @@ app.component('Divider', Divider)
 app.component('ProgressSpinner', ProgressSpinner)
 app.component('ConfirmPopup', ConfirmPopup)
 app.component('TabMenu', TabMenu)
+app.component('Calendar', Calendar)
 
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)

@@ -127,6 +127,17 @@
           route: '/shop/orders',
           class: 'm-0',
         }
+      case 'refund':
+        return {
+          label: t('Refund Revenue'),
+          route: '/business/refund',
+          class: 'm-0',
+        }
+      case 'business':
+        return {
+          label: t('Business'),
+          class: 'm-0',
+        }
       default:
         return {
           label: item,
@@ -138,7 +149,7 @@
   const scale = ref(settingStore.scale)
 
   watch(scale, (value) => {
-    settingStore.changeScale(value);
+    settingStore.changeScale(value)
   })
 </script>
 <template>
@@ -258,10 +269,32 @@
       <div class="mb-5">
         <h3 class="mb-3">{{ $t('Scale') }}</h3>
         <div class="flex align-items-center justify-content-between">
-          <Button icon="pi pi-minus font-bold" link @click="() => {if (scale > 12) scale = scale - 1}"></Button>
-          <Slider v-model="scale" :min="12" :max="16" :step="1" class="w-10rem" />
-          <Button icon="pi pi-plus font-bold" link @click="() => {if (scale < 16) scale = scale + 1}"></Button>
-          </div>
+          <Button
+            icon="pi pi-minus font-bold"
+            link
+            @click="
+              () => {
+                if (scale > 12) scale = scale - 1
+              }
+            "
+          ></Button>
+          <Slider
+            v-model="scale"
+            :min="12"
+            :max="16"
+            :step="1"
+            class="w-10rem"
+          />
+          <Button
+            icon="pi pi-plus font-bold"
+            link
+            @click="
+              () => {
+                if (scale < 16) scale = scale + 1
+              }
+            "
+          ></Button>
+        </div>
       </div>
       <div>
         <h3 class="mb-3">{{ $t('Language') }}</h3>

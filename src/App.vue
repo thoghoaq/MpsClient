@@ -3,9 +3,14 @@
   import { usePrimeVue } from 'primevue/config'
   import { onBeforeMount, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
+  import { getLocale } from 'src/locales/prime'
+  import { useI18n } from 'vue-i18n'
+  import { getMessage } from 'src/locales'
   const primeVue = usePrimeVue()
+  const i18n = useI18n()
   const settingStore = useSettingStore()
   const router = useRouter()
+  const language = localStorage.getItem('language') || 'vi'
 
   onBeforeMount(() => {
     primeVue.changeTheme(
@@ -14,6 +19,9 @@
       'theme-link',
       () => {},
     )
+    primeVue.config.locale = getLocale(language)
+    i18n.locale.value = language
+    i18n.setLocaleMessage(language, getMessage(language))
   })
 
   onMounted(() => {

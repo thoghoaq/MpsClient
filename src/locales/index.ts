@@ -8,4 +8,15 @@ export const messages = {
   [Locales.VI]: vi,
 }
 
+export const getMessage = (locale: string) => {
+  switch (locale) {
+    case 'en':
+      return messages.en
+    case 'vi':
+      return messages.vi
+    default:
+      return messages.vi
+  }
+}
+
 export const defaultLocale = Locales.VI
