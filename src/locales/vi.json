@@ -226,5 +226,10 @@
   "Action": "Hành động",
   "Paidout": "Đã thanh toán",
   "Expect Payout": "Dự kiến thanh toán",
-  "Failed": "Thất bại"
+  "Failed": "Thất bại",
+  "Expect Next Paid": "Dự kiến thanh toán tiếp theo",
+  "Total Paid": "Tổng số đã thanh toán",
+  "Total Revenue": "Tổng doanh thu",
+  "Expect Platform Earned": "Dự kiến doanh thu của nền tảng",
+  "Total Platform Earned": "Tổng doanh thu của nền tảng"
 }

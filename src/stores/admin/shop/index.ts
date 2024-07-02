@@ -9,6 +9,9 @@ export const usePayoutStore = defineStore({
   id: 'payout',
   state: () => ({
     shops: <Shop[]>[],
+    totalRevenue: 0,
+    totalExpectPayout: 0,
+    totalPaidout: 0,
   }),
   actions: {
     async fetchShops(monthToDate: Date) {
@@ -16,6 +19,7 @@ export const usePayoutStore = defineStore({
         .get(appConfig.appendUrl(appConfig.api.shop.base, { monthToDate: monthToDate.toISOString() }))
         .then((response: APIResponse<Shop[]>) => {
           this.shops = response.content
+          this.calculateOverview()
           return response
         })
     },
@@ -34,6 +38,11 @@ export const usePayoutStore = defineStore({
           this.fetchShops(monthToDate)
           return response
         })
+    },
+    calculateOverview() {
+      this.totalRevenue = this.shops.reduce((acc, shop) => acc + (shop.revenue || 0), 0)
+      this.totalExpectPayout = this.shops.reduce((acc, shop) => acc + (shop.expectPayout || 0), 0)
+      this.totalPaidout = this.shops.reduce((acc, shop) => acc + (shop.totalPayout || 0), 0)
     }
   },
 })

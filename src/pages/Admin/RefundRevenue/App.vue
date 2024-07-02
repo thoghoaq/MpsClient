@@ -12,6 +12,7 @@
   const month = ref(now)
   const selectedRow = ref()
   const expandedRows = ref({})
+  const loading = ref(false)
 
   onMounted(() => {
     payoutStore.fetchShops(now)
@@ -43,23 +44,32 @@
   }
 
   const requestAllPayout = () => {
+    loading.value = true
     payoutStore.requestMonthlyPayout(month.value).then((response) => {
       if (response.success) {
         toast.success(response.content['message'])
       } else {
         toast.error(response.content)
       }
+    }).finally(() => {
+      loading.value = false
     })
   }
 
   const acceptPayout = (payoutId: number) => {
-    payoutStore.acceptPayout(payoutId, month.value).then((response) => {
-      if (response.success) {
-        toast.success(response.content['message'])
-      } else {
-        toast.error(response.content)
-      }
-    })
+    loading.value = true
+    payoutStore
+      .acceptPayout(payoutId, month.value)
+      .then((response) => {
+        if (response.success) {
+          toast.success(response.content['message'])
+        } else {
+          toast.error(response.content)
+        }
+      })
+      .finally(() => {
+        loading.value = false
+      })
   }
 </script>
 <template>
@@ -72,11 +82,45 @@
         v-model:selection="selectedRow"
         v-model:expandedRows="expandedRows"
         dataKey="id"
+        :loading="loading"
       >
         <template #header>
           <Menubar class="border-0">
             <template #start>
-              <h4>{{ $t('Revenue') }}</h4>
+              <div
+                class="grid grid-nogutter align-items-center gap-2"
+                style="width: 50rem"
+              >
+                <div class="col flex flex-column gap-2">
+                  <div class="font-bold">
+                    {{
+                      `${$t('Expect Next Paid')}: ${NumberHelper.formatCurrency(payoutStore.totalExpectPayout - payoutStore.totalPaidout)}`
+                    }}
+                  </div>
+                  <div class="font-bold">
+                    {{
+                      `${$t('Total Paid')}: ${NumberHelper.formatCurrency(payoutStore.totalPaidout)}`
+                    }}
+                  </div>
+                </div>
+                <div class="col flex flex-column gap-2">
+                  <div class="font-bold">
+                    {{
+                      `${$t('Total Revenue')}: ${NumberHelper.formatCurrency(payoutStore.totalRevenue)}`
+                    }}
+                  </div>
+                  <div class="font-bold">
+                    {{
+                      `${$t('Expect Platform Earned')}: ${NumberHelper.formatCurrency(payoutStore.totalRevenue - payoutStore.totalExpectPayout)}`
+                    }}
+                  </div>
+                  <div class="font-bold">
+                    {{
+                      `${$t('Total Platform Earned')}: ${NumberHelper.formatCurrency(payoutStore.totalRevenue - payoutStore.totalPaidout)}`
+                    }}
+                  </div>
+                </div>
+              </div>
             </template>
             <template #end>
               <div class="flex align-items-center gap-2">
@@ -174,7 +218,11 @@
                   }}</span>
                 </template>
               </Column>
-              <Column field="ExpectAmount" :header="$t('Expect Payout')" sortable>
+              <Column
+                field="ExpectAmount"
+                :header="$t('Expect Payout')"
+                sortable
+              >
                 <template #body="{ data }">
                   <span>{{
                     NumberHelper.formatCurrency(data.expectAmount ?? 0)
