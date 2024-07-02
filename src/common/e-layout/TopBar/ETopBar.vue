@@ -8,6 +8,8 @@
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { useCartStore } from 'src/stores/cart'
+  import { useEProductStore } from 'src/stores/ecommerce/product'
+  const eProductStore = useEProductStore()
   const cartStore = useCartStore()
   const primeVue = usePrimeVue()
   const settingStore = useSettingStore()
@@ -121,9 +123,14 @@
   }
 
   const scale = ref(settingStore.scale)
+  const query = ref()
 
   watch(scale, (value) => {
     settingStore.changeScale(value)
+  })
+  watch(query, (value) => {
+    eProductStore.filter.query = value
+    eProductStore.filterProducts()
   })
 </script>
 <template>
@@ -140,7 +147,7 @@
       </router-link>
       <IconField iconPosition="right" class="w-full">
         <InputIcon class="pi pi-search"> </InputIcon>
-        <InputText :placeholder="$t('Search Product')" class="w-full" />
+        <InputText :placeholder="$t('Search Product')" class="w-full" v-model="query"/>
       </IconField>
       <div class="flex align-items-center gap-3 mx-2">
         <Button

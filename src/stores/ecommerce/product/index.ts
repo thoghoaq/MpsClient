@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Product } from './types'
+import { Filter, Product } from './types'
 import { APIResponse } from 'src/stores/types'
 import { useApi } from 'src/stores/api'
 import { appConfig } from 'src/stores'
@@ -8,7 +8,8 @@ const api = useApi()
 export const useEProductStore = defineStore({
   id: 'ecommerce-product',
   state: () => ({
-    products: <Product[]>[]
+    products: <Product[]>[],
+    filter: <Filter>{},
   }),
   actions: {
     async fetchProducts() {
@@ -28,13 +29,30 @@ export const useEProductStore = defineStore({
     },
     async fetchProductsByCategory(categoryId: number[]) {
       return api
-        .get(appConfig.appendUrl(appConfig.api.ecommerce.products, {
-          categoriesId: categoryId
-        }))
+        .get(
+          appConfig.appendUrl(appConfig.api.ecommerce.products, {
+            categoriesId: categoryId,
+          }),
+        )
         .then((response: APIResponse<Product[]>) => {
           this.products = response.content
           return response
         })
-    }
+    },
+    async filterProducts() {
+      return api
+        .get(
+          appConfig.appendUrl(appConfig.api.ecommerce.products, {
+            categoriesId: this.filter.categoriesId,
+            brandsId: this.filter.brandsId,
+            shopsId: this.filter.shopsId,
+            filter: this.filter.query,
+          }),
+        )
+        .then((response: APIResponse<Product[]>) => {
+          this.products = response.content
+          return response
+        })
+    },
   },
 })
