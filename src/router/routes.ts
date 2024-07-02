@@ -12,6 +12,7 @@ import Customers from '../pages/Admin/Customers/App.vue'
 import CustomerEdit from '../pages/Admin/Customers/Edit/App.vue'
 import ProductCategories from '../pages/Admin/ProductCategories/App.vue'
 import RefundRevenue from '../pages/Admin/RefundRevenue/App.vue'
+import ShopRequest from '../pages/Admin/ShopRequest/App.vue'
 
 /** Seller */
 import Shops from '../pages/Seller/Shops/App.vue'
@@ -52,6 +53,11 @@ export const routes = [
         path: 'shop-owners/:id',
         name: 'shopOwnerEdit',
         component: ShopOwnerEdit,
+      },
+      {
+        path: 'shop-request',
+        name: 'shopRequest',
+        component: ShopRequest,
       },
       { path: 'customers', name: 'customers', component: Customers },
       {

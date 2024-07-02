@@ -231,5 +231,11 @@
   "Total Paid": "Tổng số đã thanh toán",
   "Total Revenue": "Tổng doanh thu",
   "Expect Platform Earned": "Dự kiến doanh thu của nền tảng",
-  "Total Platform Earned": "Tổng doanh thu của nền tảng"
+  "Total Platform Earned": "Tổng doanh thu của nền tảng",
+  "Waiting for accept": "Đang chờ xác nhận",
+  "New Shop Request": "Yêu cầu cửa hàng mới",
+  "Open": "Mở cửa",
+  "Are you sure you want to open this shop?": "Bạn có chắc chắn muốn mở cửa hàng này không?",
+  "List of Shop Request": "Danh sách yêu cầu cửa hàng",
+  "No shop request found.": "Không tìm thấy yêu cầu cửa hàng nào."
 }

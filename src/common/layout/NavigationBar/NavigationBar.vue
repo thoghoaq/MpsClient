@@ -26,6 +26,12 @@
           visible: appConfig.loggedUser.isManagerGroup,
         },
         {
+          label: 'New Shop Request',
+          icon: 'pi pi-envelope',
+          route: '/admin/shop-request',
+          visible: appConfig.loggedUser.isManagerGroup,
+        },
+        {
           label: 'Manage Customers',
           icon: 'pi pi-shopping-cart',
           route: '/admin/customers',
@@ -120,7 +126,7 @@
                 >{{ appConfig.loggedUser.shopManaging.shopName }}</span
               >
               <span v-else class="font-medium text-xl font-semibold"
-                >SMPS<span class="text-primary">Admin</span></span
+                >MPC<span class="text-primary">Admin</span></span
               >
             </span>
           </router-link>

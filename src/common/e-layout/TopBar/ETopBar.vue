@@ -133,8 +133,8 @@
     >
       <router-link to="/" style="text-decoration: none;">
         <div class="flex align-items-center gap-3 mx-4">
-          <Button link label="SMPS" class="text-lg">
-            <h1>SMPS</h1>
+          <Button link label="MPC" class="text-lg">
+            <h1>MPC</h1>
           </Button>
         </div>
       </router-link>

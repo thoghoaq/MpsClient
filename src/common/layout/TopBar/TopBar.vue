@@ -138,6 +138,12 @@
           label: t('Business'),
           class: 'm-0',
         }
+      case 'shop-request':
+        return {
+          label: t('New Shop Request'),
+          route: '/admin/shop-request',
+          class: 'm-0',
+        }
       default:
         return {
           label: item,

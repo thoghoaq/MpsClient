@@ -47,7 +47,9 @@ export interface AppConfig {
             orders: string;
             order: {
                 status: string;
-            }
+            },
+            request: string;
+            acceptRequest: string;
         },
         ecommerce: {
             products: string;
