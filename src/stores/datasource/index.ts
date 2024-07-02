@@ -102,6 +102,14 @@ export const useDataSourceStore = defineStore({
         }
       }
     },
+    getNodeFromKey(key: string) {
+      const keys = key.split('-')
+      let node = this.productCategoryTree[parseInt(keys[0])]
+      for (let i = 1; i < keys.length; i++) {
+        node = node.children![parseInt(keys[i])]
+      }
+      return node
+    },
     appendChildToTree(key: string, child: TreeNode, root?: boolean) {
       if (!root) {
         const keys = key.split('-')

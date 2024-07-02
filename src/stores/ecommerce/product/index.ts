@@ -25,6 +25,16 @@ export const useEProductStore = defineStore({
         .then((response) => {
           return response
         })
+    },
+    async fetchProductsByCategory(categoryId: number[]) {
+      return api
+        .get(appConfig.appendUrl(appConfig.api.ecommerce.products, {
+          categoriesId: categoryId
+        }))
+        .then((response: APIResponse<Product[]>) => {
+          this.products = response.content
+          return response
+        })
     }
   },
 })

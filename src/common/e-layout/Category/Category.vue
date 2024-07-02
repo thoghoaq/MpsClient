@@ -1,12 +1,20 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, watch } from 'vue'
   import { useDataSourceStore } from 'src/stores/datasource'
+  import { useEProductStore } from 'src/stores/ecommerce/product';
   const dataSourceStore = useDataSourceStore()
+  const eProductStore = useEProductStore()
 
   onMounted(() => {
     dataSourceStore.fetchProductCategories()
   })
   const selectedKey = ref()
+
+  watch(selectedKey, (newVal) => {
+    var key = Object.keys(newVal)[0]
+    var node = dataSourceStore.getNodeFromKey(key)
+    eProductStore.fetchProductsByCategory(node.data.id)
+  })
 </script>
 <template>
   <TreeTable
