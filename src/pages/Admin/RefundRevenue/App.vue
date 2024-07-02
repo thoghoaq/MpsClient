@@ -94,7 +94,7 @@
                 <div class="col flex flex-column gap-2">
                   <div class="font-bold">
                     {{
-                      `${$t('Expect Next Paid')}: ${NumberHelper.formatCurrency(payoutStore.totalExpectPayout - payoutStore.totalPaidout)}`
+                      `${$t('Expect Next Paid')}: ${NumberHelper.formatCurrency(payoutStore.totalExpectPayout)}`
                     }}
                   </div>
                   <div class="font-bold">
@@ -111,7 +111,7 @@
                   </div>
                   <div class="font-bold">
                     {{
-                      `${$t('Expect Platform Earned')}: ${NumberHelper.formatCurrency(payoutStore.totalRevenue - payoutStore.totalExpectPayout)}`
+                      `${$t('Expect Platform Earned')}: ${NumberHelper.formatCurrency(payoutStore.totalRevenue - payoutStore.totalExpectPayout - payoutStore.totalPaidout)}`
                     }}
                   </div>
                   <div class="font-bold">
