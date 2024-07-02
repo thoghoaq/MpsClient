@@ -145,7 +145,7 @@
                 <div class="flex flex-column mb-3">
                   <div class="flex gap-3">
                     <div class="font-semibold mb-2">{{ $t('Quantity') }}</div>
-                    <div class="text-500">
+                    <div v-if="false" class="text-500">
                       {{ `(${productDetails?.stock} ${$t('items available')})` }}
                     </div>
                   </div>
@@ -155,7 +155,7 @@
                     buttonLayout="horizontal"
                     :step="1"
                     :min="1"
-                    :max="productDetails?.stock"
+                    :max="10"
                     class="w-5rem"
                     input-class="w-3rem"
                     :allow-empty="false"

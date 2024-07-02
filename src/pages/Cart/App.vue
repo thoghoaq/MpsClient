@@ -47,7 +47,7 @@
                   buttonLayout="horizontal"
                   :step="1"
                   :min="0"
-                  :max="data.stock"
+                  :max="10"
                   class="w-5rem"
                   input-class="w-3rem"
                   :allow-empty="false"

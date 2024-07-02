@@ -144,6 +144,11 @@
           route: '/admin/shop-request',
           class: 'm-0',
         }
+      case 'update':
+        return {
+          label: t('Update'),
+          class: 'm-0',
+        }
       default:
         return {
           label: item,

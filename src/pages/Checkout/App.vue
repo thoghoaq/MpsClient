@@ -20,7 +20,7 @@
     phoneNumber: '',
     email: appConfig.loggedUser.data.email,
     note: '',
-    paymentMethod: <any>null,
+    paymentMethod: { label: "VnPay", value: EPaymentMethod.VnPay },
     voucherCode: '',
   })
 

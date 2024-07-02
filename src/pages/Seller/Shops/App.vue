@@ -81,14 +81,22 @@
                 </div>
               </div>
             </div>
-            <div v-if="shop.isActive" class="mt-3 lg:mt-0">
-              <Button
+            <div class="mt-3 lg:mt-0 flex gap-2">
+              <SplitButton
+                v-if="shop.isActive"
                 :label="$t('Manage')"
                 icon="pi pi-cog"
+                :model="[
+                  {
+                    label: $t('Update'),
+                    command: () => {
+                      $router.push({name: 'shopsUpdate', params: {id: shop.id}})
+                    },
+                  },
+                ]"
                 @click="initShopManagement(shop)"
-              ></Button>
+              ></SplitButton>
             </div>
-            <div v-else class="text-yellow-500 text-lg">{{ $t('Waiting for accept') }}</div>
           </div>
         </div>
       </div>

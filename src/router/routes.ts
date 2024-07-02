@@ -90,6 +90,7 @@ export const routes = [
     children: [
       { path: 'shops', name: 'shops', component: Shops },
       { path: 'shops/create', name: 'shopsCreate', component: ShopsCreate },
+      { path: 'shops/:id', name: 'shopsUpdate', component: ShopsCreate },
     ],
   },
   {
