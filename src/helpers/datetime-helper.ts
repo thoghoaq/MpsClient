@@ -3,7 +3,10 @@ export default class DateTimeHelper {
     return new Date(date)
   }
 
-  static format(date: Date | string | null, format?: 'datetime' | 'date' | 'time'): string {
+  static format(
+    date: Date | string | null,
+    format?: 'datetime' | 'month' | 'date' | 'time',
+  ): string {
     if (!date) {
       return ''
     }
@@ -21,25 +24,27 @@ export default class DateTimeHelper {
     const formatter = new Intl.DateTimeFormat('vi-VN', options)
     const parts = formatter.formatToParts(date)
 
-    const day = parts.find(part => part.type === 'day')?.value;
-    const month = parts.find(part => part.type === 'month')?.value;
-    const year = parts.find(part => part.type === 'year')?.value;
-    const hour = parts.find(part => part.type === 'hour')?.value;
-    const minute = parts.find(part => part.type === 'minute')?.value;
-    const second = parts.find(part => part.type === 'second')?.value;
+    const day = parts.find((part) => part.type === 'day')?.value
+    const month = parts.find((part) => part.type === 'month')?.value
+    const year = parts.find((part) => part.type === 'year')?.value
+    const hour = parts.find((part) => part.type === 'hour')?.value
+    const minute = parts.find((part) => part.type === 'minute')?.value
+    const second = parts.find((part) => part.type === 'second')?.value
 
-    const formattedDate = `${day}/${month}/${year}`;
-    const formattedTime = `${hour}:${minute}:${second}`;
+    const formattedDate = `${day}/${month}/${year}`
+    const formattedTime = `${hour}:${minute}:${second}`
 
     switch (format) {
-        case 'datetime':
-            return `${formattedDate} ${formattedTime}`;
-        case 'date':
-            return formattedDate;
-        case 'time':
-            return formattedTime;
-        default:
-            return parts.map(part => part.value).join('');
+      case 'datetime':
+        return `${formattedDate} ${formattedTime}`
+      case 'date':
+        return formattedDate
+      case 'time':
+        return formattedTime
+      case 'month':
+        return `${month}/${year}`
+      default:
+        return parts.map((part) => part.value).join('')
     }
   }
 }

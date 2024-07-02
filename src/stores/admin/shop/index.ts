@@ -19,5 +19,21 @@ export const usePayoutStore = defineStore({
           return response
         })
     },
+    async requestMonthlyPayout(monthToDate: Date) {
+      return api
+        .post(appConfig.api.payment.requestMonthlyPayout, { monthToDate: monthToDate.toISOString() })
+        .then((response: APIResponse<any>) => {
+          this.fetchShops(monthToDate)
+          return response
+        })
+    },
+    async acceptPayout(payoutId: number, monthToDate: Date) {
+      return api
+        .post(appConfig.api.payment.acceptPayout, { payoutId: payoutId })
+        .then((response: APIResponse<any>) => {
+          this.fetchShops(monthToDate)
+          return response
+        })
+    }
   },
 })

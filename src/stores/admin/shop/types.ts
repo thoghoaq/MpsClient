@@ -17,6 +17,7 @@ export interface Shop {
   updatedAt: Date | null
   isCurrentMonthPaid: boolean
   revenue: number | null
+  expectPayout: number | null
   totalPayout: number
   payouts: Payout[]
 }
@@ -24,6 +25,7 @@ export interface Shop {
 export interface Payout {
   id: number
   shopId: number
+  expectAmount: number | null
   amount: number | null
   currency: string | null
   monthToDate: Date

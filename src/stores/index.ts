@@ -97,6 +97,8 @@ export const appConfig : AppConfig = {
         },
         payment: {
             details: getControllerUrl('details', controllers.payment),
+            requestMonthlyPayout: getControllerUrl('request-monthly-payout', controllers.payment),
+            acceptPayout: getControllerUrl('accept-payout', controllers.payment),
         }
     },
     loggedUser: getLoggedUser(),

@@ -56,6 +56,8 @@ export interface AppConfig {
         },
         payment: {
             details: string;
+            requestMonthlyPayout: string;
+            acceptPayout: string;
         }
     },
     loggedUser: User,

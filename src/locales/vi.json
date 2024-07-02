@@ -216,5 +216,15 @@
   "List of shops": "Danh sách cửa hàng",
   "Revenue": "Doanh thu",
   "Payout": "Thanh toán",
-  "Create Request": "Tạo yêu cầu"
+  "Create Request": "Tạo yêu cầu",
+  "Payout History": "Lịch sử thanh toán",
+  "Execute At": "Thực hiện vào",
+  "Month": "Tháng",
+  "Amount": "Số tiền",
+  "Currency": "Đơn vị",
+  "Batch": "Lô",
+  "Action": "Hành động",
+  "Paidout": "Đã thanh toán",
+  "Expect Payout": "Dự kiến thanh toán",
+  "Failed": "Thất bại"
 }
