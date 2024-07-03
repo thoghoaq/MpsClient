@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { onMounted, reactive, ref } from 'vue'
+  import { onMounted, reactive, ref, watch } from 'vue'
   import { useShopStore } from 'src/stores/seller/shop'
   import { useRouter, useRoute } from 'vue-router'
   import { useApi } from 'src/stores/api'
@@ -119,6 +119,33 @@
     }
   }
 
+  const loadPayPalButton = () => {
+    // Load the PayPal script
+    const script = document.createElement('script')
+    script.src = 'https://www.paypalobjects.com/js/external/api.js'
+    script.onload = () => {
+      // Ensure PayPal is available globally
+      // @ts-ignore
+      paypal.use(['login'], function (login: any) {
+        login.render({
+          appid: import.meta.env.VITE_PAYPAL_CLIENT_ID,
+          authend: 'sandbox',
+          scopes: 'email profile',
+          containerid: 'paypal-button',
+          responseType: 'code id_token',
+          locale: appConfig.language,
+          theme: 'neutral',
+          buttonType: 'CWP',
+          buttonShape: 'rectangle',
+          buttonSize: 'lg',
+          fullPage: 'true',
+          returnurl: `${window.location.origin}/shop-request`,
+        })
+      })
+    }
+    document.body.appendChild(script)
+  }
+
   onMounted(() => {
     if (shopId) {
       api.get(`${appConfig.api.seller.shop}/${shopId}`).then((res) => {
@@ -155,31 +182,11 @@
         }
       })
     }
+    loadPayPalButton()
+  })
 
-    // Load the PayPal script
-    const script = document.createElement('script')
-    script.src = 'https://www.paypalobjects.com/js/external/api.js'
-    script.onload = () => {
-      // Ensure PayPal is available globally
-      // @ts-ignore
-      paypal.use(['login'], function (login: any) {
-        login.render({
-          appid: import.meta.env.VITE_PAYPAL_CLIENT_ID,
-          authend: 'sandbox',
-          scopes: 'email profile',
-          containerid: 'paypal-button',
-          responseType: 'code id_token',
-          locale: 'vi-vn',
-          theme: 'neutral',
-          buttonType: 'CWP',
-          buttonShape: 'rectangle',
-          buttonSize: 'lg',
-          fullPage: 'true',
-          returnurl: `${window.location.origin}/shop-request`,
-        })
-      })
-    }
-    document.body.appendChild(script)
+  watch(appConfig, (value) => {
+    loadPayPalButton()
   })
 </script>
 <template>

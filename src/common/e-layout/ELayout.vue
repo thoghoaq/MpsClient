@@ -7,6 +7,7 @@
   const { t } = useI18n()
   const props = defineProps({
     hideCategory: Boolean,
+    viewProducts: Boolean,
   })
 
   const visible = ref(true)
@@ -66,30 +67,37 @@
         }
     }
   }
+
+  const selectedFilter = ref({ name: t('New'), id: 1 })
+  const filters = ref([
+    { name: t('New'), id: 1 },
+    { name: t('Popular'), id: 2 },
+    { name: t('Best Seller'), id: 3 },
+    { name: t('Low Price'), id: 4 },
+    { name: t('High Price'), id: 5 },
+  ])
 </script>
 <template>
   <header></header>
   <main>
     <div>
       <ETopBar :on-toggle-menu="toggleMenu" />
-      <div class="flex">
+      <div class="flex justify-content-center">
         <Category v-if="!props.hideCategory"></Category>
-        <div class="flex flex-column m-3 w-full">
+        <div class="flex flex-column m-3 w-full" :class="props.viewProducts ? 'max-width-min-content' : ''">
           <div class="bg-primary-reverse border-round mb-3">
-            <Breadcrumb
-              :model="getBreadcrum(router.currentRoute.value.path)"
-            >
+            <Breadcrumb :model="getBreadcrum(router.currentRoute.value.path)">
               <template #item="{ item, props }">
                 <router-link
-                  v-if="item.route"
-                  :to="item.route"
-                  v-slot="{ href, navigate }"
-                  custom
+                v-if="item.route"
+                :to="item.route"
+                v-slot="{ href, navigate }"
+                custom
                 >
-                  <a v-ripple v-bind="props.action" @click="navigate">
-                    <span class="font-semibold cursor-pointer">{{
-                      item.label
-                    }}</span>
+                <a v-ripple v-bind="props.action" @click="navigate">
+                  <span class="font-semibold cursor-pointer">{{
+                    item.label
+                  }}</span>
                   </a>
                 </router-link>
                 <a v-else v-ripple :target="item.target" v-bind="props.action">
@@ -102,6 +110,23 @@
                 <span class="font-semibold">/</span>
               </template>
             </Breadcrumb>
+            <div v-if="props.viewProducts">
+              <Divider class="m-0"></Divider>
+              <div class="flex justify-content-between align-items-center m-3">
+                <div class="font-bold text-lg">{{ $t('All products')}}</div>
+                <div class="flex gap-2 align-items-center ">
+                  <span>{{ $t('Accordion') }}</span>
+                  <Dropdown
+                    v-model="selectedFilter"
+                    :options="filters"
+                    optionLabel="name"
+                    :placeholder="$t('Select a Filter')"
+                    checkmark
+                    class="w-auto"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
           <slot name="page-content"></slot>
         </div>
@@ -109,3 +134,4 @@
     </div>
   </main>
 </template>
+<style src="./ELayout.css" lang="css" scoped></style>

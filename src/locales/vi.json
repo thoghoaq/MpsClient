@@ -237,5 +237,12 @@
   "Open": "Mở cửa",
   "Are you sure you want to open this shop?": "Bạn có chắc chắn muốn mở cửa hàng này không?",
   "List of Shop Request": "Danh sách yêu cầu cửa hàng",
-  "No shop request found.": "Không tìm thấy yêu cầu cửa hàng nào."
+  "No shop request found.": "Không tìm thấy yêu cầu cửa hàng nào.",
+  "Accordion": "Sắp xếp",
+  "New": "Mới nhất",
+  "Popular": "Phổ biến",
+  "Best Seller": "Bán chạy",
+  "Low Price": "Giá thấp đến cao",
+  "High Price": "Giá cao đến thấp",
+  "All products": "Tất cả sản phẩm"
 }

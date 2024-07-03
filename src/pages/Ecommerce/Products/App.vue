@@ -9,16 +9,15 @@
   })
 </script>
 <template>
-  <ELayout>
+  <ELayout :view-products="true">
     <template #page-content>
-      <div class="bg-primary-reverse overflow-auto border-round">
-        <div class="grid gap-5 m-5 justify-content-center">
-          <ProductItem
-            v-for="product in eProductStore.products"
-            :product="product"
-          ></ProductItem>
-        </div>
+      <div class="border-round grid-container overflow-auto">
+        <ProductItem
+          v-for="product in eProductStore.products"
+          :product="product"
+        ></ProductItem>
       </div>
     </template>
   </ELayout>
 </template>
+<style src="./App.css" lang="css" scoped></style>

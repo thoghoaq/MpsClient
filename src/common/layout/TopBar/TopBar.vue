@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { useI18n } from 'vue-i18n'
   import { ref, watch } from 'vue'
   import { useSettingStore } from 'src/stores/setting'
   import { usePrimeVue } from 'primevue/config'
@@ -6,12 +7,16 @@
   import { appConfig } from 'src/stores'
   import { useAuthStore } from 'src/stores/auth'
   import { useRouter } from 'vue-router'
-  import { useI18n } from 'vue-i18n'
+  import LanguageHelper from 'src/helpers/language-helper'
+  import axios from 'axios'
+  import { getLocale } from 'src/locales/prime'
+  import { getMessage } from 'src/locales'
+  const i18n = useI18n()
+  const t = i18n.t
   const primeVue = usePrimeVue()
   const settingStore = useSettingStore()
   const authStore = useAuthStore()
   const router = useRouter()
-  const { t } = useI18n()
 
   const props = defineProps({
     onToggleMenu: Function,
@@ -155,6 +160,17 @@
           class: 'm-0',
         }
     }
+  }
+
+  const changeLanguage = (language: string) => {
+    var accept =
+      LanguageHelper.getAcceptLanguage(language)?.toString() ?? 'vi-VN'
+    localStorage.setItem('language', language)
+    axios.defaults.headers.common['Accept-Language'] = accept
+    appConfig.language = accept
+    primeVue.config.locale = getLocale(language)
+    i18n.locale.value = language
+    i18n.setLocaleMessage(language, getMessage(language))
   }
 
   const scale = ref(settingStore.scale)
@@ -314,7 +330,7 @@
           v-model="$i18n.locale"
           :placeholder="$t('Select a language')"
           class="w-full"
-          @change="settingStore.changeLanguage($i18n.locale)"
+          @change="changeLanguage($i18n.locale)"
         ></Dropdown>
       </div>
     </Sidebar>
