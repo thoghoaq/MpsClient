@@ -33,6 +33,8 @@
     avatar: '',
     cover: '',
     payPalAccount: '',
+    latitude: '',
+    longitude: '',
   })
 
   const rules = {
@@ -54,6 +56,12 @@
     description: {},
     avatar: {},
     payPalAccount: {
+      required,
+    },
+    latitude: {
+      required,
+    },
+    longitude: {
       required,
     },
   }
@@ -119,7 +127,7 @@
     }
   }
 
-  const loadPayPalButton = () => {
+  const loadPayPalButton = async () => {
     // Load the PayPal script
     const script = document.createElement('script')
     script.src = 'https://www.paypalobjects.com/js/external/api.js'
@@ -144,6 +152,91 @@
       })
     }
     document.body.appendChild(script)
+    return
+  }
+
+  const coordinatesText = ref('')
+  let map: any = null
+  let marker: any = null
+
+  const onDragEnd = (marker: any) => {
+    const lngLat = marker.getLngLat()
+    state.latitude = lngLat.lng
+    state.longitude = lngLat.lat
+    coordinatesText.value = `Longitude: ${lngLat.lng}
+Latitude: ${lngLat.lat}`
+    var coordinates = document.getElementById('coordinates')
+    coordinates!.style.display = 'block'
+    coordinates!.innerHTML = coordinatesText.value
+  }
+
+  const updateMarkerPosition = (lng: number, lat: number) => {
+    marker.setLngLat([lng, lat])
+    map.flyTo({
+      center: [lng, lat],
+      essential: true,
+    })
+    const lngLat = marker.getLngLat()
+    state.latitude = lngLat.lng
+    state.longitude = lngLat.lat
+    coordinatesText.value = `Longitude: ${lngLat.lng}
+Latitude: ${lngLat.lat}`
+    var coordinates = document.getElementById('coordinates')
+    coordinates!.style.display = 'block'
+    coordinates!.innerHTML = coordinatesText.value
+  }
+
+  const loadMap = () => {
+    // Ensure goong-js script is loaded
+    const script = document.createElement('script')
+    script.src =
+      'https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.js'
+    script.onload = () => {
+      // @ts-ignore
+      goongjs.accessToken = import.meta.env.VITE_GOONG_API_KEY
+      // @ts-ignore
+      map = new goongjs.Map({
+        container: 'map', // container id
+        style: 'https://tiles.goong.io/assets/goong_map_web.json', // stylesheet location
+        center: [105.83991, 21.028], // starting position [lng, lat]
+        zoom: 12, // starting zoom
+      })
+      // Add geolocate control to the map
+      // @ts-ignore
+      const geolocateControl = new goongjs.GeolocateControl({
+        positionOptions: {
+          enableHighAccuracy: true,
+        },
+        trackUserLocation: true,
+        showUserLocation: true,
+      })
+
+      // Listen for geolocate control events
+      geolocateControl.on('geolocate', (event: any) => {
+        const { coords } = event
+        updateMarkerPosition(coords.longitude, coords.latitude)
+      })
+
+      // Add geolocate control to the map
+      map.addControl(geolocateControl)
+
+      // @ts-ignore
+      marker = new goongjs.Marker({
+        draggable: true,
+      })
+        .setLngLat([105.8344898123422, 21.03677130693113])
+        .addTo(map)
+
+      marker.on('dragend', () => onDragEnd(marker))
+    }
+    document.head.appendChild(script)
+
+    // Ensure goong-js CSS is loaded
+    const link = document.createElement('link')
+    link.href =
+      'https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.css'
+    link.rel = 'stylesheet'
+    document.head.appendChild(link)
   }
 
   onMounted(() => {
@@ -183,10 +276,7 @@
       })
     }
     loadPayPalButton()
-  })
-
-  watch(appConfig, (value) => {
-    loadPayPalButton()
+    loadMap()
   })
 </script>
 <template>
@@ -314,6 +404,12 @@
                 $t($v.payPalAccount.$errors[0]?.$message?.toString())
               }}</small>
             </div>
+            <div class="flex flex-column gap-2 mb-3">
+              <div class="h-30rem" id="map"></div>
+              <pre id="coordinates" class="coordinates">{{
+                coordinatesText
+              }}</pre>
+            </div>
           </div>
           <div class="flex flex-column gap-5">
             <div class="border-1 surface-border border-round">
@@ -383,3 +479,15 @@
     </template>
   </Layout>
 </template>
+<style scoped lang="css">
+  .coordinates {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px 10px;
+    margin: 0;
+    font-size: 11px;
+    line-height: 18px;
+    border-radius: 3px;
+    display: none;
+  }
+</style>
