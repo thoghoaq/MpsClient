@@ -229,7 +229,7 @@ Latitude: ${lngLat.lat}`
         positionOptions: {
           enableHighAccuracy: true,
         },
-        trackUserLocation: true,
+        trackUserLocation: false,
         showUserLocation: true,
       })
 
