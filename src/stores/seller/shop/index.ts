@@ -9,6 +9,7 @@ export const useShopStore = defineStore({
   id: 'shop',
   state: () => ({
     shops: <Shop[]>[],
+    redirectId: <any>undefined,
   }),
   actions: {
     async fetchShops() {

@@ -6,6 +6,8 @@
   import { getLocale } from 'src/locales/prime'
   import { useI18n } from 'vue-i18n'
   import { getMessage } from 'src/locales'
+  import { useShopStore } from './stores/seller/shop'
+  const shopStore = useShopStore()
   const primeVue = usePrimeVue()
   const i18n = useI18n()
   const settingStore = useSettingStore()
@@ -29,7 +31,11 @@
     if (path.startsWith('/')) {
       switch (path) {
         case '/shop-request':
-          router.push('/seller/shops/create')
+          if (shopStore.redirectId) {
+            router.push(`/seller/shops/${shopStore.redirectId}`)
+          } else {
+            router.push('/seller/shops/create')
+          }
           break
       }
     }

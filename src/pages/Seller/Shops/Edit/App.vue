@@ -2,7 +2,7 @@
   import { onMounted, reactive, ref } from 'vue'
   import { useShopStore } from 'src/stores/seller/shop'
   import { Shop } from 'src/stores/seller/shop/types'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
   import { useApi } from 'src/stores/api'
   import { appConfig } from 'src/stores'
   import { EFileType } from 'src/stores/types'
@@ -15,6 +15,9 @@
   const router = useRouter()
   const api = useApi()
   const { t } = useI18n()
+  const route = useRoute()
+  const shopId = route.params.id as string | undefined
+  shopStore.redirectId = shopId
   const state = reactive({
     shopName: '',
     address: '',
