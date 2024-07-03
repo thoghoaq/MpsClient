@@ -9,7 +9,7 @@
   })
 </script>
 <template>
-  <div class="bg-primary-reverse p-5 border-round">
+  <div class="bg-primary-reverse p-5">
     <router-link :to="`/ecommerce/products/${props.product.id}`" class="no-underline">
       <Card v-ripple class="w-18rem overflow-hidden border-0 border-round shadow-none cursor-pointer">
         <template #header>
