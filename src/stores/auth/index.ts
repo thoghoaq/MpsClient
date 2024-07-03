@@ -128,9 +128,12 @@ export const useAuthStore = defineStore({
           {
             grant_type: 'authorization_code',
             code: code,
+            auth: {
+              username: import.meta.env.VITE_PAYPAL_CLIENT_ID,
+              password: import.meta.env.VITE_PAYPAL_CLIENT_SECRET,
+            },
           },
           {
-            Authorization: `Basic ${import.meta.env.VITE_PAYPAL_CLIENT_ID}`,
             'Content-Type': 'application/x-www-form-urlencoded',
           },
         )
