@@ -122,17 +122,22 @@ export const useAuthStore = defineStore({
         })
     },
     async authPayPal(code: string) {
-      const data = new FormData()
-      data.append('grant_type', 'authorization_code')
-      data.append('code', code)
       return api
-        .post(appConfig.api.external.payPal.auth, data, {
-          Authorization: `Basic ${import.meta.env.VITE_PAYPAL_CLIENT_ID}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        })
+        .post(
+          appConfig.api.external.payPal.auth,
+          {
+            grant_type: 'authorization_code',
+            code: code,
+          },
+          {
+            Authorization: `Basic ${import.meta.env.VITE_PAYPAL_CLIENT_ID}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        )
         .then((response: APIResponse<PayPalAuth>) => {
           return response
-        }).catch((error: AxiosError<any, any>) => {
+        })
+        .catch((error: AxiosError<any, any>) => {
           if (error.response) {
             return {
               success: false,
@@ -159,7 +164,8 @@ export const useAuthStore = defineStore({
         })
         .then((response: APIResponse<PayPalCustomer>) => {
           return response
-        }).catch((error: AxiosError<any, any>) => {
+        })
+        .catch((error: AxiosError<any, any>) => {
           if (error.response) {
             return {
               success: false,
@@ -177,6 +183,6 @@ export const useAuthStore = defineStore({
             status: error.status,
           }
         })
-    }
+    },
   },
 })
