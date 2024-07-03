@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { appConfig } from '../index'
-import { Auth } from './types'
+import { Auth, PayPalAuth, PayPalCustomer } from './types'
 import { APIResponse } from '../types'
 import axios, { AxiosError } from 'axios'
 import { StaffData } from '../admin/staff/types'
@@ -128,8 +128,9 @@ export const useAuthStore = defineStore({
       return api
         .post(appConfig.api.external.payPal.auth, data, {
           Authorization: `Basic ${import.meta.env.VITE_PAYPAL_CLIENT_ID}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
         })
-        .then((response) => {
+        .then((response: APIResponse<PayPalAuth>) => {
           return response
         }).catch((error: AxiosError<any, any>) => {
           if (error.response) {
@@ -150,5 +151,32 @@ export const useAuthStore = defineStore({
           }
         })
     },
+    async getPayPalCustomer(accessToken: string) {
+      return api
+        .get(appConfig.api.external.payPal.customerInfo, {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        })
+        .then((response: APIResponse<PayPalCustomer>) => {
+          return response
+        }).catch((error: AxiosError<any, any>) => {
+          if (error.response) {
+            return {
+              success: false,
+              content:
+                error.response.data['reason'] ||
+                error.response.data['message'] ||
+                error.response.data ||
+                error.response.status,
+              status: error.response.status,
+            }
+          }
+          return {
+            success: false,
+            content: error.message || 'Internal Server Error',
+            status: error.status,
+          }
+        })
+    }
   },
 })

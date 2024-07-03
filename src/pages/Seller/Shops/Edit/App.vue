@@ -4,13 +4,14 @@
   import { useRouter, useRoute } from 'vue-router'
   import { useApi } from 'src/stores/api'
   import { appConfig } from 'src/stores'
-  import { EFileType } from 'src/stores/types'
+  import { APIResponse, EFileType } from 'src/stores/types'
   import { useToastStore } from 'src/stores/toast'
   import useVuelidate from '@vuelidate/core'
   import { required, minLength } from '@vuelidate/validators'
   import { useI18n } from 'vue-i18n'
   import { Shop } from 'src/stores/seller/shop/types'
   import { useAuthStore } from 'src/stores/auth'
+  import { PayPalAuth, PayPalCustomer } from 'src/stores/auth/types'
   const authStore = useAuthStore()
   const toast = useToastStore()
   const shopStore = useShopStore()
@@ -140,7 +141,15 @@
     if (code) {
       authStore.authPayPal(code).then((res) => {
         if (res.success) {
-          console.log(res.content)
+          var content = res.content as PayPalAuth
+          authStore.getPayPalCustomer(content.access_token).then((res) => {
+            if (res.success) {
+              const payPalAuth = res.content as PayPalCustomer
+              state.payPalAccount = payPalAuth.email
+            } else {
+              toast.error(res.content)
+            }
+          })
         } else {
           toast.error(res.content)
         }
