@@ -122,25 +122,32 @@ export const useAuthStore = defineStore({
         })
     },
     async authPayPal(code: string) {
-      return api
+      return axios
         .post(
           appConfig.api.external.payPal.auth,
           {
             grant_type: 'authorization_code',
             code: code,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
             auth: {
               username: import.meta.env.VITE_PAYPAL_CLIENT_ID,
               password: import.meta.env.VITE_PAYPAL_CLIENT_SECRET,
             },
           },
-          {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
         )
-        .then((response: APIResponse<PayPalAuth>) => {
-          return response
+        .then((response) => {
+          return {
+            success: true,
+            content: response.data,
+            status: response.status,
+          }
         })
         .catch((error: AxiosError<any, any>) => {
+          console.log(error)
           if (error.response) {
             return {
               success: false,
@@ -154,7 +161,7 @@ export const useAuthStore = defineStore({
           }
           return {
             success: false,
-            content: error.message || 'Internal Server Error',
+            content: error.message || error.status,
             status: error.status,
           }
         })

@@ -46,7 +46,7 @@ export const useApi = () => {
       })
   }
 
-  const post = async (url: string, data: any, headers?: RawAxiosRequestHeaders): Promise<APIResponse<any>> => {
+  const post = async (url: string, data: any, headers?: any, auth?: any): Promise<APIResponse<any>> => {
     let contentType = 'application/json'
     let body: any = JSON.stringify(data)
     if (data instanceof FormData) {
@@ -59,6 +59,8 @@ export const useApi = () => {
           ...getDefaultHeaders(),
           'Content-Type': contentType,
         },
+        auth: auth,
+        data: data,
       })
       .then((response) => {
         return {
