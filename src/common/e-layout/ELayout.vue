@@ -77,7 +77,7 @@
         <div class="flex flex-column m-3 w-full">
           <div class="bg-primary-reverse border-round mb-3">
             <Breadcrumb
-              :model="getBreadcrum(router.currentRoute.value.fullPath)"
+              :model="getBreadcrum(router.currentRoute.value.path)"
             >
               <template #item="{ item, props }">
                 <router-link

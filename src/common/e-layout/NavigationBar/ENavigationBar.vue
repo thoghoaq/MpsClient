@@ -84,7 +84,7 @@
           :to="item.route"
           custom
         >
-          <a v-ripple :href="href" v-bind="props.action" @click="navigate" :class="router.currentRoute.value.fullPath.match(item.route) ? 'bg-primary-100' : ''">
+          <a v-ripple :href="href" v-bind="props.action" @click="navigate" :class="router.currentRoute.value.path.match(item.route) ? 'bg-primary-100' : ''">
             <span :class="item.icon" class="pl-1" />
             <span class="ml-2">{{ item.label ? $t(item.label?.toString()) : '' }}</span>
             <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />

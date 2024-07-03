@@ -150,7 +150,7 @@
             v-bind="props.action"
             @click="navigate"
             :class="
-              router.currentRoute.value.fullPath.match(item.route)
+              router.currentRoute.value.path.match(item.route)
                 ? 'bg-primary text-0'
                 : ''
             "

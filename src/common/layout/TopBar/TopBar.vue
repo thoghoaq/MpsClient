@@ -173,7 +173,7 @@
             class="p-button-rounded p-button-text"
             @click="props.onToggleMenu"
           />
-          <Breadcrumb :model="getBreadcrum(router.currentRoute.value.fullPath)">
+          <Breadcrumb :model="getBreadcrum(router.currentRoute.value.path)">
             <template #item="{ item, props }">
               <router-link
                 v-if="item.route"
