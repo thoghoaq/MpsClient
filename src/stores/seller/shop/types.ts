@@ -14,4 +14,5 @@ export interface Shop {
     isActive:    boolean;
     createdAt:   Date;
     updatedAt:   Date | null;
+    payPalAccount: string | null;
 }

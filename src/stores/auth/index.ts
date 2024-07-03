@@ -43,7 +43,11 @@ export const useAuthStore = defineStore({
           if (error.response) {
             return {
               success: false,
-              content: error.response.data['reason'] || error.response.data['message'] || error.response.data || error.response.status,
+              content:
+                error.response.data['reason'] ||
+                error.response.data['message'] ||
+                error.response.data ||
+                error.response.status,
               status: error.response.status,
             }
           }
@@ -66,7 +70,7 @@ export const useAuthStore = defineStore({
       avatarPath: string | undefined,
       staffData: StaffData | undefined,
       shopOwnerData: ShopOwnerData | undefined,
-      customerData: CustomerData | undefined
+      customerData: CustomerData | undefined,
     ): Promise<APIResponse<any>> {
       return api
         .post(appConfig.api.account.register, {
@@ -77,14 +81,14 @@ export const useAuthStore = defineStore({
           avatarPath: avatarPath,
           staffData: staffData,
           shopOwnerData: shopOwnerData,
-          customerData: customerData
+          customerData: customerData,
         })
         .then((response) => {
-          return response;
+          return response
         })
     },
     async refresh() {
-      if (!this.auth) return;
+      if (!this.auth) return
       return api
         .post(appConfig.api.account.refresh, {
           refreshToken: this.auth?.refreshToken,
@@ -96,13 +100,17 @@ export const useAuthStore = defineStore({
           localStorage.setItem('auth', JSON.stringify(this.auth))
           axios.defaults.headers.common['Authorization'] =
             `Bearer ${this.auth?.accessToken}`
-          return response;
+          return response
         })
         .catch((error: AxiosError<any, any>) => {
           if (error.response) {
             return {
               success: false,
-              content: error.response.data['reason'] || error.response.data['message'] || error.response.data || error.response.status,
+              content:
+                error.response.data['reason'] ||
+                error.response.data['message'] ||
+                error.response.data ||
+                error.response.status,
               status: error.response.status,
             }
           }
@@ -112,6 +120,35 @@ export const useAuthStore = defineStore({
             status: error.status,
           }
         })
-    }
+    },
+    async authPayPal(code: string) {
+      const data = new FormData()
+      data.append('grant_type', 'authorization_code')
+      data.append('code', code)
+      return api
+        .post(appConfig.api.external.payPal.auth, data, {
+          Authorization: `Basic ${import.meta.env.VITE_PAYPAL_CLIENT_ID}`,
+        })
+        .then((response) => {
+          return response
+        }).catch((error: AxiosError<any, any>) => {
+          if (error.response) {
+            return {
+              success: false,
+              content:
+                error.response.data['reason'] ||
+                error.response.data['message'] ||
+                error.response.data ||
+                error.response.status,
+              status: error.response.status,
+            }
+          }
+          return {
+            success: false,
+            content: error.message || 'Internal Server Error',
+            status: error.status,
+          }
+        })
+    },
   },
 })

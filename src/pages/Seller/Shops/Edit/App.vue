@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { onMounted, reactive, ref } from 'vue'
   import { useShopStore } from 'src/stores/seller/shop'
-  import { Shop } from 'src/stores/seller/shop/types'
   import { useRouter, useRoute } from 'vue-router'
   import { useApi } from 'src/stores/api'
   import { appConfig } from 'src/stores'
@@ -10,6 +9,9 @@
   import useVuelidate from '@vuelidate/core'
   import { required, minLength } from '@vuelidate/validators'
   import { useI18n } from 'vue-i18n'
+  import { Shop } from 'src/stores/seller/shop/types'
+  import { useAuthStore } from 'src/stores/auth'
+  const authStore = useAuthStore()
   const toast = useToastStore()
   const shopStore = useShopStore()
   const router = useRouter()
@@ -17,7 +19,9 @@
   const { t } = useI18n()
   const route = useRoute()
   const shopId = route.params.id as string | undefined
-  shopStore.redirectId = shopId
+  localStorage.setItem('shopRedirectId', shopId ?? '')
+  const code = route.query.code as string | undefined
+
   const state = reactive({
     shopName: '',
     address: '',
@@ -27,6 +31,7 @@
     description: '',
     avatar: '',
     cover: '',
+    payPalAccount: '',
   })
 
   const rules = {
@@ -47,6 +52,9 @@
     },
     description: {},
     avatar: {},
+    payPalAccount: {
+      required,
+    },
   }
 
   const $v = useVuelidate(rules, state)
@@ -111,32 +119,59 @@
   }
 
   onMounted(() => {
-  // Load the PayPal script
-  const script = document.createElement('script');
-  script.src = 'https://www.paypalobjects.com/js/external/api.js';
-  script.onload = () => {
-    // Ensure PayPal is available globally
-    // @ts-ignore
-    paypal.use(['login'], function (login: any) {
-      login.render({
-        appid: import.meta.env.VITE_PAYPAL_CLIENT_ID,
-        authend: 'sandbox',
-        scopes: 'email profile',
-        containerid: 'paypal-button',
-        responseType: 'code id_token',
-        locale: 'vi-vn',
-        theme: 'neutral',
-        buttonType: 'CWP',
-        buttonShape: 'rectangle',
-        buttonSize: 'lg',
-        fullPage: 'true',
-        returnurl: `${window.location.origin}/shop-request`
-      });
-    });
-  };
-  document.body.appendChild(script);
-});
+    if (shopId) {
+      api.get(`${appConfig.api.seller.shop}/${shopId}`).then((res) => {
+        if (res.success) {
+          const shop = res.content as Shop
+          state.shopName = shop.shopName
+          state.address = shop.address
+          state.phoneNumber = shop.phoneNumber
+          state.district = shop.district ?? ''
+          state.city = shop.city ?? ''
+          state.description = shop.description ?? ''
+          state.avatar = shop.avatar ?? ''
+          state.cover = shop.cover ?? ''
+          state.payPalAccount = shop.payPalAccount ?? ''
+        } else {
+          toast.error(res.content)
+        }
+      })
+    }
+    if (code) {
+      authStore.authPayPal(code).then((res) => {
+        if (res.success) {
+          console.log(res.content)
+        } else {
+          toast.error(res.content)
+        }
+      })
+    }
 
+    // Load the PayPal script
+    const script = document.createElement('script')
+    script.src = 'https://www.paypalobjects.com/js/external/api.js'
+    script.onload = () => {
+      // Ensure PayPal is available globally
+      // @ts-ignore
+      paypal.use(['login'], function (login: any) {
+        login.render({
+          appid: import.meta.env.VITE_PAYPAL_CLIENT_ID,
+          authend: 'sandbox',
+          scopes: 'email profile',
+          containerid: 'paypal-button',
+          responseType: 'code id_token',
+          locale: 'vi-vn',
+          theme: 'neutral',
+          buttonType: 'CWP',
+          buttonShape: 'rectangle',
+          buttonSize: 'lg',
+          fullPage: 'true',
+          returnurl: `${window.location.origin}/shop-request`,
+        })
+      })
+    }
+    document.body.appendChild(script)
+  })
 </script>
 <template>
   <Layout>
@@ -154,7 +189,9 @@
                   :invalid="$v.shopName.$error"
                   @blur="$v.shopName.$touch"
                 />
-                <label for="shopName">{{ $t('Shop Name') }}</label>
+                <label class="required" for="shopName">{{
+                  $t('Shop Name')
+                }}</label>
               </FloatLabel>
               <small class="p-error" v-if="$v.shopName.$error">{{
                 $t($v.shopName.$errors[0]?.$message?.toString())
@@ -169,7 +206,9 @@
                   :invalid="$v.address.$error"
                   @blur="$v.address.$touch"
                 />
-                <label for="address">{{ $t('Address') }}</label>
+                <label class="required" for="address">{{
+                  $t('Address')
+                }}</label>
               </FloatLabel>
               <small class="p-error" v-if="$v.address.$error">{{
                 $t($v.address.$errors[0]?.$message?.toString())
@@ -184,7 +223,9 @@
                   :invalid="$v.district.$error"
                   @blur="$v.district.$touch"
                 />
-                <label for="district">{{ $t('District') }}</label>
+                <label class="required" for="district">{{
+                  $t('District')
+                }}</label>
               </FloatLabel>
               <small class="p-error" v-if="$v.district.$error">{{
                 $t($v.district.$errors[0]?.$message?.toString())
@@ -199,7 +240,9 @@
                   :invalid="$v.phoneNumber.$error"
                   @blur="$v.phoneNumber.$touch"
                 />
-                <label for="phoneNumber">{{ $t('Phone Number') }}</label>
+                <label class="required" for="phoneNumber">{{
+                  $t('Phone Number')
+                }}</label>
               </FloatLabel>
               <small class="p-error" v-if="$v.phoneNumber.$error">{{
                 $t($v.phoneNumber.$errors[0]?.$message?.toString())
@@ -214,7 +257,7 @@
                   :invalid="$v.city.$error"
                   @blur="$v.city.$touch"
                 />
-                <label for="city">{{ $t('City') }}</label>
+                <label class="required" for="city">{{ $t('City') }}</label>
               </FloatLabel>
               <small class="p-error" v-if="$v.city.$error">{{
                 $t($v.city.$errors[0]?.$message?.toString())
@@ -234,6 +277,25 @@
               </FloatLabel>
               <small class="p-error" v-if="$v.description.$error">{{
                 $t($v.description.$errors[0]?.$message?.toString())
+              }}</small>
+            </div>
+            <div class="flex flex-column gap-2">
+              <label class="required" for="payPalAccount">{{
+                $t('PayPal Account')
+              }}</label>
+              <div class="flex gap-2">
+                <InputText
+                  class="w-full"
+                  id="payPalAccount"
+                  v-model="state.payPalAccount"
+                  :invalid="$v.payPalAccount.$error"
+                  @blur="$v.payPalAccount.$touch"
+                  disabled
+                />
+                <div id="paypal-button"></div>
+              </div>
+              <small class="p-error" v-if="$v.payPalAccount.$error">{{
+                $t($v.payPalAccount.$errors[0]?.$message?.toString())
               }}</small>
             </div>
           </div>
@@ -296,7 +358,6 @@
                 </FileUpload>
               </div>
             </div>
-            <div id="paypal-button"></div>
             <div class="flex flex-column gap-2">
               <Button label="Submit" @click="submit" />
             </div>

@@ -28,18 +28,28 @@
 
   onMounted(() => {
     const path = new URL(window.location.href).pathname
+    const queryParams = new URLSearchParams(window.location.search)
+
     if (path.startsWith('/')) {
       switch (path) {
         case '/shop-request':
-          if (shopStore.redirectId) {
-            router.push(`/seller/shops/${shopStore.redirectId}`)
+          const redirectId = localStorage.getItem('shopRedirectId')
+          const code = queryParams.get('code')
+          if (redirectId) {
+            router.push({
+              path: `/seller/shops/${redirectId}`,
+              query: { code: code },
+            })
           } else {
-            router.push('/seller/shops/create')
+            router.push({
+              path: `/seller/shops/create`,
+              query: { code: code },
+            })
           }
           break
       }
     }
-    const queryParams = new URLSearchParams(window.location.search)
+
     const redirect = queryParams.get('redirect')
     if (redirect) {
       switch (redirect) {

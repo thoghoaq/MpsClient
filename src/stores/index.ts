@@ -5,6 +5,8 @@ const getAppPath = function () {
     return import.meta.env.VITE_API_ENDPOINT;
 }
 
+const paypalUrl = import.meta.env.VITE_PAYPAL_API_ENDPOINT;
+
 const getUrl = function (url: string, params?: any): string {
     return getAppPath() + appendUrl(url, params);
 }
@@ -101,6 +103,12 @@ export const appConfig : AppConfig = {
             details: getControllerUrl('details', controllers.payment),
             requestMonthlyPayout: getControllerUrl('request-monthly-payout', controllers.payment),
             acceptPayout: getControllerUrl('accept-payout', controllers.payment),
+        },
+        external: {
+            payPal: {
+                auth: `${paypalUrl}/oauth2/token`,
+                customerInfo: `${paypalUrl}/identity/oauth2/userinfo`,
+            }
         }
     },
     loggedUser: getLoggedUser(),

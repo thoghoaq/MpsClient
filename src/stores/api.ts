@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, RawAxiosRequestHeaders } from 'axios'
 import { appConfig } from './index'
 import { Auth } from './auth/types'
 import { APIResponse } from './types'
@@ -14,10 +14,10 @@ export const useApi = () => {
     return defaultHeaders
   }
 
-  const get = async (url: string): Promise<APIResponse<any>> => {
+  const get = async (url: string, headers?: RawAxiosRequestHeaders): Promise<APIResponse<any>> => {
     return axios
       .get(url, {
-        headers: getDefaultHeaders(),
+        headers: headers ?? getDefaultHeaders(),
       })
       .then((response) => {
         return {
@@ -46,7 +46,7 @@ export const useApi = () => {
       })
   }
 
-  const post = async (url: string, data: any): Promise<APIResponse<any>> => {
+  const post = async (url: string, data: any, headers?: RawAxiosRequestHeaders): Promise<APIResponse<any>> => {
     let contentType = 'application/json'
     let body: any = JSON.stringify(data)
     if (data instanceof FormData) {
@@ -55,7 +55,7 @@ export const useApi = () => {
     }
     return axios
       .post(url, body, {
-        headers: {
+        headers: headers ?? {
           ...getDefaultHeaders(),
           'Content-Type': contentType,
         },

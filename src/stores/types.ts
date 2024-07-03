@@ -60,7 +60,13 @@ export interface AppConfig {
             details: string;
             requestMonthlyPayout: string;
             acceptPayout: string;
-        }
+        },
+        external: {
+            payPal: {
+                auth: string;
+                customerInfo: string;
+            }
+        },
     },
     loggedUser: User,
     appendUrl: (url: string, params?: any) => string;
