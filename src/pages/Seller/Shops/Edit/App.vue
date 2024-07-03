@@ -106,6 +106,34 @@
       toast.warning(t('Please check your input'))
     }
   }
+
+  onMounted(() => {
+  // Load the PayPal script
+  const script = document.createElement('script');
+  script.src = 'https://www.paypalobjects.com/js/external/api.js';
+  script.onload = () => {
+    // Ensure PayPal is available globally
+    // @ts-ignore
+    paypal.use(['login'], function (login: any) {
+      login.render({
+        appid: import.meta.env.VITE_PAYPAL_CLIENT_ID,
+        authend: 'sandbox',
+        scopes: 'email profile',
+        containerid: 'paypal-button',
+        responseType: 'code id_token',
+        locale: 'vi-vn',
+        theme: 'neutral',
+        buttonType: 'CWP',
+        buttonShape: 'rectangle',
+        buttonSize: 'lg',
+        fullPage: 'true',
+        returnurl: `${window.location.origin}/shop-request`
+      });
+    });
+  };
+  document.body.appendChild(script);
+});
+
 </script>
 <template>
   <Layout>
@@ -265,6 +293,7 @@
                 </FileUpload>
               </div>
             </div>
+            <div id="paypal-button"></div>
             <div class="flex flex-column gap-2">
               <Button label="Submit" @click="submit" />
             </div>

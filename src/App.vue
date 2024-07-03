@@ -25,6 +25,14 @@
   })
 
   onMounted(() => {
+    const path = new URL(window.location.href).pathname
+    if (path.startsWith('/')) {
+      switch (path) {
+        case '/shop-request':
+          router.push('/seller/shops/create')
+          break
+      }
+    }
     const queryParams = new URLSearchParams(window.location.search)
     const redirect = queryParams.get('redirect')
     if (redirect) {
@@ -38,13 +46,13 @@
               reason: queryParams.get('reason'),
             },
           })
-          window.history.pushState({}, document.title, window.location.pathname)
           break
 
         default:
           break
       }
     }
+    window.history.pushState({}, document.title, '/')
   })
 </script>
 
