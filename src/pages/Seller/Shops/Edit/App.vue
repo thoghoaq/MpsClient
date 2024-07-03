@@ -22,6 +22,7 @@
   const shopId = route.params.id as string | undefined
   localStorage.setItem('shopRedirectId', shopId ?? '')
   const code = route.query.code as string | undefined
+  const isActive = ref()
 
   const state = reactive({
     shopName: '',
@@ -33,8 +34,8 @@
     avatar: '',
     cover: '',
     payPalAccount: '',
-    latitude: '',
-    longitude: '',
+    latitude: <Number | null>null,
+    longitude: <Number | null>null,
   })
 
   const rules = {
@@ -101,27 +102,48 @@
     $v.value.$touch()
     if (!$v.value.$invalid) {
       loading.value = true
-      api
-        .post(appConfig.api.seller.shop, {
-          shopName: state.shopName,
-          address: state.address,
-          phoneNumber: state.phoneNumber,
-          district: state.district,
-          city: state.city,
-          description: state.description,
-          avatar: state.avatar,
-        })
-        .then((res) => {
-          if (res.success) {
-            toast.success(t('Request new shop successfully'))
-            router.push('/seller/shops')
-          } else {
-            toast.error(res.content)
-          }
-        })
-        .finally(() => {
-          loading.value = false
-        })
+      const data = {
+        id: shopId,
+        shopName: state.shopName,
+        address: state.address,
+        phoneNumber: state.phoneNumber,
+        district: state.district,
+        city: state.city,
+        description: state.description,
+        avatar: state.avatar,
+        payPalAccount: state.payPalAccount,
+        latitude: state.latitude,
+        longitude: state.longitude,
+      }
+      if (shopId) {
+        api
+          .put(`${appConfig.api.seller.shop}/${shopId}`, data)
+          .then((res) => {
+            if (res.success) {
+              toast.success(t('Update shop successfully'))
+              router.push('/seller/shops')
+            } else {
+              toast.error(res.content)
+            }
+          })
+          .finally(() => {
+            loading.value = false
+          })
+      } else {
+        api
+          .post(appConfig.api.seller.shop, data)
+          .then((res) => {
+            if (res.success) {
+              toast.success(t('Request new shop successfully'))
+              router.push('/seller/shops')
+            } else {
+              toast.error(res.content)
+            }
+          })
+          .finally(() => {
+            loading.value = false
+          })
+      }
     } else {
       toast.warning(t('Please check your input'))
     }
@@ -228,6 +250,13 @@ Latitude: ${lngLat.lat}`
         .addTo(map)
 
       marker.on('dragend', () => onDragEnd(marker))
+
+      if (state.latitude != null && state.longitude != null) {
+        let latitude = state.latitude as number
+        let longitude = state.longitude as number
+        console.log(latitude, longitude)
+        updateMarkerPosition(longitude, latitude)
+      }
     }
     document.head.appendChild(script)
 
@@ -253,10 +282,16 @@ Latitude: ${lngLat.lat}`
           state.avatar = shop.avatar ?? ''
           state.cover = shop.cover ?? ''
           state.payPalAccount = shop.payPalAccount ?? ''
+          isActive.value = shop.isActive
+          state.latitude = shop.latitude
+          state.longitude = shop.longitude
         } else {
           toast.error(res.content)
         }
+        loadMap()
       })
+    } else {
+      loadMap()
     }
     if (code) {
       authStore.authPayPal(code).then((res) => {
@@ -276,14 +311,26 @@ Latitude: ${lngLat.lat}`
       })
     }
     loadPayPalButton()
-    loadMap()
   })
+
+  const getStatus = function (isActive: Boolean) {
+    switch (isActive) {
+      case true:
+        return 'Openning'
+      case false:
+        return 'Closing'
+      default:
+        return 'Draft'
+    }
+  }
 </script>
 <template>
   <Layout>
     <template #page-content>
       <div class="flex flex-column">
-        <h3 class="mx-5 mt-5 gap-2">{{ $t('Request New Shop') }}</h3>
+        <h3 class="mx-5 mt-5 gap-2">
+          {{ shopId ? state.shopName : $t('Request New Shop') }}
+        </h3>
         <div class="grid mx-4 mt-3 gap-4">
           <div class="col flex flex-column gap-5 w-full">
             <div class="flex flex-column gap-2">
@@ -301,6 +348,60 @@ Latitude: ${lngLat.lat}`
               </FloatLabel>
               <small class="p-error" v-if="$v.shopName.$error">{{
                 $t($v.shopName.$errors[0]?.$message?.toString())
+              }}</small>
+            </div>
+            <div class="flex flex-column gap-2">
+              <FloatLabel>
+                <InputText
+                  class="w-full"
+                  id="phoneNumber"
+                  v-model="state.phoneNumber"
+                  :invalid="$v.phoneNumber.$error"
+                  @blur="$v.phoneNumber.$touch"
+                />
+                <label class="required" for="phoneNumber">{{
+                  $t('Phone Number')
+                }}</label>
+              </FloatLabel>
+              <small class="p-error" v-if="$v.phoneNumber.$error">{{
+                $t($v.phoneNumber.$errors[0]?.$message?.toString())
+              }}</small>
+            </div>
+            <div class="flex flex-column gap-2">
+              <FloatLabel>
+                <Textarea
+                  class="w-full"
+                  id="description"
+                  v-model="state.description"
+                  rows="5"
+                  :invalid="$v.description.$error"
+                  @blur="$v.description.$touch"
+                />
+                <label for="description">{{ $t('Description') }}</label>
+              </FloatLabel>
+              <small class="p-error" v-if="$v.description.$error">{{
+                $t($v.description.$errors[0]?.$message?.toString())
+              }}</small>
+            </div>
+            <div class="flex flex-column gap-2">
+              <div class="flex gap-2 align-items-center">
+                <FloatLabel class="w-full">
+                  <InputText
+                    class="w-full"
+                    id="payPalAccount"
+                    v-model="state.payPalAccount"
+                    :invalid="$v.payPalAccount.$error"
+                    @blur="$v.payPalAccount.$touch"
+                    disabled
+                  />
+                  <label class="required" for="payPalAccount">{{
+                    $t('PayPal Account')
+                  }}</label>
+                </FloatLabel>
+                <div id="paypal-button"></div>
+              </div>
+              <small class="p-error" v-if="$v.payPalAccount.$error">{{
+                $t($v.payPalAccount.$errors[0]?.$message?.toString())
               }}</small>
             </div>
             <div class="flex flex-column gap-2">
@@ -341,23 +442,6 @@ Latitude: ${lngLat.lat}`
               <FloatLabel>
                 <InputText
                   class="w-full"
-                  id="phoneNumber"
-                  v-model="state.phoneNumber"
-                  :invalid="$v.phoneNumber.$error"
-                  @blur="$v.phoneNumber.$touch"
-                />
-                <label class="required" for="phoneNumber">{{
-                  $t('Phone Number')
-                }}</label>
-              </FloatLabel>
-              <small class="p-error" v-if="$v.phoneNumber.$error">{{
-                $t($v.phoneNumber.$errors[0]?.$message?.toString())
-              }}</small>
-            </div>
-            <div class="flex flex-column gap-2">
-              <FloatLabel>
-                <InputText
-                  class="w-full"
                   id="city"
                   v-model="state.city"
                   :invalid="$v.city.$error"
@@ -369,46 +453,16 @@ Latitude: ${lngLat.lat}`
                 $t($v.city.$errors[0]?.$message?.toString())
               }}</small>
             </div>
-            <div class="flex flex-column gap-2">
-              <FloatLabel>
-                <Textarea
-                  class="w-full"
-                  id="description"
-                  v-model="state.description"
-                  rows="5"
-                  :invalid="$v.description.$error"
-                  @blur="$v.description.$touch"
-                />
-                <label for="description">{{ $t('Description') }}</label>
-              </FloatLabel>
-              <small class="p-error" v-if="$v.description.$error">{{
-                $t($v.description.$errors[0]?.$message?.toString())
-              }}</small>
-            </div>
-            <div class="flex flex-column gap-2">
-              <label class="required" for="payPalAccount">{{
-                $t('PayPal Account')
-              }}</label>
-              <div class="flex gap-2">
-                <InputText
-                  class="w-full"
-                  id="payPalAccount"
-                  v-model="state.payPalAccount"
-                  :invalid="$v.payPalAccount.$error"
-                  @blur="$v.payPalAccount.$touch"
-                  disabled
-                />
-                <div id="paypal-button"></div>
-              </div>
-              <small class="p-error" v-if="$v.payPalAccount.$error">{{
-                $t($v.payPalAccount.$errors[0]?.$message?.toString())
-              }}</small>
-            </div>
             <div class="flex flex-column gap-2 mb-3">
               <div class="h-30rem" id="map"></div>
               <pre id="coordinates" class="coordinates">{{
                 coordinatesText
               }}</pre>
+              <small
+                class="p-error"
+                v-if="$v.latitude.$error || $v.longitude.$error"
+                >{{ $t($v.latitude.$errors[0]?.$message?.toString()) }}</small
+              >
             </div>
           </div>
           <div class="flex flex-column gap-5">
@@ -424,7 +478,7 @@ Latitude: ${lngLat.lat}`
                   <span class="text-black-alpha-90 font-bold mr-3"
                     >{{ $t('Status') }}:</span
                   ><span class="text-black-alpha-60 font-semibold">{{
-                    $t('Draft')
+                    $t(getStatus(isActive))
                   }}</span>
                 </div>
               </div>
@@ -471,7 +525,7 @@ Latitude: ${lngLat.lat}`
               </div>
             </div>
             <div class="flex flex-column gap-2">
-              <Button label="Submit" @click="submit" />
+              <Button :label="$t('Submit')" @click="submit" />
             </div>
           </div>
         </div>
