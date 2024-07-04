@@ -48,6 +48,8 @@ export const useEProductStore = defineStore({
             shopsId: this.filter.shopsId,
             filter: this.filter.query,
             filterBy: this.filter.filterBy,
+            latitude: this.filter.latitude,
+            longitude: this.filter.longitude,
           }),
         )
         .then((response: APIResponse<Product[]>) => {

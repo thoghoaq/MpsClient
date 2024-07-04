@@ -24,4 +24,6 @@ export type Filter = {
   shopsId: number[] | null
   query: string | null
   filterBy: number | null
+  latitude: number | null
+  longitude: number | null
 }

@@ -5,7 +5,7 @@
   const eProductStore = useEProductStore()
 
   onMounted(() => {
-    eProductStore.fetchProducts()
+    eProductStore.filterProducts()
   })
 </script>
 <template>

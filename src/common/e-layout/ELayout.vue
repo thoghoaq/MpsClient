@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import ETopBar from './TopBar/ETopBar.vue'
   import { useI18n } from 'vue-i18n'
   import { useRouter } from 'vue-router'
@@ -83,6 +83,64 @@
     eProductStore.filter.filterBy = value.id
     eProductStore.filterProducts()
   }
+  const location = ref<{ latitude: number; longitude: number } | null>(null)
+  const error = ref<string | null>(null)
+  const loadingFilterByNearest = ref(false)
+  const isFilterByNearest = ref(false)
+  const getCurrentLocation = () => {
+    loadingFilterByNearest.value = true
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          location.value = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          }
+          eProductStore.filter.latitude = location.value?.latitude as number
+          eProductStore.filter.longitude = location.value?.longitude as number
+          eProductStore.filterProducts().then(() => {
+            loadingFilterByNearest.value = false
+            isFilterByNearest.value = !isFilterByNearest.value
+          })
+          error.value = null
+        },
+        (err) => {
+          switch (err.code) {
+            case err.PERMISSION_DENIED:
+              error.value = 'User denied the request for Geolocation.'
+              break
+            case err.POSITION_UNAVAILABLE:
+              error.value = 'Location information is unavailable.'
+              break
+            case err.TIMEOUT:
+              error.value = 'The request to get user location timed out.'
+              break
+            default:
+              error.value = 'An unknown error occurred.'
+              break
+          }
+        },
+      )
+    } else {
+      error.value = 'Geolocation is not supported by this browser.'
+    }
+  }
+
+  const onSearchNearest = () => {
+    if (!isFilterByNearest.value) {
+      getCurrentLocation()
+    } else {
+      eProductStore.filter.latitude = null
+      eProductStore.filter.longitude = null
+      eProductStore.filterProducts().then(() => {
+        isFilterByNearest.value = !isFilterByNearest.value
+      })
+    }
+  }
+
+  onMounted(() => {
+    isFilterByNearest.value = !(!eProductStore.filter.latitude || !eProductStore.filter.longitude)
+  })
 </script>
 <template>
   <header></header>
@@ -127,7 +185,13 @@
                 <div class="flex gap-5">
                   <div class="flex gap-2 align-items-center">
                     <span>{{ $t('Search by') }}</span>
-                    <Button :label="$t('Nearest Shop')" :outlined="true" />
+                    <Button
+                      :label="$t('Nearest Shop')"
+                      :outlined="!isFilterByNearest"
+                      :loading="loadingFilterByNearest"
+                      :icon="isFilterByNearest ? 'pi pi-check' : ''"
+                      @click="onSearchNearest"
+                    />
                   </div>
                   <div class="flex gap-2 align-items-center">
                     <span>{{ $t('Accordion') }}</span>
