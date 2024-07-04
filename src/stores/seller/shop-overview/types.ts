@@ -2,7 +2,7 @@ export interface ShopInfo {
     overview:                Overview;
     dailyRevenues:           DailyRevenue[];
     productSoldByCategories: ProductSoldByCategory[];
-    recentOrders:            any[];
+    recentOrders:            RecentOrder[];
     topProducts:             TopProduct[];
 }
 

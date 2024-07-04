@@ -5,9 +5,11 @@
   import NumberHelper from 'src/helpers/number-helper'
   import RevenueChart from './RevenueChart/RevenueChart.vue'
   import CategoryChart from './CategoryChart/CategoryChart.vue'
+  import DateTimeHelper from 'src/helpers/datetime-helper'
   const overviewStore = useOverviewStore()
   const routes = useRoute()
   const shopId = routes.params.id as string
+  const selectedTime = ref(new Date())
 
   onMounted(() => {
     if (shopId) {
@@ -160,6 +162,21 @@
               <span class="text-900 text-xl font-semibold">{{
                 $t('Revenue Overview')
               }}</span>
+              <Calendar
+                v-model="selectedTime"
+                view="month"
+                dateFormat="mm/yy"
+                inputId="month"
+                input-class="w-8rem"
+                panel-class="w-20rem"
+                @update:model-value="
+                  () => {
+                    selectedTime.setDate(selectedTime.getDate() + 1)
+                    overviewStore.fetchOverview(shopId, selectedTime)
+                  }
+                "
+              >
+              </Calendar>
             </div>
             <RevenueChart
               :dailyRevenues="overviewStore.shopInfo?.dailyRevenues"
@@ -177,6 +194,65 @@
                 overviewStore.shopInfo?.productSoldByCategories
               "
             ></CategoryChart>
+          </div>
+        </div>
+        <div class="col-12 xl:col-7">
+          <div class="card h-full bg-primary-reverse p-5 border-round">
+            <div class="text-900 text-xl font-semibold mb-6">
+              {{ $t('Recent Orders') }}
+            </div>
+            <DataTable
+              v-if="overviewStore.shopInfo?.recentOrders?.length > 0"
+              :value="overviewStore.shopInfo?.recentOrders"
+              removable-sort
+              :paginator="true"
+              :rows="5"
+              :rowsPerPageOptions="[5, 10, 20, 50]"
+            >
+              <Column field="orderId" :header="$t('Number')" sortable></Column>
+              <Column field="orderDate" :header="$t('Order Date')" sortable>
+                <template #body="slotProps">
+                  {{ DateTimeHelper.format(slotProps.data.orderDate) }}
+                </template>
+              </Column>
+              <Column field="total" :header="$t('Total')" sortable>
+                <template #body="slotProps">
+                  {{ NumberHelper.formatCurrency(slotProps.data.total) }}
+                </template>
+              </Column>
+            </DataTable>
+          </div>
+        </div>
+        <div class="col-12 xl:col-5">
+          <div class="card h-full bg-primary-reverse p-5 border-round">
+            <div class="text-900 text-xl font-semibold mb-6">
+              {{ $t('Top Products') }}
+            </div>
+            <div class="flex flex-column gap-2">
+              <div
+                v-for="product in overviewStore.shopInfo?.topProducts"
+                class="flex justify-content-between align-items-center"
+              >
+                <div class="flex align-items-center">
+                  <img
+                    :src="
+                      product.productImage ?? 'https://via.placeholder.com/150'
+                    "
+                    alt="product"
+                    class="w-5rem h-5rem object-cover rounded-lg"
+                    style="object-fit: cover"
+                  />
+                  <div class="ml-3">
+                    <span class="text-900 font-semibold">{{
+                      product.productName
+                    }}</span>
+                  </div>
+                </div>
+                <div class="text-900 font-semibold">
+                  {{ NumberHelper.formatCurrency(product.price) }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
