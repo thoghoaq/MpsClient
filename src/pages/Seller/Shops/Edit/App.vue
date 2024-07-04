@@ -186,13 +186,13 @@
     state.latitude = lngLat.lng
     state.longitude = lngLat.lat
     coordinatesText.value = `Longitude: ${lngLat.lng}
-Latitude: ${lngLat.lat}`
+  Latitude: ${lngLat.lat}`
     var coordinates = document.getElementById('coordinates')
     coordinates!.style.display = 'block'
     coordinates!.innerHTML = coordinatesText.value
   }
 
-  const updateMarkerPosition = (lng: number, lat: number) => {
+  const updateMarkerPosition = (marker: any, lng: any, lat: any) => {
     marker.setLngLat([lng, lat])
     map.flyTo({
       center: [lng, lat],
@@ -206,6 +206,7 @@ Latitude: ${lngLat.lat}`
     var coordinates = document.getElementById('coordinates')
     coordinates!.style.display = 'block'
     coordinates!.innerHTML = coordinatesText.value
+    console.log(coordinatesText.value)
   }
 
   const loadMap = () => {
@@ -215,7 +216,7 @@ Latitude: ${lngLat.lat}`
       'https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.js'
     script.onload = () => {
       // @ts-ignore
-      goongjs.accessToken = import.meta.env.VITE_GOONG_API_KEY
+      goongjs.accessToken = import.meta.env.VITE_GOONG_MAP_KEY
       // @ts-ignore
       map = new goongjs.Map({
         container: 'map', // container id
@@ -223,6 +224,47 @@ Latitude: ${lngLat.lat}`
         center: [105.83991, 21.028], // starting position [lng, lat]
         zoom: 12, // starting zoom
       })
+
+      // Load the Goong Geocoder script
+      const geocoderScript = document.createElement('script')
+      geocoderScript.src =
+        'https://cdn.jsdelivr.net/npm/@goongmaps/goong-geocoder@1.1.1/dist/goong-geocoder.min.js'
+      geocoderScript.onload = () => {
+        // @ts-ignore
+        const geocoder = new GoongGeocoder({
+          accessToken: import.meta.env.VITE_GOONG_API_KEY,
+          // @ts-ignore
+          goongjs: goongjs,
+        })
+        map.addControl(geocoder)
+        // Add event listener for search result
+        geocoder.on('result', (event: any) => {
+          const { result } = event
+          console.log(result.result)
+          const address = result.result.formatted_address
+          const district = result.result.compound.district
+          const province = result.result.compound.province
+          state.address = address
+          state.district = district
+          state.city = province
+
+          // Handle the search result (e.g., move the marker to the selected location)
+          if (
+            result &&
+            result.result &&
+            result.result.geometry.location &&
+            result.result.geometry.location
+          ) {
+            updateMarkerPosition(
+              marker,
+              result.result.geometry.location.lng,
+              result.result.geometry.location.lat,
+            )
+          }
+        })
+      }
+      document.head.appendChild(geocoderScript)
+
       // Add geolocate control to the map
       // @ts-ignore
       const geolocateControl = new goongjs.GeolocateControl({
@@ -233,14 +275,14 @@ Latitude: ${lngLat.lat}`
         showUserLocation: true,
       })
 
+      // Add geolocate control to the map
+      map.addControl(geolocateControl)
+
       // Listen for geolocate control events
       geolocateControl.on('geolocate', (event: any) => {
         const { coords } = event
-        updateMarkerPosition(coords.longitude, coords.latitude)
+        updateMarkerPosition(marker, coords.longitude, coords.latitude)
       })
-
-      // Add geolocate control to the map
-      map.addControl(geolocateControl)
 
       // @ts-ignore
       marker = new goongjs.Marker({
@@ -255,17 +297,35 @@ Latitude: ${lngLat.lat}`
         let latitude = state.latitude as number
         let longitude = state.longitude as number
         console.log(latitude, longitude)
-        updateMarkerPosition(longitude, latitude)
+        updateMarkerPosition(marker, longitude, latitude)
       }
     }
     document.head.appendChild(script)
 
     // Ensure goong-js CSS is loaded
-    const link = document.createElement('link')
-    link.href =
+    const goongJsLink = document.createElement('link')
+    goongJsLink.href =
       'https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.css'
-    link.rel = 'stylesheet'
-    document.head.appendChild(link)
+    goongJsLink.rel = 'stylesheet'
+    document.head.appendChild(goongJsLink)
+
+    // Ensure goong-geocoder CSS is loaded
+    const geocoderLink = document.createElement('link')
+    geocoderLink.href =
+      'https://cdn.jsdelivr.net/npm/@goongmaps/goong-geocoder@1.1.1/dist/goong-geocoder.css'
+    geocoderLink.rel = 'stylesheet'
+    document.head.appendChild(geocoderLink)
+
+    // Ensure promise polyfill script is loaded
+    const promisePolyfillScript1 = document.createElement('script')
+    promisePolyfillScript1.src =
+      'https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js'
+    document.head.appendChild(promisePolyfillScript1)
+
+    const promisePolyfillScript2 = document.createElement('script')
+    promisePolyfillScript2.src =
+      'https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js'
+    document.head.appendChild(promisePolyfillScript2)
   }
 
   onMounted(() => {
