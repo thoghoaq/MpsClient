@@ -6,6 +6,10 @@
   const toggleMenu = () => {
     visible.value = !visible.value
   }
+
+  const props = defineProps({
+    hideBackground: Boolean,
+  })
 </script>
 <template>
   <header></header>
@@ -14,7 +18,7 @@
       <NavigationBar :visible="visible" />
       <div class="flex flex-column w-full h-screen">
         <TopBar :on-toggle-menu="toggleMenu" />
-        <div class="bg-primary-reverse h-full overflow-auto m-3 border-round">
+        <div class="h-full overflow-x-hidden m-3 border-round" :class="hideBackground ? '' : 'bg-primary-reverse'">
           <slot name="page-content"></slot>
         </div>
       </div>

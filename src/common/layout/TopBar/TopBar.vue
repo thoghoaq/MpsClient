@@ -154,6 +154,11 @@
           label: t('Update'),
           class: 'm-0',
         }
+      case 'shop-overview':
+        return {
+          label: t('Overview'),
+          class: 'm-0',
+        }
       default:
         return {
           label: item,

@@ -76,6 +76,12 @@
       label: 'Manage Shop',
       visible: appConfig.loggedUser.isShopOwner,
       items: [
+      {
+          label: 'Overview',
+          icon: 'pi pi-chart-bar',
+          route: `/seller/shop-overview/${appConfig.loggedUser.shopManaging?.id}`,
+          visible: appConfig.loggedUser.isShopOwner,
+        },
         {
           label: 'Orders',
           icon: 'pi pi-shopping-bag',
@@ -92,12 +98,7 @@
           label: 'Information',
           icon: 'pi pi-user-edit',
           visible: appConfig.loggedUser.isShopOwner,
-        },
-        {
-          label: 'Report',
-          icon: 'pi pi-chart-bar',
-          visible: appConfig.loggedUser.isShopOwner,
-        },
+        }
       ],
     },
   ])

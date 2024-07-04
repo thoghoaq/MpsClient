@@ -251,5 +251,10 @@
   "Nearest Shop": "Cửa hàng gần nhất",
   "Search by": "Tìm kiếm theo",
   "Select a Filter": "Chọn bộ lọc",
-  "No products found.": "Không tìm thấy sản phẩm nào."
+  "No products found.": "Không tìm thấy sản phẩm nào.",
+  "Overview": "Tổng quan",
+  "Customers": "Khách hàng",
+  "Sales": "Doanh số",
+  "Revenue Overview": "Tổng quan doanh thu",
+  "Sales by Category": "Doanh số theo danh mục"
 }
