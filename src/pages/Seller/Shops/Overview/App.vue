@@ -212,7 +212,7 @@
               <Column field="orderId" :header="$t('Number')" sortable></Column>
               <Column field="orderDate" :header="$t('Order Date')" sortable>
                 <template #body="slotProps">
-                  {{ DateTimeHelper.format(slotProps.data.orderDate) }}
+                  {{ DateTimeHelper.format(slotProps.data.orderDate, 'datetime') }}
                 </template>
               </Column>
               <Column field="total" :header="$t('Total')" sortable>
