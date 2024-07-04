@@ -47,6 +47,7 @@ export const useEProductStore = defineStore({
             brandsId: this.filter.brandsId,
             shopsId: this.filter.shopsId,
             filter: this.filter.query,
+            filterBy: this.filter.filterBy,
           }),
         )
         .then((response: APIResponse<Product[]>) => {

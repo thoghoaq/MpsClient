@@ -23,4 +23,5 @@ export type Filter = {
   brandsId: number[] | null
   shopsId: number[] | null
   query: string | null
+  filterBy: number | null
 }

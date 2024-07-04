@@ -3,6 +3,8 @@
   import ETopBar from './TopBar/ETopBar.vue'
   import { useI18n } from 'vue-i18n'
   import { useRouter } from 'vue-router'
+  import { useEProductStore } from 'src/stores/ecommerce/product'
+  const eProductStore = useEProductStore()
   const router = useRouter()
   const { t } = useI18n()
   const props = defineProps({
@@ -76,6 +78,11 @@
     { name: t('Low Price'), id: 4 },
     { name: t('High Price'), id: 5 },
   ])
+
+  const onSelectFilter = (value: any) => {
+    eProductStore.filter.filterBy = value.id
+    eProductStore.filterProducts()
+  }
 </script>
 <template>
   <header></header>
@@ -131,6 +138,7 @@
                       :placeholder="$t('Select a Filter')"
                       checkmark
                       class="w-auto"
+                      @update:model-value="onSelectFilter"
                     />
                   </div>
                 </div>
