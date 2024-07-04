@@ -138,15 +138,18 @@
           <div class="col">
             <div class="flex flex-column gap-3">
               <div class="card p-3 bg-primary-reverse border-round">
-                <div class="flex align-items-center gap-3">
-                  <Avatar
-                    :image="productDetails?.shop?.avatar"
-                    shape="circle"
-                    size="large"
-                  ></Avatar>
-                  <span class="font-bold text-xl">{{
-                    productDetails?.shop?.shopName
-                  }}</span>
+                <div class="flex align-items-center justify-content-between gap-3">
+                  <div class="flex align-items-center gap-3">
+                    <Avatar
+                      :image="productDetails?.shop?.avatar"
+                      shape="circle"
+                      size="large"
+                    ></Avatar>
+                    <span class="font-bold text-xl">{{
+                      productDetails?.shop?.shopName
+                    }}</span>
+                  </div>
+                  <span>{{ `${productDetails?.shop?.address}, ${productDetails?.shop?.district}, ${productDetails?.shop?.city}` }}</span>
                 </div>
                 <Divider></Divider>
                 <div class="flex flex-column mb-3">

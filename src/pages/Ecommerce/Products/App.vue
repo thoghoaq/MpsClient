@@ -11,8 +11,11 @@
 <template>
   <ELayout :view-products="true">
     <template #page-content>
-      <div class="border-round grid-container overflow-auto">
-        <ProductItem
+      <div class="border-round grid-container overflow-auto bg-primary-reverse">
+        <div v-if="eProductStore.products.length <= 0" style="width: 60rem;">
+          <div class="bg-primary-reverse p-4 text-center">{{ $t('No products found.') }}</div>
+        </div>
+        <ProductItem v-else
           v-for="product in eProductStore.products"
           :product="product"
         ></ProductItem>
