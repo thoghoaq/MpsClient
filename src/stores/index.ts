@@ -98,6 +98,7 @@ export const appConfig : AppConfig = {
             products: getControllerUrl('products', controllers.ecommerce),
             checkout: getControllerUrl('checkout', controllers.ecommerce),
             orders: getControllerUrl('orders', controllers.ecommerce),
+            trackingProduct: getControllerUrl('tracking-product', controllers.ecommerce),
         },
         payment: {
             details: getControllerUrl('details', controllers.payment),

@@ -7,6 +7,9 @@
   import NumberHelper from 'src/helpers/number-helper'
   import { useCartStore } from 'src/stores/cart'
   import { useI18n } from 'vue-i18n'
+  import { useApi } from 'src/stores/api'
+  import { appConfig } from 'src/stores'
+  const api = useApi()
   const { t } = useI18n()
   const route = useRoute()
   const id = route.params.id as string
@@ -37,6 +40,10 @@
       } else {
         toast.error(res.content)
       }
+    })
+    api.post(appConfig.api.ecommerce.trackingProduct, {
+      productId: [id],
+      action: 1,
     })
   })
 
@@ -146,7 +153,9 @@
                   <div class="flex gap-3">
                     <div class="font-semibold mb-2">{{ $t('Quantity') }}</div>
                     <div v-if="false" class="text-500">
-                      {{ `(${productDetails?.stock} ${$t('items available')})` }}
+                      {{
+                        `(${productDetails?.stock} ${$t('items available')})`
+                      }}
                     </div>
                   </div>
                   <InputNumber
