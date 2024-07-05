@@ -26,4 +26,6 @@ export type Filter = {
   filterBy: number | null
   latitude: number | null
   longitude: number | null
+  pageSize: 20
+  pageNumber: number | null
 }

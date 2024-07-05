@@ -68,10 +68,10 @@
 <template>
   <ELayout>
     <template #page-content>
-      <div class="grid grid-nogutter gap-3">
+      <div class="grid">
         <div
+          class="col-12 xl:col-4"
           v-if="productDetails?.images && productDetails?.images.length > 0"
-          class="col-3"
         >
           <div class="card p-3 bg-primary-reverse border-round">
             <Galleria
@@ -88,124 +88,148 @@
               thumbnailsPosition="bottom"
             >
               <template #item="slotProps">
-                <Image
-                  :src="slotProps.item.itemImageSrc"
-                  :alt="slotProps.item.alt"
-                  width="500"
-                  class="overflow-hidden"
-                  preview
-                />
+                <Image :alt="slotProps.item.alt" preview class="w-full">
+                  <template #image>
+                    <img
+                      :src="slotProps.item.itemImageSrc"
+                      alt="image"
+                      class="w-full"
+                    />
+                  </template>
+                  <template #preview="pslotProps">
+                    <img
+                      :src="slotProps.item.itemImageSrc"
+                      alt="preview"
+                      :style="pslotProps.style"
+                      @click="pslotProps.onClick"
+                    />
+                  </template>
+                </Image>
               </template>
               <template #thumbnail="slotProps">
                 <img
                   :src="slotProps.item.thumbnailImageSrc"
                   :alt="slotProps.item.alt"
-                  width="100"
+                  height="100"
+                  style="object-fit: cover"
                 />
               </template>
             </Galleria>
           </div>
         </div>
-        <div class="grid grid-nogutter gap-3 col">
-          <div class="col">
-            <div class="flex flex-column gap-3">
-              <div class="card px-4 bg-primary-reverse border-round">
-                <h2>{{ productDetails?.name }}</h2>
-                <h2 class="text-red-500">
-                  {{ NumberHelper.formatCurrency(productDetails?.price) }}
-                </h2>
+        <div
+          :class="
+            productDetails?.images && productDetails?.images.length > 0
+              ? 'col-12 xl:col-5'
+              : 'col'
+          "
+        >
+          <div class="flex flex-column gap-3">
+            <div class="card px-4 bg-primary-reverse border-round">
+              <h2>{{ productDetails?.name }}</h2>
+              <h2 class="text-red-500">
+                {{ NumberHelper.formatCurrency(productDetails?.price) }}
+              </h2>
+            </div>
+            <div class="card p-4 bg-primary-reverse border-round">
+              <div class="text-xl font-bold pb-2">
+                {{ $t('Product Description') }}
               </div>
-              <div class="card p-4 bg-primary-reverse border-round">
-                <div class="text-xl font-bold pb-2">
-                  {{ $t('Product Description') }}
-                </div>
-                <div
-                  v-html="productDetails?.description"
-                  class="overflow-auto"
-                ></div>
+              <div
+                v-html="productDetails?.description"
+                class="overflow-auto"
+              ></div>
+            </div>
+            <div class="card p-4 bg-primary-reverse border-round">
+              <div class="text-xl font-bold pb-2">
+                {{ $t('Guarantee Information') }}
               </div>
-              <div class="card p-4 bg-primary-reverse border-round">
-                <div class="text-xl font-bold pb-2">
-                  {{ $t('Guarantee Information') }}
-                </div>
-                <div class="text-lg">
-                  {{ $t('Guarantee Guideline.') }}
-                  <a href="">{{ $t('View detail') }}</a>
-                </div>
+              <div class="text-lg">
+                {{ $t('Guarantee Guideline.') }}
+                <a href="">{{ $t('View detail') }}</a>
               </div>
             </div>
           </div>
-          <div class="col">
-            <div class="flex flex-column gap-3">
-              <div class="card p-3 bg-primary-reverse border-round">
-                <div class="flex align-items-center justify-content-between gap-3">
-                  <div class="flex align-items-center gap-3">
-                    <Avatar
-                      :image="productDetails?.shop?.avatar"
-                      shape="circle"
-                      size="large"
-                    ></Avatar>
+        </div>
+        <div class="col-12 xl:col-3">
+          <div class="flex flex-column gap-3">
+            <div class="card p-3 bg-primary-reverse border-round">
+              <div
+                class="flex align-items-center justify-content-between gap-3"
+              >
+                <div>
+                  <Avatar
+                    :image="productDetails?.shop?.avatar"
+                    shape="circle"
+                    size="xlarge"
+                  ></Avatar>
+                </div>
+                <div class="grid grid-nogutter align-items-center justify-content-between w-full gap-2">
+                  <div class="flex gap-2 align-items-center">
+                    <i class="pi pi-shop text-xl"></i>
                     <span class="font-bold text-xl">{{
                       productDetails?.shop?.shopName
                     }}</span>
                   </div>
-                  <span>{{ `${productDetails?.shop?.address}, ${productDetails?.shop?.district}, ${productDetails?.shop?.city}` }}</span>
-                </div>
-                <Divider></Divider>
-                <div class="flex flex-column mb-3">
-                  <div class="flex gap-3">
-                    <div class="font-semibold mb-2">{{ $t('Quantity') }}</div>
-                    <div v-if="false" class="text-500">
-                      {{
-                        `(${productDetails?.stock} ${$t('items available')})`
-                      }}
-                    </div>
-                  </div>
-                  <InputNumber
-                    v-model="quantity"
-                    showButtons
-                    buttonLayout="horizontal"
-                    :step="1"
-                    :min="1"
-                    :max="10"
-                    class="w-5rem"
-                    input-class="w-3rem"
-                    :allow-empty="false"
-                  >
-                    <template #incrementbuttonicon>
-                      <span class="pi pi-plus" />
-                    </template>
-                    <template #decrementbuttonicon>
-                      <span class="pi pi-minus" />
-                    </template>
-                  </InputNumber>
-                </div>
-                <div class="flex flex-column">
-                  <div class="font-semibold mb-2">{{ $t('Provisional') }}</div>
-                  <div class="text-red-500 text-xl font-bold">
-                    {{ NumberHelper.formatCurrency(total) }}
+                  <div>
+                    {{
+                      `${productDetails?.shop?.address}, ${productDetails?.shop?.district}, ${productDetails?.shop?.city}`
+                    }}
                   </div>
                 </div>
-                <Button
-                  type="button"
-                  severity="contrast"
-                  :label="$t('ADD TO CART')"
-                  class="w-full mt-3"
-                  @click="() => productDetails && addToCart(productDetails)"
-                />
-                <Button
-                  type="button"
-                  severity="danger"
-                  :label="$t('BUY NOW')"
-                  class="w-full mt-3"
-                  @click="
-                    () => {
-                      productDetails && addToCart(productDetails, true)
-                      $router.push({ name: 'checkout' })
-                    }
-                  "
-                />
               </div>
+              <Divider></Divider>
+              <div class="flex flex-column mb-3">
+                <div class="flex gap-3">
+                  <div class="font-semibold mb-2">{{ $t('Quantity') }}</div>
+                  <div v-if="false" class="text-500">
+                    {{ `(${productDetails?.stock} ${$t('items available')})` }}
+                  </div>
+                </div>
+                <InputNumber
+                  v-model="quantity"
+                  showButtons
+                  buttonLayout="horizontal"
+                  :step="1"
+                  :min="1"
+                  :max="10"
+                  class="w-5rem"
+                  input-class="w-3rem"
+                  :allow-empty="false"
+                >
+                  <template #incrementbuttonicon>
+                    <span class="pi pi-plus" />
+                  </template>
+                  <template #decrementbuttonicon>
+                    <span class="pi pi-minus" />
+                  </template>
+                </InputNumber>
+              </div>
+              <div class="flex flex-column">
+                <div class="font-semibold mb-2">{{ $t('Provisional') }}</div>
+                <div class="text-red-500 text-xl font-bold">
+                  {{ NumberHelper.formatCurrency(total) }}
+                </div>
+              </div>
+              <Button
+                type="button"
+                severity="contrast"
+                :label="$t('ADD TO CART')"
+                class="w-full mt-3"
+                @click="() => productDetails && addToCart(productDetails)"
+              />
+              <Button
+                type="button"
+                severity="danger"
+                :label="$t('BUY NOW')"
+                class="w-full mt-3"
+                @click="
+                  () => {
+                    productDetails && addToCart(productDetails, true)
+                    $router.push({ name: 'checkout' })
+                  }
+                "
+              />
             </div>
           </div>
         </div>

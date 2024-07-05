@@ -147,11 +147,10 @@
   <main>
     <div>
       <ETopBar :on-toggle-menu="toggleMenu" />
-      <div class="flex justify-content-center">
-        <Category v-if="!props.hideCategory"></Category>
+      <div class="grid grid-nogutter justify-content-center gap-3 p-3">
+        <Category class="col-12 md:col-3 xl:col-2" v-if="!props.hideCategory"></Category>
         <div
-          class="flex flex-column m-3 w-full"
-          :class="props.viewProducts ? 'max-width-min-content' : ''"
+          class="flex flex-column w-full col-12 md:col xl:col"
         >
           <div class="bg-primary-reverse border-round mb-3">
             <Breadcrumb :model="getBreadcrum(router.currentRoute.value.path)">

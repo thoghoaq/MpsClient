@@ -22,18 +22,20 @@
   })
 </script>
 <template>
-  <TreeTable
-    :value="dataSourceStore.productCategoryTree"
-    v-model:selectionKeys="selectedKey"
-    selection-mode="single"
-    class="w-20rem overflow-auto border-round my-3 ml-3"
-  >
-    <Column
-      field="name"
-      :header="$t('PARTS & ACCESSORIES')"
-      header-class="bg-primary"
-      expander
+  <div style="min-width: 20rem;">
+    <TreeTable
+      :value="dataSourceStore.productCategoryTree"
+      v-model:selectionKeys="selectedKey"
+      selection-mode="single"
+      class="overflow-auto border-round"
     >
-    </Column>
-  </TreeTable>
+      <Column
+        field="name"
+        :header="$t('PARTS & ACCESSORIES')"
+        header-class="bg-primary"
+        expander
+      >
+      </Column>
+    </TreeTable>
+  </div>
 </template>

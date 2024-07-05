@@ -9,15 +9,25 @@
   })
 </script>
 <template>
-  <div class="bg-primary-reverse p-5">
-    <router-link :to="`/ecommerce/products/${props.product.id}`" class="no-underline">
-      <Card v-ripple class="w-18rem overflow-hidden border-0 border-round shadow-none cursor-pointer">
+  <div class="bg-primary-reverse col">
+    <router-link
+      :to="`/ecommerce/products/${props.product.id}`"
+      class="no-underline"
+    >
+      <Card
+        v-ripple
+        class="w-ful overflow-hidden border-0 border-round shadow-none cursor-pointer"
+        style="min-width: 18rem"
+      >
         <template #header>
           <Image alt="image">
             <template #image>
               <img
-                :src="props.product.images[0]?.imagePath ?? 'https://via.placeholder.com/200x250'"
-                class="h-20rem w-18rem"
+                :src="
+                  props.product.images[0]?.imagePath ??
+                  'https://via.placeholder.com/200x250'
+                "
+                class="h-20rem w-full"
                 style="object-fit: cover"
               />
             </template>

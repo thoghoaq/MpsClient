@@ -3,6 +3,15 @@
   grid-template-columns: repeat(4, 1fr); /* 4 items per row */
 }
 
+@media (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: repeat(
+      3,
+      1fr
+    ); /* 3 items per row for medium screens */
+  }
+}
+
 @media (max-width: 768px) {
   .grid-container {
     grid-template-columns: repeat(

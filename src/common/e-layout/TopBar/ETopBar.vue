@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, watch } from 'vue'
+  import { ref, watch, onMounted } from 'vue'
   import { useSettingStore } from 'src/stores/setting'
   import { usePrimeVue } from 'primevue/config'
   import { Theme } from 'src/stores/setting/types'
@@ -138,6 +138,10 @@
     eProductStore.filterProducts()
   })
 
+  onMounted(() => {
+    query.value = eProductStore.filter.query
+  })
+
   const changeLanguage = (language: string) => {
     var accept =
       LanguageHelper.getAcceptLanguage(language)?.toString() ?? 'vi-VN'
@@ -154,7 +158,7 @@
     <div
       class="flex h-10rem align-items-center justify-content-between mx-3 gap-3"
     >
-      <router-link to="/" style="text-decoration: none;">
+      <router-link to="/" style="text-decoration: none">
         <div class="flex align-items-center gap-3 mx-4">
           <Button link label="MPC" class="text-lg">
             <h1>MPC</h1>
@@ -163,14 +167,20 @@
       </router-link>
       <IconField iconPosition="right" class="w-full">
         <InputIcon class="pi pi-search"> </InputIcon>
-        <InputText :placeholder="$t('Search Product')" class="w-full" v-model="query"/>
+        <InputText
+          :placeholder="$t('Search Product')"
+          class="w-full"
+          v-model="query"
+        />
       </IconField>
       <div class="flex align-items-center gap-3 mx-2">
         <Button
           icon="pi pi-shopping-cart"
           class="p-button-rounded p-button-text"
           @click="$router.push({ name: 'cart' })"
-          :badge="cartStore.items.length > 0 ? `${cartStore.items.length}` : undefined"
+          :badge="
+            cartStore.items.length > 0 ? `${cartStore.items.length}` : undefined
+          "
           badge-class="p-badge-danger p-badge-rounded p-badge-no-gutter"
         />
         <Button

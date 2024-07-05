@@ -11,7 +11,7 @@
 <template>
   <ELayout :view-products="true">
     <template #page-content>
-      <div class="border-round grid-container overflow-auto bg-primary-reverse">
+      <div class="border-round grid grid-nogutter overflow-auto bg-primary-reverse w-full gap-5 p-5 justify-content-center">
         <div v-if="eProductStore.products.length <= 0" style="width: 60rem;">
           <div class="bg-primary-reverse p-4 text-center">{{ $t('No products found.') }}</div>
         </div>
