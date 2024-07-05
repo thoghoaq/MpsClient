@@ -21,6 +21,14 @@ body {
 }
 
 .required::after {
-  content: " *";
+  content: ' *';
   color: var(--red-500);
+}
+
+.text-2-line {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

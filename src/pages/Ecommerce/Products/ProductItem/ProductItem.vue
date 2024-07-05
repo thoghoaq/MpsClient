@@ -34,10 +34,17 @@
           </Image>
         </template>
         <template #content>
-          <div class="font-medium text-lg">{{ props.product.name }}</div>
-          <h3 class="text-red-500">
-            {{ NumberHelper.formatCurrency(props.product.price) }}
-          </h3>
+          <div class="flex flex-column justify-content-between h-5rem">
+            <div class="font-medium text-lg white-space-nowrap overflow-hidden text-overflow-ellipsis w-22rem">{{ props.product.name }}</div>
+            <div class="flex justify-content-between align-items-center">
+              <h3 class="text-red-500">
+                {{ NumberHelper.formatCurrency(props.product.price) }}
+              </h3>
+              <div class="text-gray-500 ml-2">
+                {{ `${$t('Sold')} ${props.product.soldCount}` }}
+              </div>
+            </div>
+          </div>
         </template>
       </Card>
     </router-link>

@@ -10,6 +10,7 @@ export type Product = {
   brandId: number | null
   shopId: number
   isActive: boolean
+  soldCount: number
   createdAt: Date
   updatedAt: Date
   category: any
