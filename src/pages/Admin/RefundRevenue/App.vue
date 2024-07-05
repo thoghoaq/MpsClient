@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue'
+  import { onMounted, ref, watch } from 'vue'
   import { usePayoutStore } from 'src/stores/admin/shop'
   import NumberHelper from 'src/helpers/number-helper'
   import DateTimeHelper from 'src/helpers/datetime-helper'
   import { useToastStore } from 'src/stores/toast'
-  import { Payout } from 'src/stores/admin/shop/types'
+  import StringHelper from 'src/helpers/string-helper'
   const toast = useToastStore()
   const payoutStore = usePayoutStore()
   const now = new Date()
@@ -13,9 +13,12 @@
   const selectedRow = ref()
   const expandedRows = ref({})
   const loading = ref(false)
+  const filteredShops = ref()
 
   onMounted(() => {
-    payoutStore.fetchShops(now)
+    payoutStore.fetchShops(now).then(() => {
+      filteredShops.value = payoutStore.shops
+    })
   })
 
   const getStatusDisplay = (status: number) => {
@@ -45,15 +48,18 @@
 
   const requestAllPayout = () => {
     loading.value = true
-    payoutStore.requestMonthlyPayout(month.value).then((response) => {
-      if (response.success) {
-        toast.success(response.content['message'])
-      } else {
-        toast.error(response.content)
-      }
-    }).finally(() => {
-      loading.value = false
-    })
+    payoutStore
+      .requestMonthlyPayout(month.value)
+      .then((response) => {
+        if (response.success) {
+          toast.success(response.content['message'])
+        } else {
+          toast.error(response.content)
+        }
+      })
+      .finally(() => {
+        loading.value = false
+      })
   }
 
   const acceptPayout = (payoutId: number) => {
@@ -71,6 +77,16 @@
         loading.value = false
       })
   }
+
+  watch(query, (value) => {
+    if (value) {
+      payoutStore.shops = filteredShops.value.filter((shop: any) => {
+        return StringHelper.searchIgnoreCase(shop.shopName, value)
+      })
+    } else {
+      payoutStore.shops = filteredShops.value
+    }
+  })
 </script>
 <template>
   <Layout>
@@ -83,6 +99,7 @@
         v-model:expandedRows="expandedRows"
         dataKey="id"
         :loading="loading"
+        removable-sort
       >
         <template #header>
           <Menubar class="border-0">
@@ -158,17 +175,17 @@
           </Menubar>
         </template>
         <Column expander class="w-3rem" />
-        <Column field="shopName" :header="$t('Shop Name')"> </Column>
-        <Column field="phoneNumber" :header="$t('Phone Number')"> </Column>
-        <Column field="address" :header="$t('Address')">
+        <Column field="shopName" :header="$t('Shop Name')" sortable></Column>
+        <Column field="phoneNumber" :header="$t('Phone Number')" sortable> </Column>
+        <Column field="address" :header="$t('Address')" sortable>
           <template #body="slotProps">
             <span>{{
               `${slotProps.data.address}, ${slotProps.data.district}, ${slotProps.data.city}`
             }}</span>
           </template>
         </Column>
-        <Column field="payPalAccount" header="Paypal"></Column>
-        <Column field="isActive" :header="$t('Status')">
+        <Column field="payPalAccount" header="Paypal" sortable></Column>
+        <Column field="isActive" :header="$t('Status')" sortable>
           <template #body="{ data }">
             <i
               class="pi"
@@ -179,24 +196,24 @@
             ></i>
           </template>
         </Column>
-        <Column field="revenue" :header="$t('Revenue')">
+        <Column field="revenue" :header="$t('Revenue')" sortable>
           <template #body="{ data }">
             <span>{{ NumberHelper.formatCurrency(data.revenue ?? 0) }}</span>
           </template>
         </Column>
-        <Column field="expectPayout" :header="$t('Expect Payout')">
+        <Column field="expectPayout" :header="$t('Expect Payout')" sortable>
           <template #body="{ data }">
             <span>{{
               NumberHelper.formatCurrency(data.expectPayout ?? 0)
             }}</span>
           </template>
         </Column>
-        <Column field="totalPayout" :header="$t('Paidout')">
+        <Column field="totalPayout" :header="$t('Paidout')" sortable>
           <template #body="{ data }">
             <span>{{ NumberHelper.formatCurrency(data.totalPayout) }}</span>
           </template>
         </Column>
-        <Column field="isCurrentMonthPaid" :header="$t('Paid')">
+        <Column field="isCurrentMonthPaid" :header="$t('Paid')" sortable>
           <template #body="{ data }">
             <i
               class="pi"

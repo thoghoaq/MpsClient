@@ -4,6 +4,8 @@
   import DateTimeHelper from 'src/helpers/datetime-helper'
   import { useI18n } from 'vue-i18n'
   import { useToastStore } from 'src/stores/toast'
+  import { Order } from 'src/stores/seller/order/types'
+  import NumberHelper from 'src/helpers/number-helper'
   const toast = useToastStore()
   const { t } = useI18n()
   const orderStore = useOrderStore()
@@ -139,6 +141,18 @@
     menuId.value = event.currentTarget.id.replace('menu_', '')
     menu.value.toggle(event)
   }
+
+  const showOrderDetails = (event: any) => {
+    console.log(event.currentTarget.id)
+    const orderId = event.currentTarget.id.replace('order_', '')
+    selectedOrder.value = orderStore.orders.find(
+      (order) => order.id === parseInt(orderId),
+    )
+    op.value.toggle(event)
+  }
+
+  const op = ref()
+  const selectedOrder = ref<Order>()
 </script>
 <template>
   <Layout>
@@ -194,7 +208,7 @@
             sortable
           ></Column>
           <Column field="note" :header="$t('Note')" sortable></Column>
-          <Column field="id" :header="$t('Status')">
+          <Column field="orderStatusId" :header="$t('Status')" sortable>
             <template #body="{ data }">
               <Button :id="`menu_${data.id}`" text class="p-0" @click="toggle">
                 <Tag
@@ -263,7 +277,33 @@
               </Menu>
             </template>
           </Column>
+          <Column :header="$t('Detail')">
+            <template #body="slotProps">
+              <Button
+                icon="pi pi-info"
+                text
+                :id="slotProps.data.id"
+                @click="showOrderDetails"
+              ></Button>
+            </template>
+          </Column>
         </DataTable>
+        <OverlayPanel ref="op" appendTo="body">
+          <DataTable
+            :value="selectedOrder?.orderDetails"
+            showGridlines
+            tableStyle="min-width: 50rem"
+            removable-sort
+          >
+            <Column field="productName" :header="$t('Product Name')"></Column>
+            <Column field="quantity" :header="$t('Quantity')"></Column>
+            <Column field="total" :header="$t('Total')">
+              <template #body="slotProps">
+                {{ NumberHelper.formatCurrency(slotProps.data.total) }}
+              </template>
+            </Column>
+          </DataTable>
+        </OverlayPanel>
       </div>
     </template>
   </Layout>
