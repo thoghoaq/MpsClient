@@ -260,5 +260,10 @@
   "Recent Orders": "Đơn hàng gần đây",
   "Top Products": "Sản phẩm hàng đầu",
   "Sold": "Đã bán",
-  "Your order are included shipping fee and VAT": "Đơn hàng của bạn đã bao gồm phí vận chuyển và VAT"
+  "Your order are not included shipping fee": "Đơn hàng của bạn chưa bao gồm phí vận chuyển",
+  "Feedback": "Đánh giá",
+  "Save": "Lưu",
+  "Cancel": "Hủy",
+  "Write your feedback": "Viết đánh giá của bạn",
+  "Please select a rating": "Vui lòng chọn một đánh giá"
 }

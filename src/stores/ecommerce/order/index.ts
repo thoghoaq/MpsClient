@@ -16,5 +16,33 @@ export const useEOrderStore = defineStore({
         return response
       })
     },
+    async feedback(
+      productId: number,
+      orderId: number,
+      feedback: string | null,
+      rating: number,
+    ) {
+      return api
+        .post(appConfig.api.ecommerce.feedback, {
+          productId,
+          orderId,
+          feedback,
+          rating,
+        })
+        .then((response) => {
+          if (response.success) {
+            const order = this.orders.find((o) => o.id === orderId)
+            if (order) {
+              const orderDetail = order.orderDetails.find(
+                (o) => o.productId === productId,
+              )
+              if (orderDetail) {
+                orderDetail.isFeedbacked = true
+              }
+            }
+          }
+          return response
+        })
+    },
   },
 })

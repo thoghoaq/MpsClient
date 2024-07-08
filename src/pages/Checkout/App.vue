@@ -244,7 +244,7 @@
             @click="submitOrder"
           />
           <div class="mx-3">
-            <small>{{ $t('Your order are included shipping fee and VAT') }}</small>
+            <small>{{ $t('Your order are not included shipping fee') }}</small>
           </div>
         </div>
       </div>

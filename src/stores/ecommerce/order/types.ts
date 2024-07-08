@@ -28,10 +28,12 @@ export interface OrderDetail {
     orderId:     number;
     productId:   number;
     productName: string;
+    productImage: string | null;
     quantity:    number;
     price:       number;
     discount:    number;
     total:       number;
+    isFeedbacked: boolean;
 }
 
 export interface OrderStatus {

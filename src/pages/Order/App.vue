@@ -1,40 +1,119 @@
 <script setup lang="ts">
-  import { onMounted } from 'vue'
+  import { onMounted, ref, reactive } from 'vue'
   import { useEOrderStore } from 'src/stores/ecommerce/order'
+  import useVuelidate from '@vuelidate/core'
+  import { required } from '@vuelidate/validators'
   import DateTimeHelper from 'src/helpers/datetime-helper'
   import NumberHelper from 'src/helpers/number-helper'
+  import { useToastStore } from 'src/stores/toast'
+  import { useI18n } from 'vue-i18n'
+  const { t } = useI18n()
+  const toast = useToastStore()
   const eOrderStore = useEOrderStore()
 
   onMounted(() => {
     eOrderStore.fetchOrders()
   })
 
-  const getStatusDisplay = (status: any) => {
-    switch (status.id) {
+  const getStatusDisplay = (status: number) => {
+    switch (status) {
       case 1:
         return {
-          severity: 'warning',
-          label: status.name,
-          class: 'text-yellow-500',
+          label: 'Pending',
+          severity: 'warn',
         }
       case 2:
         return {
+          label: 'Processing',
+          severity: 'warn',
+        }
+      case 3:
+        return {
+          label: 'Delivered',
           severity: 'info',
-          label: status.name,
-          class: 'text-primary-500',
         }
       case 4:
         return {
+          label: 'Cancelled',
           severity: 'danger',
-          label: status.name,
-          class: 'text-red-500',
+        }
+      case 5:
+        return {
+          label: 'Returned',
+          severity: 'warn',
+        }
+      case 6:
+        return {
+          label: 'Refunded',
+          severity: 'success',
+        }
+      case 7:
+        return {
+          label: 'Completed',
+          severity: 'success',
         }
       default:
         return {
-          severity: 'secondary',
-          label: status.name,
-          class: 'bg-secondary',
+          label: 'Unknown',
+          severity: 'gray',
         }
+    }
+  }
+
+  const visible = ref(false)
+  const selectedItem = ref<SelectedItem>()
+  type SelectedItem = {
+    productId: number
+    orderId: number
+    productName: string
+  }
+
+  const state = reactive({
+    rating: <any>null,
+    feedback: <any>null,
+  })
+
+  const rules = {
+    rating: {
+      required,
+    },
+  }
+  const showFeedback = (
+    productId: number,
+    orderId: number,
+    productName: string,
+  ) => {
+    selectedItem.value = {
+      productId,
+      orderId,
+      productName,
+    }
+    state.rating = null
+    visible.value = true
+  }
+
+  const $v = useVuelidate(rules, state)
+
+  const postFeedback = () => {
+    $v.value.$touch()
+    if (!$v.value.$invalid) {
+      eOrderStore
+        .feedback(
+          selectedItem.value!.productId!,
+          selectedItem.value!.orderId!,
+          state.feedback,
+          state.rating,
+        )
+        .then((res) => {
+          if (res.success) {
+            toast.success(res.content["message"])
+            visible.value = false
+          } else {
+            toast.error(res.content)
+          }
+        })
+    } else {
+      toast.warning(t('Please select a rating'))
     }
   }
 </script>
@@ -46,7 +125,9 @@
           class="flex flex-column md:flex-row justify-content-between align-items-center mb-4"
         >
           <div class="flex flex-column text-center md:text-left">
-            <span class="text-900 text-2xl mb-2 font-bold">{{ $t('Your Orders') }}</span>
+            <span class="text-900 text-2xl mb-2 font-bold">{{
+              $t('Your Orders')
+            }}</span>
           </div>
           <span
             class="p-input-icon-right mt-5 mb-2 md:mt-0 md:mb-0 w-full lg:w-25rem"
@@ -60,9 +141,9 @@
           v-if="eOrderStore.orders.length > 0"
           v-for="order in eOrderStore.orders"
           :key="order.id"
-          class="surface-card grid grid-nogutter border-round shadow-2 mb-6 ng-star-inserted"
+          class="surface-card grid grid-nogutter border-round shadow-1 mb-6 ng-star-inserted"
         >
-          <div class="col-12 flex p-2 surface-100 border-round-top">
+          <div class="col-12 flex p-2 bg-primary-50 border-round-top">
             <div class="p-2 flex-auto text-center md:text-left">
               <span class="text-700 block">{{ $t('Order Number') }}</span
               ><span class="text-900 font-medium block mt-2">{{
@@ -120,75 +201,65 @@
                 <img
                   alt="product"
                   class="w-8rem h-8rem mr-3 flex-shrink-0"
-                  src="https://via.placeholder.com/200x250"
+                  :src="
+                    item.productImage ?? 'https://via.placeholder.com/200x250'
+                  "
                 />
                 <div class="flex flex-column my-auto text-center md:text-left">
                   <span class="text-900 font-medium mb-3 mt-3 lg:mt-0"
                     >{{ item.productName }} x {{ item.quantity }}</span
-                  ><span class="text-700 text-sm mb-3">{{
-                    NumberHelper.formatCurrency(item.total)
-                  }}</span
-                  ><a
-                    pripple=""
-                    tabindex="0"
-                    class="p-ripple p-element p-2 select-none cursor-pointer w-10rem mx-auto lg:mx-0 border-round font-medium text-center border-1 border-primary text-primary transition-duration-150"
-                    >Buy Again <span class="font-light"></span
-                    ><span
-                      class="p-ink"
-                      aria-hidden="true"
-                      role="presentation"
-                    ></span
-                  ></a>
+                  ><span class="text-700 text-sm mb-3"
+                    >{{ NumberHelper.formatCurrency(item.total) }}
+                  </span>
+                  <Button v-if="!item.isFeedbacked"
+                    :label="$t('Write a Review')"
+                    outlined
+                    class="w-10rem mx-auto lg:mx-0 border-round font-medium text-center border-1 border-primary text-primary"
+                    @click="
+                      showFeedback(
+                        item.productId,
+                        item.orderId,
+                        item.productName,
+                      )
+                    "
+                  ></Button>
                 </div>
               </div>
-              <div
-                class="mr-0 lg:mr-3 mt-4 lg:mt-0 p-2 flex align-items-center"
-                style="
-                  background-color: rgba(76, 175, 80, 0.1);
-                  border-radius: 2.5rem;
-                "
+              <Tag
+                class="m-3"
+                :severity="getStatusDisplay(order.orderStatus.id).severity"
+                :value="$t(getStatusDisplay(order.orderStatus.id).label)"
               >
-                <span
-                  :class="`p-2 ${getStatusDisplay(order.orderStatus).class}`"
-                  >{{ $t(getStatusDisplay(order.orderStatus).label) }}</span
-                >
-              </div>
-              <p-divider
-                class="p-element w-full block lg:hidden surface-border ng-star-inserted"
-                ><div
-                  role="separator"
-                  aria-orientation="horizontal"
-                  data-pc-name="divider"
-                  class="p-divider p-component p-divider-horizontal p-divider-solid p-divider-left"
-                >
-                  <div class="p-divider-content"></div></div
-              ></p-divider>
+              </Tag>
             </div>
           </div>
           <div class="col-12 p-0 flex border-top-1 surface-border">
-            <a
+            <!-- <a
               tabindex="0"
               class="cursor-pointer py-4 flex flex-column md:flex-row text-center justify-content-center align-items-center text-primary hover:bg-primary hover:text-0 transition-duration-150 w-full"
               style="border-bottom-left-radius: 6px"
               ><i class="pi pi-folder mr-2 mb-2 md:mb-1"></i
               >{{ $t('Archive Order') }}</a
-            ><a
+            > -->
+            <!-- <a
               tabindex="0"
               class="cursor-pointer py-4 flex flex-column md:flex-row text-center justify-content-center align-items-center text-primary hover:bg-primary hover:text-0 transition-duration-150 w-full"
               ><i class="pi pi-refresh mr-2 mb-2 md:mb-1"></i
               >{{ $t('Return') }}</a
-            ><a
+            > -->
+            <a
               tabindex="0"
               class="cursor-pointer py-4 flex flex-column md:flex-row text-center justify-content-center align-items-center text-primary hover:bg-primary hover:text-0 transition-duration-150 w-full"
               ><i class="pi pi-file mr-2 mb-2 md:mb-1"></i
               >{{ $t('View Invoice') }}</a
-            ><a
+            >
+            <!-- <a
               tabindex="0"
               class="cursor-pointer py-4 flex flex-column md:flex-row text-center justify-content-center align-items-center text-primary hover:bg-primary hover:text-0 transition-duration-150 w-full"
               style="border-bottom-right-radius: 6px"
               ><i class="pi pi-comment mr-2 mb-2 md:mb-1"></i
               >{{ $t('Write a Review') }}</a
-            >
+            > -->
           </div>
         </div>
         <div v-else>
@@ -206,6 +277,49 @@
           </div>
         </div>
       </div>
+      <Dialog
+        v-model:visible="visible"
+        modal
+        :header="$t('Write a Review')"
+        class="mx-3"
+        :style="{ width: '50rem' }"
+      >
+        <div class="text-2xl text-center font-bold mb-4">
+          {{ selectedItem?.productName }}
+        </div>
+        <div class="flex items-center justify-content-center gap-4 mb-4">
+          <Rating v-model="state.rating" :cancel="false">
+            <template #onicon>
+              <i class="pi pi-star-fill text-5xl text-primary"></i>
+            </template>
+            <template #officon>
+              <i class="pi pi-star text-5xl text-primary"></i>
+            </template>
+          </Rating>
+        </div>
+        <div class="flex items-center gap-4 mb-4">
+          <Textarea
+            id="feedback"
+            class="flex-auto"
+            rows="5"
+            auto-resize
+            :placeholder="$t('Write your feedback')"
+          />
+        </div>
+        <div class="flex justify-content-end gap-2">
+          <Button
+            type="button"
+            :label="$t('Cancel')"
+            severity="secondary"
+            @click="visible = false"
+          ></Button>
+          <Button
+            type="button"
+            :label="$t('Save')"
+            @click="postFeedback"
+          ></Button>
+        </div>
+      </Dialog>
     </template>
   </ELayout>
 </template>

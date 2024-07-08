@@ -53,6 +53,7 @@ import TabMenu from 'primevue/tabmenu'
 import Calendar from 'primevue/calendar'
 import SplitButton from 'primevue/splitbutton'
 import OverlayPanel from 'primevue/overlaypanel'
+import Rating from 'primevue/rating'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -138,6 +139,7 @@ app.component('TabMenu', TabMenu)
 app.component('Calendar', Calendar)
 app.component('SplitButton', SplitButton)
 app.component('OverlayPanel', OverlayPanel)
+app.component('Rating', Rating)
 
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)

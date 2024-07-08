@@ -57,6 +57,8 @@ export interface AppConfig {
             checkout: string;
             orders: string;
             trackingProduct: string;
+            feedback: string;
+            feedbacks: string;
         },
         payment: {
             details: string;
