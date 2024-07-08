@@ -11,7 +11,12 @@ export interface CartItem {
     imageUrl: string | null;
     selected: boolean;
     shopId: number;
+    shop: any;
 }
+
+export type CartItemsGroupedByShop = {
+    [shopId: number]: CartItem[];
+};
 
 export interface CheckoutRequest {
     customerName:  string;

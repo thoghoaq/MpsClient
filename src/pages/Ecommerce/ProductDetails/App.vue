@@ -57,6 +57,7 @@
       stock: product.stock,
       selected: selected ?? false,
       shopId: product.shopId,
+      shop: product.shop,
     })
     toast.success(t('Add to cart successfully'))
   }

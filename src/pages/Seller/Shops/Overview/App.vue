@@ -32,6 +32,51 @@
       up: true,
     }
   }
+
+  const getStatusDisplay = (status: number) => {
+    switch (status) {
+      case 1:
+        return {
+          label: 'Pending',
+          severity: 'warn',
+        }
+      case 2:
+        return {
+          label: 'Processing',
+          severity: 'warn',
+        }
+      case 3:
+        return {
+          label: 'Delivered',
+          severity: 'info',
+        }
+      case 4:
+        return {
+          label: 'Cancelled',
+          severity: 'danger',
+        }
+      case 5:
+        return {
+          label: 'Returned',
+          severity: 'warn',
+        }
+      case 6:
+        return {
+          label: 'Refunded',
+          severity: 'success',
+        }
+      case 7:
+        return {
+          label: 'Completed',
+          severity: 'success',
+        }
+      default:
+        return {
+          label: 'Unknown',
+          severity: 'gray',
+        }
+    }
+  }
 </script>
 <template>
   <Layout :hideBackground="true">
@@ -212,12 +257,26 @@
               <Column field="orderId" :header="$t('Number')" sortable></Column>
               <Column field="orderDate" :header="$t('Order Date')" sortable>
                 <template #body="slotProps">
-                  {{ DateTimeHelper.format(slotProps.data.orderDate, 'datetime') }}
+                  {{
+                    DateTimeHelper.format(slotProps.data.orderDate, 'datetime')
+                  }}
                 </template>
               </Column>
               <Column field="total" :header="$t('Total')" sortable>
                 <template #body="slotProps">
                   {{ NumberHelper.formatCurrency(slotProps.data.total) }}
+                </template>
+              </Column>
+              <Column field="orderStatus" :header="$t('Status')" sortable>
+                <template #body="slotProps">
+                  <Tag
+                    :severity="
+                      getStatusDisplay(slotProps.data.orderStatus).severity
+                    "
+                    :value="
+                      $t(getStatusDisplay(slotProps.data.orderStatus).label)
+                    "
+                  ></Tag>
                 </template>
               </Column>
             </DataTable>
@@ -249,7 +308,7 @@
                   </div>
                 </div>
                 <div class="text-900 font-semibold">
-                  {{ NumberHelper.formatCurrency(product.price) }}
+                  {{ `${$t('Sold')} ${product.soldCount}` }}
                 </div>
               </div>
             </div>

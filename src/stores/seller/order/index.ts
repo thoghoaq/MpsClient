@@ -44,14 +44,16 @@ export const useOrderStore = defineStore({
         })
         .then((response: APIResponse<any>) => {
           // update value of status
-          const order = this.orders.find((o) => o.id === orderId)
-          if (order) {
-            order.orderStatusId = statusId
-            order.orderStatus = {
-              id: statusId,
-              name: OrderStatus[statusId].toString(),
+          if (response.success) {
+            const order = this.orders.find((o) => o.id === orderId)
+            if (order) {
+              order.orderStatusId = statusId
+              order.orderStatus = {
+                id: statusId,
+                name: OrderStatus[statusId].toString(),
+              }
             }
-          }
+          }          
           return response
         })
     },

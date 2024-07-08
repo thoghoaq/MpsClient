@@ -24,6 +24,7 @@ export interface RecentOrder {
     orderId: number;
     orderDate: number;
     total: number;
+    orderStatus : string;
 }
 
 export interface ProductSoldByCategory {
@@ -36,4 +37,5 @@ export interface TopProduct {
     productName:  string;
     productImage: string | null;
     price:        number;
+    soldCount:    number;
 }

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import {
   CartItem,
+  CartItemsGroupedByShop,
   CheckoutItem,
   CheckoutRequest,
   CheckoutResponse,
@@ -85,6 +86,18 @@ export const useCartStore = defineStore({
         .then((response) => {
           return response
         })
+    },
+    groupCartItemsByShop(cartItems: CartItem[]): CartItemsGroupedByShop {
+      return cartItems.reduce(
+        (groupedItems: CartItemsGroupedByShop, item: CartItem) => {
+          if (!groupedItems[item.shopId]) {
+            groupedItems[item.shopId] = []
+          }
+          groupedItems[item.shopId].push(item)
+          return groupedItems
+        },
+        {},
+      )
     },
   },
 })

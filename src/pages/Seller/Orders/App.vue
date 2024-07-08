@@ -114,23 +114,43 @@
     switch (status.id) {
       case 1:
         return {
-          severity: 'warning',
-          label: status.name,
+          label: 'Pending',
+          severity: 'warn',
         }
       case 2:
         return {
+          label: 'Processing',
+          severity: 'warn',
+        }
+      case 3:
+        return {
+          label: 'Delivered',
           severity: 'info',
-          label: status.name,
         }
       case 4:
         return {
+          label: 'Cancelled',
           severity: 'danger',
-          label: status.name,
+        }
+      case 5:
+        return {
+          label: 'Returned',
+          severity: 'warn',
+        }
+      case 6:
+        return {
+          label: 'Refunded',
+          severity: 'success',
+        }
+      case 7:
+        return {
+          label: 'Completed',
+          severity: 'success',
         }
       default:
         return {
-          severity: 'secondary',
-          label: status.name,
+          label: 'Unknown',
+          severity: 'gray',
         }
     }
   }
