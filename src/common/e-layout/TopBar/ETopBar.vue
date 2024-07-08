@@ -5,7 +5,7 @@
   import { Theme } from 'src/stores/setting/types'
   import { appConfig } from 'src/stores'
   import { useAuthStore } from 'src/stores/auth'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { useCartStore } from 'src/stores/cart'
   import { useEProductStore } from 'src/stores/ecommerce/product'
@@ -21,6 +21,7 @@
   const settingStore = useSettingStore()
   const authStore = useAuthStore()
   const router = useRouter()
+  const route = useRoute()
 
   const props = defineProps({
     onToggleMenu: Function,
@@ -171,6 +172,13 @@
           :placeholder="$t('Search Product')"
           class="w-full"
           v-model="query"
+          @change="
+            () => {
+              if (route.name != 'eProducts') {
+                router.push({ name: 'eProducts' })
+              }
+            }
+          "
         />
       </IconField>
       <div class="flex align-items-center gap-3 mx-2">

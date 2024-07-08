@@ -22,12 +22,19 @@
   })
 </script>
 <template>
-  <div style="min-width: 20rem;">
+  <div style="min-width: 20rem">
     <TreeTable
       :value="dataSourceStore.productCategoryTree"
       v-model:selectionKeys="selectedKey"
       selection-mode="single"
       class="overflow-auto border-round"
+      @update:selection-keys="
+        () => {
+          if ($route.name != 'eProducts') {
+            $router.push({ name: 'eProducts' })
+          }
+        }
+      "
     >
       <Column
         field="name"

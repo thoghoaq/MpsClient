@@ -25,6 +25,8 @@ type Data = {
     email: string;
     displayName: string;
     photoUrl: string;
+    phoneNumber: string | null;
+    customerAddress: string | null;
 }
 
 export interface PayPalAuth {

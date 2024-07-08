@@ -33,6 +33,7 @@
   const productDetails = ref<Product>()
 
   onMounted(() => {
+    window.scrollTo(0, 0);
     eProductStore.fetchProductDetails(id).then((res) => {
       if (res.success) {
         productDetails.value = res.content
