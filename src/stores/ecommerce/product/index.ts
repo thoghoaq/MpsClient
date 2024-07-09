@@ -57,5 +57,12 @@ export const useEProductStore = defineStore({
           return response
         })
     },
+    async fetchFeedbacks(productId: string) {
+      return api
+        .get(appConfig.appendUrl(appConfig.api.ecommerce.feedbacks, { productId: productId}))
+        .then((response) => {
+          return response
+        })
+    },
   },
 })

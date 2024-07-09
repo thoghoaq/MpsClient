@@ -139,7 +139,13 @@
   }
 
   onMounted(() => {
-    isFilterByNearest.value = !(!eProductStore.filter.latitude || !eProductStore.filter.longitude)
+    isFilterByNearest.value = !(
+      !eProductStore.filter.latitude || !eProductStore.filter.longitude
+    )
+    selectedFilter.value =
+      filters.value.find((f) => eProductStore.filter.filterBy === f.id) ||
+      filters.value[0]
+    eProductStore.filter.categoriesId = null
   })
 </script>
 <template>
@@ -148,10 +154,11 @@
     <div>
       <ETopBar :on-toggle-menu="toggleMenu" />
       <div class="grid grid-nogutter justify-content-center gap-3 p-3">
-        <Category class="col-12 md:col-3 xl:col-2" v-if="!props.hideCategory"></Category>
-        <div
-          class="flex flex-column w-full col-12 md:col xl:col"
-        >
+        <Category
+          class="col-12 md:col-3 xl:col-2"
+          v-if="!props.hideCategory"
+        ></Category>
+        <div class="flex flex-column w-full col-12 md:col xl:col">
           <div class="bg-primary-reverse border-round mb-3">
             <Breadcrumb :model="getBreadcrum(router.currentRoute.value.path)">
               <template #item="{ item, props }">

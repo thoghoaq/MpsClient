@@ -7,6 +7,7 @@
   import NumberHelper from 'src/helpers/number-helper'
   import { useToastStore } from 'src/stores/toast'
   import { useI18n } from 'vue-i18n'
+  import { OrderStatus } from 'src/stores/types'
   const { t } = useI18n()
   const toast = useToastStore()
   const eOrderStore = useEOrderStore()
@@ -89,6 +90,7 @@
       productName,
     }
     state.rating = null
+    state.feedback = null
     visible.value = true
   }
 
@@ -211,7 +213,7 @@
                   ><span class="text-700 text-sm mb-3"
                     >{{ NumberHelper.formatCurrency(item.total) }}
                   </span>
-                  <Button v-if="!item.isFeedbacked"
+                  <Button v-if="!item.isFeedbacked && order.orderStatusId === OrderStatus.Completed"
                     :label="$t('Write a Review')"
                     outlined
                     class="w-10rem mx-auto lg:mx-0 border-round font-medium text-center border-1 border-primary text-primary"
@@ -304,6 +306,7 @@
             rows="5"
             auto-resize
             :placeholder="$t('Write your feedback')"
+            v-model="state.feedback"
           />
         </div>
         <div class="flex justify-content-end gap-2">

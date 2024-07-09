@@ -16,8 +16,8 @@
     >
       <Card
         v-ripple
-        class="w-ful overflow-hidden border-0 border-round shadow-none cursor-pointer"
-        style="min-width: 18rem"
+        class="w-full overflow-hidden border-0 border-round shadow-none cursor-pointer"
+        style="min-width: 18rem;"
       >
         <template #header>
           <Image alt="image">

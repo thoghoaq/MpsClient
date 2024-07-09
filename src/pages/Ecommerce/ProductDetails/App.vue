@@ -2,9 +2,10 @@
   import { ref, onMounted, watch } from 'vue'
   import { useEProductStore } from 'src/stores/ecommerce/product'
   import { useRoute } from 'vue-router'
-  import { Product } from 'src/stores/ecommerce/product/types'
+  import { Feedback, Product } from 'src/stores/ecommerce/product/types'
   import { useToastStore } from 'src/stores/toast'
   import NumberHelper from 'src/helpers/number-helper'
+  import DateTimeHelper from 'src/helpers/datetime-helper'
   import { useCartStore } from 'src/stores/cart'
   import { useI18n } from 'vue-i18n'
   import { useApi } from 'src/stores/api'
@@ -31,9 +32,10 @@
   const total = ref()
 
   const productDetails = ref<Product>()
+  const feedback = ref<Feedback>()
 
   onMounted(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0)
     eProductStore.fetchProductDetails(id).then((res) => {
       if (res.success) {
         productDetails.value = res.content
@@ -45,6 +47,13 @@
     api.post(appConfig.api.ecommerce.trackingProduct, {
       productId: [id],
       action: 1,
+    })
+    eProductStore.fetchFeedbacks(id).then((res) => {
+      if (res.success) {
+        feedback.value = res.content
+      } else {
+        toast.error(res.content)
+      }
     })
   })
 
@@ -68,7 +77,7 @@
   })
 </script>
 <template>
-  <ELayout>
+  <ELayout :hide-category="true">
     <template #page-content>
       <div class="grid">
         <div
@@ -151,6 +160,101 @@
                 <a href="">{{ $t('View detail') }}</a>
               </div>
             </div>
+            <div class="card p-4 bg-primary-reverse border-round flex flex-column gap-3">
+              <div class="text-xl font-bold pb-2">
+                {{ $t('PRODUCT FEEDBACKS') }}
+              </div>
+              <div
+                v-if="feedback"
+                class="p-4 grid align-items-center gap-5"
+              >
+                <div>
+                  <div class="flex align-items-center gap-2">
+                    <div class="text-2xl font-bold">
+                      {{ feedback?.averageRating }}
+                    </div>
+                    <Rating
+                      :model-value="feedback?.averageRating"
+                      :cancel="false"
+                      readonly
+                    />
+                  </div>
+                  <div>
+                    {{ `(${feedback?.total} ${$t('feedbacks')})` }}
+                  </div>
+                </div>
+                <div class="flex flex-column gap-2">
+                  <div class="flex gap-2">
+                    <Rating :model-value="5" :cancel="false" readonly />
+                    <div class="w-20rem">
+                      <ProgressBar
+                        :value="(feedback?.fiveStar / feedback?.total) * 100"
+                      >
+                        {{ feedback?.fiveStar }}
+                      </ProgressBar>
+                    </div>
+                  </div>
+                  <div class="flex gap-2">
+                    <Rating :model-value="4" :cancel="false" readonly />
+                    <div class="w-20rem">
+                      <ProgressBar
+                        :value="(feedback?.fourStar / feedback?.total) * 100"
+                      >
+                        {{ feedback?.fourStar }}
+                      </ProgressBar>
+                    </div>
+                  </div>
+                  <div class="flex gap-2">
+                    <Rating :model-value="3" :cancel="false" readonly />
+                    <div class="w-20rem">
+                      <ProgressBar
+                        :value="(feedback?.threeStar / feedback?.total) * 100"
+                      >
+                        {{ feedback?.threeStar }}
+                      </ProgressBar>
+                    </div>
+                  </div>
+                  <div class="flex gap-2">
+                    <Rating :model-value="2" :cancel="false" readonly />
+                    <div class="w-20rem">
+                      <ProgressBar
+                        :value="(feedback?.twoStar / feedback?.total) * 100"
+                      >
+                        {{ feedback?.twoStar }}
+                      </ProgressBar>
+                    </div>
+                  </div>
+                  <div class="flex gap-2">
+                    <Rating :model-value="1" :cancel="false" readonly />
+                    <div class="w-20rem">
+                      <ProgressBar
+                        :value="(feedback?.oneStar / feedback?.total) * 100"
+                      >
+                        {{ feedback?.oneStar }}
+                      </ProgressBar>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div v-for="post in feedback?.feedbacks" >
+                <div class="flex gap-2">
+                  <Avatar
+                    :image="post.user.avatarPath ?? 'https://via.placeholder.com/250'"
+                    shape="circle"
+                    size="large"
+                  ></Avatar>
+                  <div class="flex flex-column gap-2">
+                    <div>{{ post.user.fullName }}</div>
+                    <Rating :model-value="post.rating" :cancel="false" readonly />
+                    <div class="text-400">
+                      {{ DateTimeHelper.format(post.createdAt, 'datetime') }}
+                    </div>
+                    <div class="text-500">{{ post.feedback }}</div>
+                  </div>
+                </div>
+                <Divider></Divider>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-12 xl:col-3">
@@ -166,7 +270,9 @@
                     size="xlarge"
                   ></Avatar>
                 </div>
-                <div class="grid grid-nogutter align-items-center justify-content-between w-full gap-2">
+                <div
+                  class="grid grid-nogutter align-items-center justify-content-between w-full gap-2"
+                >
                   <div class="flex gap-2 align-items-center">
                     <i class="pi pi-shop text-xl"></i>
                     <span class="font-bold text-xl">{{
@@ -239,4 +345,3 @@
     </template>
   </ELayout>
 </template>
-src/stores/cart
