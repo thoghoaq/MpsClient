@@ -4,12 +4,15 @@ import { APIResponse } from 'src/stores/types'
 import { useApi } from 'src/stores/api'
 import { appConfig } from 'src/stores'
 const api = useApi()
+const DEFAULT_PAGE_SIZE = 24
 
 export const useEProductStore = defineStore({
   id: 'ecommerce-product',
   state: () => ({
     products: <Product[]>[],
     filter: <Filter>{},
+    pageSize: DEFAULT_PAGE_SIZE,
+    pageNumber: 1,
   }),
   actions: {
     async fetchProducts() {
@@ -50,6 +53,8 @@ export const useEProductStore = defineStore({
             filterBy: this.filter.filterBy,
             latitude: this.filter.latitude,
             longitude: this.filter.longitude,
+            pageNumber: this.pageNumber,
+            pageSize: this.pageSize,
           }),
         )
         .then((response: APIResponse<Product[]>) => {
@@ -59,10 +64,18 @@ export const useEProductStore = defineStore({
     },
     async fetchFeedbacks(productId: string) {
       return api
-        .get(appConfig.appendUrl(appConfig.api.ecommerce.feedbacks, { productId: productId}))
+        .get(
+          appConfig.appendUrl(appConfig.api.ecommerce.feedbacks, {
+            productId: productId,
+          }),
+        )
         .then((response) => {
           return response
         })
+    },
+    async loadMoreProducts() {
+      this.pageSize += DEFAULT_PAGE_SIZE
+      return this.filterProducts()
     },
   },
 })
