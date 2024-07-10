@@ -1,9 +1,10 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, watch } from 'vue'
   import ETopBar from './TopBar/ETopBar.vue'
   import { useI18n } from 'vue-i18n'
   import { useRouter } from 'vue-router'
   import { useEProductStore } from 'src/stores/ecommerce/product'
+  import { isMobile } from 'src/stores'
   const eProductStore = useEProductStore()
   const router = useRouter()
   const { t } = useI18n()
@@ -147,6 +148,8 @@
       filters.value[0]
     eProductStore.filter.categoriesId = null
   })
+
+  const cateVisible = ref(false)
 </script>
 <template>
   <header></header>
@@ -154,8 +157,15 @@
     <div>
       <ETopBar :on-toggle-menu="toggleMenu" />
       <div class="grid grid-nogutter justify-content-center gap-3 p-3">
+        <Sidebar v-if="isMobile" v-model:visible="cateVisible" class="w-25rem">
+          <Category
+            class="col-12 md:col-3 xl:col-2"
+            v-if="!props.hideCategory"
+          ></Category>
+        </Sidebar>
         <Category
           class="col-12 md:col-3 xl:col-2"
+          v-else
           v-if="!props.hideCategory"
         ></Category>
         <div class="flex flex-column w-full col-12 md:col xl:col">
@@ -186,10 +196,17 @@
             </Breadcrumb>
             <div v-if="props.viewProducts">
               <Divider class="m-0"></Divider>
-              <div class="flex justify-content-between align-items-center m-3">
-                <div class="font-bold text-lg">{{ $t('All products') }}</div>
-                <div class="flex gap-5">
-                  <div class="flex gap-2 align-items-center">
+              <div class="grid grid-nogutter justify-content-between align-items-center m-3 gap-3">
+                <div class="flex align-items-center gap-3">
+                  <Button
+                    v-if="isMobile"
+                    icon="pi pi-bars"
+                    @click="cateVisible = true"
+                  />
+                  <div class="font-bold text-lg">{{ $t('All products') }}</div>
+                </div>
+                <div class="grid grid-nogutter gap-3">
+                  <div class="flex gap-2 sm:justify-content-between align-items-center">
                     <span>{{ $t('Search by') }}</span>
                     <Button
                       :label="$t('Nearest Shop')"
@@ -199,7 +216,7 @@
                       @click="onSearchNearest"
                     />
                   </div>
-                  <div class="flex gap-2 align-items-center">
+                  <div class="flex gap-2 sm:justify-content-between align-items-center">
                     <span>{{ $t('Accordion') }}</span>
                     <Dropdown
                       v-model="selectedFilter"

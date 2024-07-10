@@ -23,6 +23,7 @@
           v-else
           v-for="product in eProductStore.products"
           :product="product"
+          class="col-5 md:col lg:col xl:col"
         ></ProductItem>
         <div v-if="eProductStore.products.length > 0">
           <Button

@@ -156,32 +156,32 @@
 </script>
 <template>
   <div class="card w-full bg-primary-reverse">
-    <div
-      class="flex h-10rem align-items-center justify-content-between mx-3 gap-3"
-    >
+    <div class="grid align-items-center justify-content-between mx-3 p-3 py-5 gap-3">
       <router-link to="/" style="text-decoration: none">
-        <div class="flex align-items-center gap-3 mx-4">
+        <div class="flex align-items-center gap-3">
           <Button link label="MPC" class="text-lg">
-            <h1>MPC</h1>
+            <div class="text-5xl font-bold">MPC</div>
           </Button>
         </div>
       </router-link>
-      <IconField iconPosition="right" class="w-full">
-        <InputIcon class="pi pi-search"> </InputIcon>
-        <InputText
-          :placeholder="$t('Search Product')"
-          class="w-full"
-          v-model="query"
-          @change="
-            () => {
-              if (route.name != 'eProducts') {
-                router.push({ name: 'eProducts' })
+      <div class="col">
+        <IconField iconPosition="right">
+          <InputIcon class="pi pi-search"> </InputIcon>
+          <InputText
+            :placeholder="$t('Search Product')"
+            class="w-full"
+            v-model="query"
+            @change="
+              () => {
+                if (route.name != 'eProducts') {
+                  router.push({ name: 'eProducts' })
+                }
               }
-            }
-          "
-        />
-      </IconField>
-      <div class="flex align-items-center gap-3 mx-2">
+            "
+          />
+        </IconField>
+      </div>
+      <div class="flex align-items-center gap-3">
         <Button
           icon="pi pi-shopping-cart"
           class="p-button-rounded p-button-text"
