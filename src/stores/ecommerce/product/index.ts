@@ -77,5 +77,16 @@ export const useEProductStore = defineStore({
       this.pageSize += DEFAULT_PAGE_SIZE
       return this.filterProducts()
     },
+    async getSimilarProducts(productId: string) {
+      return api
+        .get(
+          appConfig.appendUrl(appConfig.api.ecommerce.similar, {
+            productId: productId,
+          }),
+        )
+        .then((response) => {
+          return response
+        })
+    },
   },
 })

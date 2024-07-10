@@ -33,6 +33,7 @@
 
   const productDetails = ref<Product>()
   const feedback = ref<Feedback>()
+  const similarProducts = ref<Product[]>([])
 
   onMounted(() => {
     window.scrollTo(0, 0)
@@ -51,6 +52,13 @@
     eProductStore.fetchFeedbacks(id).then((res) => {
       if (res.success) {
         feedback.value = res.content
+      } else {
+        toast.error(res.content)
+      }
+    })
+    eProductStore.getSimilarProducts(id).then((res) => {
+      if (res.success) {
+        similarProducts.value = res.content
       } else {
         toast.error(res.content)
       }
@@ -75,16 +83,65 @@
   watch(quantity, (value) => {
     total.value = (productDetails.value?.price ?? 0) * value
   })
+
+  const responsiveOptions2 = ref([
+    {
+      breakpoint: '1400px',
+      numVisible: 2,
+      numScroll: 1,
+    },
+    {
+      breakpoint: '1199px',
+      numVisible: 3,
+      numScroll: 1,
+    },
+    {
+      breakpoint: '767px',
+      numVisible: 2,
+      numScroll: 1,
+    },
+    {
+      breakpoint: '575px',
+      numVisible: 1,
+      numScroll: 1,
+    },
+  ])
+
+  const reload = (id: string) => {
+    window.scrollTo(0, 0)
+    eProductStore.fetchProductDetails(id).then((res) => {
+      if (res.success) {
+        productDetails.value = res.content
+        total.value = productDetails.value?.price ?? 0
+      } else {
+        toast.error(res.content)
+      }
+    })
+    eProductStore.fetchFeedbacks(id).then((res) => {
+      if (res.success) {
+        feedback.value = res.content
+      } else {
+        toast.error(res.content)
+      }
+    })
+    eProductStore.getSimilarProducts(id).then((res) => {
+      if (res.success) {
+        similarProducts.value = res.content
+      } else {
+        toast.error(res.content)
+      }
+    })
+  }
 </script>
 <template>
   <ELayout :hide-category="true">
     <template #page-content>
-      <div class="grid">
+      <div class="lg:flex grid">
         <div
-          class="col-12 xl:col-4"
+          class="col-12 xl:col-4 xl:sticky top-0"
           v-if="productDetails?.images && productDetails?.images.length > 0"
         >
-          <div class="card p-3 bg-primary-reverse border-round">
+          <div class="p-3 bg-primary-reverse border-round">
             <Galleria
               :value="
                 productDetails?.images.map((image, index) => ({
@@ -134,8 +191,11 @@
               ? 'col-12 xl:col-5'
               : 'col'
           "
+          class="xl:flex xl:flex-auto gap-3"
         >
-          <div class="flex flex-column gap-3">
+          <div
+            class="xl:max-h-screen hide-scroll p-0 overflow-y-auto flex flex-column gap-3 content col mb-3 xl:mb-0"
+          >
             <div class="card px-4 bg-primary-reverse border-round">
               <h2>{{ productDetails?.name }}</h2>
               <h2 class="text-red-500">
@@ -160,14 +220,13 @@
                 <a href="">{{ $t('View detail') }}</a>
               </div>
             </div>
-            <div class="card p-4 bg-primary-reverse border-round flex flex-column gap-3">
+            <div
+              class="card p-4 bg-primary-reverse border-round flex flex-column gap-3"
+            >
               <div class="text-xl font-bold pb-2">
                 {{ $t('PRODUCT FEEDBACKS') }}
               </div>
-              <div
-                v-if="feedback"
-                class="p-4 grid align-items-center gap-5"
-              >
+              <div v-if="feedback" class="p-4 grid align-items-center gap-5">
                 <div>
                   <div class="flex align-items-center gap-2">
                     <div class="text-2xl font-bold">
@@ -236,16 +295,22 @@
                   </div>
                 </div>
               </div>
-              <div v-for="post in feedback?.feedbacks" >
+              <div v-for="post in feedback?.feedbacks">
                 <div class="flex gap-2">
                   <Avatar
-                    :image="post.user.avatarPath ?? 'https://via.placeholder.com/250'"
+                    :image="
+                      post.user.avatarPath ?? 'https://via.placeholder.com/250'
+                    "
                     shape="circle"
                     size="large"
                   ></Avatar>
                   <div class="flex flex-column gap-2">
                     <div>{{ post.user.fullName }}</div>
-                    <Rating :model-value="post.rating" :cancel="false" readonly />
+                    <Rating
+                      :model-value="post.rating"
+                      :cancel="false"
+                      readonly
+                    />
                     <div class="text-400">
                       {{ DateTimeHelper.format(post.createdAt, 'datetime') }}
                     </div>
@@ -255,11 +320,54 @@
                 <Divider></Divider>
               </div>
             </div>
+            <div
+              class="card p-4 bg-primary-reverse border-round flex flex-column gap-3"
+            >
+              <div class="text-xl font-bold pb-2">
+                {{ $t('SIMILAR PRODUCTS') }}
+              </div>
+              <Carousel
+                :value="similarProducts"
+                :numVisible="3"
+                :numScroll="3"
+                :responsiveOptions="responsiveOptions2"
+              >
+                <template #item="slotProps">
+                  <div class="border-1 surface-border border-round m-2 p-3">
+                    <div class="cursor-pointer" @click="reload(slotProps.data.id)">
+                      <div class="mb-3">
+                        <div class="relative mx-auto">
+                          <img
+                            :src="
+                              slotProps.data.images[0]?.imagePath ??
+                              'https://via.placeholder.com/200x250'
+                            "
+                            :alt="slotProps.data.name"
+                            class="w-full h-18rem border-round"
+                            style="object-fit: cover;"
+                          />
+                        </div>
+                      </div>
+                      <div class="mb-3 font-medium text-2-line">
+                        {{ slotProps.data.name }}
+                      </div>
+                      <div
+                        class="flex justify-content-between align-items-center"
+                      >
+                        <div class="mt-0 font-semibold text-xl text-red-500">
+                          {{
+                            NumberHelper.formatCurrency(slotProps.data.price)
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </Carousel>
+            </div>
           </div>
-        </div>
-        <div class="col-12 xl:col-3">
-          <div class="flex flex-column gap-3">
-            <div class="card p-3 bg-primary-reverse border-round">
+          <div class="xl:sticky top-0 xl:col-4 flex flex-column gap-3 p-0">
+            <div class="p-3 bg-primary-reverse border-round">
               <div
                 class="flex align-items-center justify-content-between gap-3"
               >
@@ -345,3 +453,12 @@
     </template>
   </ELayout>
 </template>
+<style scoped lang="css">
+  .hide-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .hide-scroll::-webkit-scrollbar {
+    display: none;
+  }
+</style>

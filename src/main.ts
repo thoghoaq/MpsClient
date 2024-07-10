@@ -55,6 +55,7 @@ import SplitButton from 'primevue/splitbutton'
 import OverlayPanel from 'primevue/overlaypanel'
 import Rating from 'primevue/rating'
 import ProgressBar from 'primevue/progressbar'
+import Carousel from 'primevue/carousel'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -142,6 +143,7 @@ app.component('SplitButton', SplitButton)
 app.component('OverlayPanel', OverlayPanel)
 app.component('Rating', Rating)
 app.component('ProgressBar', ProgressBar)
+app.component('Carousel', Carousel)
 
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)

@@ -59,6 +59,7 @@ export interface AppConfig {
             trackingProduct: string;
             feedback: string;
             feedbacks: string;
+            similar: string;
         },
         payment: {
             details: string;
