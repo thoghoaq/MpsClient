@@ -72,6 +72,9 @@ export interface AppConfig {
                 customerInfo: string;
             }
         },
+        setting: {
+            base: string;
+        }
     },
     loggedUser: User,
     appendUrl: (url: string, params?: any) => string;

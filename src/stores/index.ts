@@ -37,6 +37,7 @@ const controllers = {
     shop: '/shop',
     ecommerce: '/ecommerce',
     payment: '/payment',
+    setting: '/setting',
 }
 
 const getLoggedUser = function () {
@@ -114,6 +115,9 @@ export const appConfig : AppConfig = {
                 auth: `${paypalUrl}/oauth2/token`,
                 customerInfo: `${paypalUrl}/identity/oauth2/userinfo`,
             }
+        },
+        setting: {
+            base: getUrl(controllers.setting)
         }
     },
     loggedUser: getLoggedUser(),

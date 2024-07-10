@@ -43,19 +43,25 @@
           route: '/admin/product-categories',
           visible: appConfig.loggedUser.isManagerGroup,
         },
+        {
+          label: 'Settings',
+          icon: 'pi pi-cog',
+          route: '/admin/settings',
+          visible: appConfig.loggedUser.isAdminGroup,
+        }
       ],
     },
     {
       label: 'Business',
       visible: appConfig.loggedUser.isManagerGroup,
       items: [
-      {
+        {
           label: 'Refund Revenue',
           icon: 'pi pi-paypal',
           route: '/business/refund',
           visible: appConfig.loggedUser.isManagerGroup,
-        },
-      ]
+        }
+      ],
     },
     {
       label: 'Seller Channel',
@@ -76,7 +82,7 @@
       label: 'Manage Shop',
       visible: appConfig.loggedUser.isShopOwner,
       items: [
-      {
+        {
           label: 'Overview',
           icon: 'pi pi-chart-bar',
           route: `/seller/shop-overview/${appConfig.loggedUser.shopManaging?.id}`,
@@ -98,7 +104,7 @@
           label: 'Information',
           icon: 'pi pi-user-edit',
           visible: appConfig.loggedUser.isShopOwner,
-        }
+        },
       ],
     },
   ])
@@ -116,9 +122,14 @@
     >
       <template #start>
         <span class="flex align-items-center">
-           <Button v-if="appConfig.loggedUser.shopManaging" class="h-2rem mx-2" outlined @click="backToHome">
-              <i class="pi pi-home"></i>
-           </Button>
+          <Button
+            v-if="appConfig.loggedUser.shopManaging"
+            class="h-2rem mx-2"
+            outlined
+            @click="backToHome"
+          >
+            <i class="pi pi-home"></i>
+          </Button>
           <router-link to="/">
             <span class="inline-flex align-items-center gap-1 px-2 py-4">
               <span

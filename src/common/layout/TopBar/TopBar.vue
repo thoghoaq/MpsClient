@@ -159,6 +159,12 @@
           label: t('Overview'),
           class: 'm-0',
         }
+      case 'settings':
+        return {
+          label: t('Settings'),
+          route: '/admin/settings',
+          class: 'm-0',
+        }
       default:
         return {
           label: item,
