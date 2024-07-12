@@ -202,11 +202,6 @@
             <span>{{ NumberHelper.formatCurrency(data.revenue ?? 0) }}</span>
           </template>
         </Column>
-        <Column field="discount" :header="$t('Revenue Discount')">
-          <template #body="{ data }">
-            <span>{{ NumberHelper.displayPercentage(data.discount) }}</span>
-          </template>
-        </Column>
         <Column field="expectPayout" :header="$t('Expect Payout')" sortable>
           <template #body="{ data }">
             <span>{{
