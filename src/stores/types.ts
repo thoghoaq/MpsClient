@@ -17,6 +17,7 @@ export interface AppConfig {
         account: {
             login: string;
             refresh: string;
+            loggedUser: string;
             all: string;
             register: string;
             details: string;

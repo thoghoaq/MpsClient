@@ -194,5 +194,32 @@ export const useAuthStore = defineStore({
           }
         })
     },
+    async getLoggedUser() {
+      return api
+        .get(appConfig.api.account.loggedUser)
+        .then((response) => {
+          this.auth!.user = response.content
+          localStorage.setItem('auth', JSON.stringify(this.auth))
+          return response
+        })
+        .catch((error: AxiosError<any, any>) => {
+          if (error.response) {
+            return {
+              success: false,
+              content:
+                error.response.data['reason'] ||
+                error.response.data['message'] ||
+                error.response.data ||
+                error.response.status,
+              status: error.response.status,
+            }
+          }
+          return {
+            success: false,
+            content: error.message || 'Internal Server Error',
+            status: error.status,
+          }
+        })
+    },
   },
 })

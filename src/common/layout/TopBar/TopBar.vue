@@ -165,6 +165,11 @@
           route: '/admin/settings',
           class: 'm-0',
         }
+      case 'profile':
+        return {
+          label: t('Profile'),
+          class: 'm-0',
+        }
       default:
         return {
           label: item,
@@ -349,12 +354,22 @@
       <div>
         <div class="font-bold text-lg mb-2">{{ $t('Hello') }}</div>
         <div class="mb-4">{{ appConfig.loggedUser.data.displayName }}</div>
-        <Button severity="danger" class="w-full" outlined @click="logout">
-          <i class="pi pi-power-off px-2"></i>
-          <div class="flex flex-column text-left m-3">
-            <span>{{ $t('Sign Out') }}</span>
-          </div>
-        </Button>
+        <div class="flex flex-column gap-3">
+          <router-link to="/profile">
+              <Button severity="primary" class="w-full" outlined>
+                <i class="pi pi-user-edit px-2"></i>
+                <div class="flex flex-column text-left m-3">
+                  <span>{{ $t('Profile') }}</span>
+                </div>
+              </Button>
+            </router-link>
+          <Button severity="danger" class="w-full" outlined @click="logout">
+            <i class="pi pi-power-off px-2"></i>
+            <div class="flex flex-column text-left m-3">
+              <span>{{ $t('Sign Out') }}</span>
+            </div>
+          </Button>
+        </div>
       </div>
     </Sidebar>
   </div>

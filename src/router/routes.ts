@@ -2,6 +2,7 @@ import Home from '../pages/Home/App.vue'
 import SignIn from '../pages/SignIn/App.vue'
 import SignUp from '../pages/SignUp/App.vue'
 import PasswordReset from '../pages/PasswordReset/App.vue'
+import Profile from '../pages/Profile/App.vue'
 
 /** Administrator */
 import Staffs from '../pages/Admin/Staffs/App.vue'
@@ -144,4 +145,9 @@ export const routes = [
     name: 'eOrders',
     component: EOrders,
   },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile,
+  }
 ]

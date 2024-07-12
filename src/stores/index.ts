@@ -55,7 +55,7 @@ const getLoggedUser = function () {
 }
 
 export const windowSize = ref(window.innerWidth)
-export const isMobile = ref(false)
+export const isMobile = ref(window.innerWidth <= 768)
 
 window.addEventListener('resize', () => {
   windowSize.value = window.innerWidth
@@ -70,6 +70,7 @@ export const appConfig: AppConfig = {
       login: getControllerUrl('login', controllers.account),
       refresh: getControllerUrl('refresh', controllers.account),
       all: getControllerUrl('all', controllers.account),
+      loggedUser: getControllerUrl('logged-user', controllers.account),
       register: getControllerUrl('register', controllers.account),
       details: getControllerUrl('details', controllers.account),
       update: getControllerUrl('update', controllers.account),

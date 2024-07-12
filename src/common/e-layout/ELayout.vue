@@ -63,6 +63,12 @@
           class: 'm-0',
         }
       }
+      case 'profile': {
+        return {
+          label: t('Profile'),
+          class: 'm-0',
+        }
+      }
       default:
         return {
           label: item,
@@ -196,7 +202,9 @@
             </Breadcrumb>
             <div v-if="props.viewProducts">
               <Divider class="m-0"></Divider>
-              <div class="grid grid-nogutter justify-content-between align-items-center m-3 gap-3">
+              <div
+                class="grid grid-nogutter justify-content-between align-items-center m-3 gap-3"
+              >
                 <div class="flex align-items-center gap-3">
                   <Button
                     v-if="isMobile"
@@ -206,7 +214,9 @@
                   <div class="font-bold text-lg">{{ $t('All products') }}</div>
                 </div>
                 <div class="grid grid-nogutter gap-3">
-                  <div class="flex gap-2 sm:justify-content-between align-items-center">
+                  <div
+                    class="flex gap-2 sm:justify-content-between align-items-center"
+                  >
                     <span>{{ $t('Search by') }}</span>
                     <Button
                       :label="$t('Nearest Shop')"
@@ -216,7 +226,9 @@
                       @click="onSearchNearest"
                     />
                   </div>
-                  <div class="flex gap-2 sm:justify-content-between align-items-center">
+                  <div
+                    class="flex gap-2 sm:justify-content-between align-items-center"
+                  >
                     <span>{{ $t('Accordion') }}</span>
                     <Dropdown
                       v-model="selectedFilter"
