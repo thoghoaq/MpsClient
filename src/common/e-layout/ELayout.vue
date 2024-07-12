@@ -235,6 +235,7 @@
           <slot name="page-content"></slot>
         </div>
       </div>
+      <ScrollTop />
     </div>
   </main>
 </template>

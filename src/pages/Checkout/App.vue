@@ -50,18 +50,18 @@
         }
       })
     orderItems.value = orderItems.value.concat([
-      {
-        product: t('Discount'),
-        provisional: '',
-        productClass: 'font-semibold',
-        provisionalClass: 'font-semibold',
-      },
-      {
-        product: t('VAT'),
-        provisional: '',
-        productClass: 'font-semibold',
-        provisionalClass: 'font-semibold',
-      },
+      // {
+      //   product: t('Discount'),
+      //   provisional: '',
+      //   productClass: 'font-semibold',
+      //   provisionalClass: 'font-semibold',
+      // },
+      // {
+      //   product: t('VAT'),
+      //   provisional: '',
+      //   productClass: 'font-semibold',
+      //   provisionalClass: 'font-semibold',
+      // },
       {
         product: t('Total'),
         provisional: NumberHelper.formatCurrency(cartStore.calculateTotal()),
@@ -219,7 +219,7 @@
             @blur="v$.paymentMethod.$touch"
           >
           </Dropdown>
-          <DataTable :value="[{ row: 1 }]">
+          <DataTable :value="[{ row: 1 }]" v-if="false">
             <Column>
               <template #header>
                 <div class="flex gap-3 align-items-center">

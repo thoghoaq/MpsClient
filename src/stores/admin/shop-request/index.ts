@@ -6,7 +6,7 @@ const api = useApi()
 export const useShopRequestStore = defineStore({
   id: 'shopRequest',
   state: () => ({
-    shops: [] as Shop[],
+    shops: [] as Shop[]
   }),
   actions: {
     async fetchShops() {

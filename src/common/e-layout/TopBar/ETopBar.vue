@@ -134,10 +134,6 @@
   watch(scale, (value) => {
     settingStore.changeScale(value)
   })
-  watch(query, (value) => {
-    eProductStore.filter.query = value
-    eProductStore.filterProducts()
-  })
 
   onMounted(() => {
     query.value = eProductStore.filter.query
@@ -156,7 +152,9 @@
 </script>
 <template>
   <div class="card w-full bg-primary-reverse">
-    <div class="grid align-items-center justify-content-between mx-3 p-3 py-5 gap-3">
+    <div
+      class="grid align-items-center justify-content-between mx-3 p-3 py-5 gap-3"
+    >
       <router-link to="/" style="text-decoration: none">
         <div class="flex align-items-center gap-3">
           <Button link label="MPC" class="text-lg">
@@ -173,6 +171,8 @@
             v-model="query"
             @change="
               () => {
+                eProductStore.filter.query = query
+                eProductStore.filterProducts()
                 if (route.name != 'eProducts') {
                   router.push({ name: 'eProducts' })
                 }

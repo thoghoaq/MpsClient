@@ -12,20 +12,28 @@
   <ELayout :view-products="true">
     <template #page-content>
       <div
-        class="grid grid-nogutter gap-5 w-full border-round overflow-auto bg-primary-reverse p-5 justify-content-center align-items-center"
+        class="w-full border-round overflow-auto bg-primary-reverse p-5"
       >
-        <div v-if="eProductStore.products.length <= 0" style="width: 60rem">
-          <div class="bg-primary-reverse p-4 text-center">
-            {{ $t('No products found.') }}
+        <div
+          class="grid grid-nogutter gap-5 justify-content-center align-items-center"
+        >
+          <div v-if="eProductStore.products.length <= 0" style="width: 60rem">
+            <div class="bg-primary-reverse p-4 text-center">
+              {{ $t('No products found.') }}
+            </div>
           </div>
+          <ProductItem
+            v-else
+            v-for="product in eProductStore.products"
+            :product="product"
+            class="col-5 md:col lg:col xl:col"
+            style="max-width: 25rem"
+          ></ProductItem>
         </div>
-        <ProductItem
-          v-else
-          v-for="product in eProductStore.products"
-          :product="product"
-          class="col-5 md:col lg:col xl:col"
-        ></ProductItem>
-        <div v-if="eProductStore.products.length > 0">
+        <div
+          v-if="eProductStore.products.length > 0"
+          class="grid grid-nogutter align-items-center justify-content-center"
+        >
           <Button
             :label="$t('Load more')"
             class="w-12rem"

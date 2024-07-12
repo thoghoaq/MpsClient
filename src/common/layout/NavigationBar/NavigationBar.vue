@@ -1,7 +1,9 @@
 <script setup lang="ts">
   import { appConfig } from 'src/stores'
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
+  import { useShopRequestStore } from 'src/stores/admin/shop-request'
+  const shopRequestStore = useShopRequestStore()
   const router = useRouter()
   const props = defineProps({
     visible: Boolean,
@@ -30,6 +32,7 @@
           icon: 'pi pi-envelope',
           route: '/admin/shop-request',
           visible: appConfig.loggedUser.isManagerGroup,
+          badge: shopRequestStore.shops.length,
         },
         {
           label: 'Manage Customers',
@@ -48,7 +51,7 @@
           icon: 'pi pi-cog',
           route: '/admin/settings',
           visible: appConfig.loggedUser.isAdminGroup,
-        }
+        },
       ],
     },
     {
@@ -60,7 +63,7 @@
           icon: 'pi pi-paypal',
           route: '/business/refund',
           visible: appConfig.loggedUser.isManagerGroup,
-        }
+        },
       ],
     },
     {
@@ -113,6 +116,20 @@
     appConfig.loggedUser.shopManaging = undefined
     router.push('/')
   }
+
+  onMounted(() => {
+    if (appConfig.loggedUser.isManagerGroup) {
+      var parent = items.value.find(
+        (item) => item.label === 'Administrator',
+      ).items
+      var item = parent.find((i: any) => i.label === 'New Shop Request')
+      if (item) {
+        shopRequestStore.fetchShops().then(() => {
+          item.badge = shopRequestStore.shops.length
+        })
+      }
+    }
+  })
 </script>
 <template>
   <div v-if="props.visible" class="card flex justify-content-center h-screen">
