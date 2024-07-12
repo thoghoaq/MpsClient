@@ -23,7 +23,7 @@
   const rules = {
     displayName: { required },
     email: { required, email },
-    phoneNumber: { required, minLength: minLength(8) },
+    phoneNumber: { required, minLength: minLength(10) },
     address: {},
   }
 
@@ -88,7 +88,119 @@
     "
   >
     <template #page-content>
-      <div></div>
+      <div class="bg-primary-reverse border-round p-5">
+        <span class="block text-900 font-bold text-xl mb-4">{{
+          state.displayName
+        }}</span>
+        <div class="grid">
+          <div class="col-12 lg:col-8">
+            <div class="flex flex-column gap-2">
+              <label class="required" for="avatar">{{ $t('Avatar') }}</label>
+              <FileUpload
+                name="demo[]"
+                :preview-width="100"
+                :custom-upload="true"
+                @uploader="onUploadAvatar"
+                :multiple="false"
+                :auto="true"
+                :chooseLabel="state.avatarFile ? $t('Change') : $t('Upload')"
+                :choose-icon="state.avatarFile ? 'pi pi-pencil' : 'pi pi-plus'"
+                :show-upload-button="false"
+                :show-cancel-button="false"
+                accept="image/*"
+                :maxFileSize="2000000"
+              >
+                <template #empty>
+                  <div class="card flex" v-if="state.avatarFile">
+                    <Image
+                      :src="state.avatarFile"
+                      alt="Avatar"
+                      width="250"
+                      preview
+                    />
+                  </div>
+                  <div
+                    v-else
+                    class="flex align-items-center justify-content-center flex-column"
+                  >
+                    <i
+                      class="pi pi-cloud-upload border-2 border-circle p-5 text-8xl text-400 border-400"
+                    />
+                    <p class="mt-4 mb-4">
+                      {{ $t('Drag and drop files to here to upload.') }}
+                    </p>
+                  </div>
+                </template>
+              </FileUpload>
+            </div>
+          </div>
+          <div class="col-12 lg:col-4 flex flex-column gap-3">
+            <div class="flex flex-column gap-2">
+              <label class="required" for="displayName">{{ $t('Name') }}</label>
+              <InputText
+                class="w-full"
+                :placeholder="$t('Name')"
+                v-model="state.displayName"
+                :invalid="$v.displayName.$error"
+                @blur="$v.displayName.$touch"
+              />
+              <small class="p-error" v-if="$v.displayName.$error">{{
+                $t($v.displayName.$errors[0]?.$message?.toString())
+              }}</small>
+            </div>
+            <div class="flex flex-column gap-2">
+              <label class="required" for="email">{{ 'Email' }}</label>
+              <InputText
+                class="w-full"
+                :placeholder="'Email'"
+                v-model="state.email"
+                :invalid="$v.email.$error"
+                @blur="$v.email.$touch"
+                :disabled="true"
+              />
+              <small class="p-error" v-if="$v.email.$error">{{
+                $t($v.email.$errors[0]?.$message?.toString())
+              }}</small>
+            </div>
+            <div class="flex flex-column gap-2">
+              <label class="required" for="phoneNumber">{{
+                $t('Phone Number')
+              }}</label>
+              <InputText
+                class="w-full"
+                :placeholder="$t('Phone Number')"
+                v-model="state.phoneNumber"
+                :invalid="$v.phoneNumber.$error"
+                @blur="$v.phoneNumber.$touch"
+              />
+              <small class="p-error" v-if="$v.phoneNumber.$error">{{
+                $t($v.phoneNumber.$errors[0]?.$message?.toString())
+              }}</small>
+            </div>
+            <div class="flex flex-column gap-2">
+              <label for="address">{{ $t('Address') }}</label>
+              <InputText
+                class="w-full"
+                :placeholder="$t('Address')"
+                v-model="state.address"
+                :invalid="$v.address.$error"
+                @blur="$v.address.$touch"
+              />
+              <small class="p-error" v-if="$v.address.$error">{{
+                $t($v.address.$errors[0]?.$message?.toString())
+              }}</small>
+            </div>
+            <div class="flex">
+              <Button
+                :label="$t('Save')"
+                class="w-full"
+                :disabled="$v.$invalid"
+                @click="saveProfile"
+              ></Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
   </Layout>
   <ELayout :hide-category="true" v-else>
