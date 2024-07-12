@@ -10,7 +10,7 @@
   })
 </script>
 <template>
-  <div class="bg-primary-reverse col">
+  <div class="bg-primary-reverse">
     <router-link
       :to="`/ecommerce/products/${props.product.id}`"
       class="no-underline"

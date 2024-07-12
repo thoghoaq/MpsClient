@@ -147,6 +147,11 @@
               <Button :label="$t('Sign up')" link class="p-0 text-primary" />
             </router-link>
           </div>
+          <div class="mt-3">
+            <router-link to="/">
+              <Button :label="$t('Home')" link class="p-0 text-primary" />
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
