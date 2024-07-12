@@ -12,10 +12,10 @@
   <ELayout :view-products="true">
     <template #page-content>
       <div
-        class="w-full border-round overflow-auto bg-primary-reverse p-5"
+        class="border-round overflow-auto bg-primary-reverse p-5"
       >
         <div
-          class="grid grid-nogutter gap-5 justify-content-center align-items-center"
+          class="grid grid-nogutter gap-5 justify-content-start align-items-center"
         >
           <div v-if="eProductStore.products.length <= 0" style="width: 60rem">
             <div class="bg-primary-reverse p-4 text-center">
@@ -27,7 +27,7 @@
             v-for="product in eProductStore.products"
             :product="product"
             class="col-5 md:col lg:col xl:col"
-            style="max-width: 25rem"
+            style="max-width: 20rem;"
           ></ProductItem>
         </div>
         <div
