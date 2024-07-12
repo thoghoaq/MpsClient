@@ -25,7 +25,7 @@
               <img
                 :src="
                   props.product.images[0]?.imagePath ??
-                  'https://via.placeholder.com/200x250'
+                  'https://via.placeholder.com/200'
                 "
                 class="h-12rem md:h-20rem w-full"
                 style="object-fit: cover"
