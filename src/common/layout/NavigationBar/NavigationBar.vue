@@ -147,14 +147,17 @@
           >
             <i class="pi pi-home"></i>
           </Button>
-          <router-link to="/">
+          <span
+            class="inline-flex align-items-center gap-1 px-2 py-4"
+            v-if="appConfig.loggedUser.shopManaging"
+          >
+            <span class="font-medium text-xl font-semibold">{{
+              appConfig.loggedUser.shopManaging.shopName
+            }}</span>
+          </span>
+          <router-link v-else to="/">
             <span class="inline-flex align-items-center gap-1 px-2 py-4">
-              <span
-                v-if="appConfig.loggedUser.shopManaging"
-                class="font-medium text-xl font-semibold"
-                >{{ appConfig.loggedUser.shopManaging.shopName }}</span
-              >
-              <span v-else class="font-medium text-xl font-semibold"
+              <span class="font-medium text-xl font-semibold"
                 >MPC<span class="text-primary">Admin</span></span
               >
             </span>

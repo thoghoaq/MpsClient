@@ -138,7 +138,7 @@
     <template #page-content>
       <div class="lg:flex grid">
         <div
-          class="col-12 xl:col-4 xl:sticky top-0"
+          class="col-12 xl:col-4"
           v-if="productDetails?.images && productDetails?.images.length > 0"
         >
           <div class="p-3 bg-primary-reverse border-round">
@@ -194,7 +194,7 @@
           class="xl:flex xl:flex-auto gap-3"
         >
           <div
-            class="xl:max-h-screen hide-scroll p-0 overflow-y-auto flex flex-column gap-3 content col mb-3 xl:mb-0"
+            class="p-0 overflow-y-auto flex flex-column gap-3 content col mb-3 xl:mb-0"
           >
             <div class="card px-4 bg-primary-reverse border-round">
               <h2>{{ productDetails?.name }}</h2>
