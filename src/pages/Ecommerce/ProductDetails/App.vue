@@ -211,7 +211,7 @@
                 class="overflow-auto"
               ></div>
             </div>
-            <div class="card p-4 bg-primary-reverse border-round">
+            <div class="card p-4 bg-primary-reverse border-round" v-if="false">
               <div class="text-xl font-bold pb-2">
                 {{ $t('Guarantee Information') }}
               </div>
