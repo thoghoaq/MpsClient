@@ -7,7 +7,7 @@
   import NumberHelper from 'src/helpers/number-helper'
   import { useI18n } from 'vue-i18n'
   import { useToastStore } from 'src/stores/toast'
-  import { appConfig } from 'src/stores'
+  import { appConfig, isMobile } from 'src/stores'
   import { EPaymentMethod } from 'src/stores/types'
   import { useRouter } from 'vue-router'
   const toast = useToastStore()
@@ -20,7 +20,7 @@
     phoneNumber: '',
     email: appConfig.loggedUser.data.email,
     note: '',
-    paymentMethod: { label: "VnPay", value: EPaymentMethod.VnPay },
+    paymentMethod: { label: 'VnPay', value: EPaymentMethod.VnPay },
     voucherCode: '',
   })
 
@@ -71,9 +71,7 @@
     ])
   })
 
-  const paymentMethods = ref([
-    { label: "VnPay", value: EPaymentMethod.VnPay },
-  ])
+  const paymentMethods = ref([{ label: 'VnPay', value: EPaymentMethod.VnPay }])
 
   const submitOrder = function () {
     v$.value.$touch()
@@ -105,9 +103,9 @@
   <ELayout :hide-category="true">
     <template #page-content>
       <div
-        class="bg-primary-reverse w-full grid grid-nogutter p-6 gap-6 border-round"
+        class="bg-primary-reverse w-full grid grid-nogutter p-4 lg:p-6 gap-4 lg:gap-6 border-round"
       >
-        <div class="flex flex-column w-full gap-6 col">
+        <div class="flex flex-column w-full gap-4 lg:gap-6 col">
           <div class="flex flex-column gap-3">
             <div class="text-lg font-bold">
               {{ $t('CHECK OUT INFORMATION') }}
@@ -178,7 +176,7 @@
               />
             </div>
           </div>
-          <router-link to="/cart">
+          <router-link to="/cart" v-if="!isMobile">
             <Button
               :label="$t('Back to cart')"
               icon="pi pi-arrow-left"
@@ -187,7 +185,7 @@
           </router-link>
         </div>
         <div
-          class="col-4 border-round border-1 border-200 p-4 flex flex-column gap-3"
+          class="col-12 lg:col-4 border-round border-1 border-200 p-4 flex flex-column gap-3"
         >
           <div class="text-lg font-bold mx-3">{{ $t('YOUR ORDER') }}</div>
           <DataTable :value="orderItems">
@@ -247,6 +245,13 @@
             <small>{{ $t('Your order are not included shipping fee') }}</small>
           </div>
         </div>
+        <router-link to="/cart" v-if="isMobile">
+          <Button
+            :label="$t('Back to cart')"
+            icon="pi pi-arrow-left"
+            outlined
+          />
+        </router-link>
       </div>
     </template>
   </ELayout>

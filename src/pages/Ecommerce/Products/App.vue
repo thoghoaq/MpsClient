@@ -13,9 +13,9 @@
     <template #page-content>
       <div class="border-round overflow-auto bg-primary-reverse p-5">
         <div
-          class="grid grid-nogutter gap-5 justify-content-start align-items-center"
+          class="grid grid-nogutter gap-5 justify-content-start"
         >
-          <div v-if="eProductStore.products.length <= 0" style="width: 60rem">
+          <div v-if="eProductStore.products.length <= 0" class="w-full">
             <div class="bg-primary-reverse p-4 text-center">
               {{ $t('No products found.') }}
             </div>
