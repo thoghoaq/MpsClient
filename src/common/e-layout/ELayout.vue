@@ -247,8 +247,40 @@
           <slot name="page-content"></slot>
         </div>
       </div>
-      <ScrollTop />
+      <ScrollTop
+        :pt="{
+          root: isMobile ? 'mb-8' : '',
+        }"
+      />
     </div>
+    <div v-if="isMobile" class="h-5rem"></div>
   </main>
+  <footer v-if="isMobile" class="fixed bottom-0 w-full h-5rem" style="z-index: 9999;">
+    <div class="bg-primary-reverse p-1 h-full shadow-4">
+      <div class="flex gap-3 justify-content-evenly align-items-center">
+        <router-link to="/" style="text-decoration: none"
+          ><div class="flex flex-column align-items-center">
+            <Button icon="pi pi-home" class="p-button-rounded p-button-text" />
+            <div class="text-primary">{{ $t('Home') }}</div>
+          </div></router-link
+        >
+        <router-link to="/cart" style="text-decoration: none">
+          <div class="flex flex-column align-items-center">
+            <Button
+              icon="pi pi-shopping-cart"
+              class="p-button-rounded p-button-text"
+            />
+            <div class="text-primary">{{ $t('Cart') }}</div>
+          </div>
+        </router-link>
+        <router-link to="/profile" style="text-decoration: none">
+          <div class="flex flex-column align-items-center">
+            <Button icon="pi pi-user" class="p-button-rounded p-button-text" />
+            <div class="text-primary">{{ $t('Profile') }}</div>
+          </div>
+        </router-link>
+      </div>
+    </div>
+  </footer>
 </template>
 <style src="./ELayout.css" lang="css" scoped></style>

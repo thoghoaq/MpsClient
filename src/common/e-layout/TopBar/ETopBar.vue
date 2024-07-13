@@ -3,7 +3,7 @@
   import { useSettingStore } from 'src/stores/setting'
   import { usePrimeVue } from 'primevue/config'
   import { Theme } from 'src/stores/setting/types'
-  import { appConfig } from 'src/stores'
+  import { appConfig, isMobile } from 'src/stores'
   import { useAuthStore } from 'src/stores/auth'
   import { useRouter, useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
@@ -162,7 +162,7 @@
           </Button>
         </div>
       </router-link>
-      <div class="col">
+      <div v-if="!isMobile" class="col">
         <IconField iconPosition="right">
           <InputIcon class="pi pi-search"> </InputIcon>
           <InputText
@@ -215,6 +215,25 @@
           :label="$t('Log in')"
           @click="router.push({ name: 'signIn' })"
         />
+      </div>
+      <div v-if="isMobile" class="col-12">
+        <IconField iconPosition="right">
+          <InputIcon class="pi pi-search"> </InputIcon>
+          <InputText
+            :placeholder="$t('Search Product')"
+            class="w-full"
+            v-model="query"
+            @change="
+              () => {
+                eProductStore.filter.query = query
+                eProductStore.filterProducts()
+                if (route.name != 'eProducts') {
+                  router.push({ name: 'eProducts' })
+                }
+              }
+            "
+          />
+        </IconField>
       </div>
     </div>
     <Sidebar
