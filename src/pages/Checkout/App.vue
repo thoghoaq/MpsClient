@@ -16,8 +16,8 @@
   const router = useRouter()
   const state = reactive({
     fullName: appConfig.loggedUser.data.displayName,
-    address: '',
-    phoneNumber: '',
+    address: appConfig.loggedUser.data.customerAddress ?? '',
+    phoneNumber: appConfig.loggedUser.data.phoneNumber ?? '',
     email: appConfig.loggedUser.data.email,
     note: '',
     paymentMethod: { label: 'VnPay', value: EPaymentMethod.VnPay },

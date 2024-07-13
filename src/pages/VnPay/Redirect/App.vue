@@ -12,7 +12,7 @@
 </script>
 <template>
     <div class="align-items-center h-screen justify-content-center">
-        <div class="text-center">
+        <div class="text-center h-full">
             <div class="text-2xl font-semibold mb-4">{{ $t('Redirecting to VnPay...') }}</div>
             <ProgressSpinner />
         </div>
