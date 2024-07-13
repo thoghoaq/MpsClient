@@ -316,7 +316,7 @@
         <div class="font-bold text-lg mb-2">{{ $t('Hello') }}</div>
         <div class="mb-4">{{ appConfig.loggedUser.data.displayName }}</div>
         <div class="flex flex-column gap-3">
-          <router-link to="/profile">
+          <router-link to="/profile" style="text-decoration: none">
             <Button severity="primary" class="w-full" outlined>
               <i class="pi pi-user-edit px-2"></i>
               <div class="flex flex-column text-left m-3">
@@ -324,7 +324,7 @@
               </div>
             </Button>
           </router-link>
-          <router-link to="/orders">
+          <router-link to="/orders" style="text-decoration: none">
             <Button severity="primary" class="w-full" outlined>
               <i class="pi pi-shopping-bag px-2"></i>
               <div class="flex flex-column text-left m-3">
