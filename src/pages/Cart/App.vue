@@ -202,7 +202,7 @@
                 <div class="flex flex-column gap-2">
                   <div>{{ item.name }}</div>
                   <div class="text-red-500 font-bold">
-                    {{ NumberHelper.formatCurrency(item.price) }}
+                    {{ NumberHelper.formatCurrency(item.price * item.quantity) }}
                   </div>
                 </div>
                 <div class="w-10rem">
@@ -245,37 +245,41 @@
           </div>
         </div>
       </div>
+      <div class="h-7rem"></div>
       <div
         v-if="isMobile && !isCartEmpty"
-        class="sticky w-full bottom-0 bg-primary-reverse font-bold border-round flex shadow-2 mt-3"
+        class="fixed bottom-0 left-0 w-full"
       >
-        <DataTable :value="[{ label: 'Total' }]" class="w-full border-round">
-          <Column :header="$t('CART TOTAL')" class="border-round">
-            <template #body="{ data }">
-              {{ $t(data.label) }}
-            </template>
-          </Column>
-          <Column class="text-right font-bold border-round">
-            <template #body>
-              {{ NumberHelper.formatCurrency(cartStore.calculateTotal()) }}
-            </template>
-          </Column>
-        </DataTable>
-        <Button
-          type="button"
-          severity="contrast"
-          :label="$t('CHECKOUT')"
-          class="w-10rem"
-          @click="
-            () => {
-              if (cartStore.items.filter((item) => item.selected).length > 0) {
-                $router.push({ name: 'checkout' })
-              } else {
-                toast.warning($t('Please select at least one product'))
+        <div class="bg-primary-reverse font-bold border-round flex mt-3">
+          <DataTable :value="[{ label: 'Total' }]" class="w-full border-round">
+            <Column :header="$t('CART TOTAL')" class="border-round">
+              <template #body="{ data }">
+                {{ $t(data.label) }}
+              </template>
+            </Column>
+            <Column class="text-right font-bold border-round">
+              <template #body>
+                {{ NumberHelper.formatCurrency(cartStore.calculateTotal()) }}
+              </template>
+            </Column>
+          </DataTable>
+          <Button
+            type="button"
+            severity="contrast"
+            :label="$t('CHECKOUT')"
+            class="w-10rem"
+            @click="
+              () => {
+                if (cartStore.items.filter((item) => item.selected).length > 0) {
+                  $router.push({ name: 'checkout' })
+                } else {
+                  toast.warning($t('Please select at least one product'))
+                }
               }
-            }
-          "
-        />
+            "
+          />
+        </div>
+        <div class="h-5rem"></div>
       </div>
     </template>
   </ELayout>
