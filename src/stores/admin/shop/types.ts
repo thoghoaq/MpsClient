@@ -35,3 +35,10 @@ export interface Payout {
   createdDate: Date
   updatedDate: Date | null
 }
+
+export enum PayoutDate {
+  day1 = 1,
+  day8 = 8,
+  day15 = 15,
+  day22 = 22,
+}

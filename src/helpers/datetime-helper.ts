@@ -47,4 +47,8 @@ export default class DateTimeHelper {
         return parts.map((part) => part.value).join('')
     }
   }
+
+  static getLastDayOfMonth(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0)
+  }
 }

@@ -5,9 +5,16 @@
   import DateTimeHelper from 'src/helpers/datetime-helper'
   import { useToastStore } from 'src/stores/toast'
   import StringHelper from 'src/helpers/string-helper'
+  import { PayoutDate } from 'src/stores/admin/shop/types'
+  import { useI18n } from 'vue-i18n'
+  import { useApi } from 'src/stores/api'
+  import { appConfig } from 'src/stores'
+  const api = useApi()
+  const { t } = useI18n()
   const toast = useToastStore()
   const payoutStore = usePayoutStore()
   const now = new Date()
+  const payoutDate = ref(PayoutDate.day8)
   const query = ref()
   const month = ref(now)
   const selectedRow = ref()
@@ -16,7 +23,7 @@
   const filteredShops = ref()
 
   onMounted(() => {
-    payoutStore.fetchShops(now).then(() => {
+    payoutStore.fetchShops(now, payoutDate.value).then(() => {
       filteredShops.value = payoutStore.shops
     })
   })
@@ -49,7 +56,7 @@
   const requestAllPayout = () => {
     loading.value = true
     payoutStore
-      .requestMonthlyPayout(month.value)
+      .requestMonthlyPayout(month.value, payoutDate.value)
       .then((response) => {
         if (response.success) {
           toast.success(response.content['message'])
@@ -65,7 +72,7 @@
   const acceptPayout = (payoutId: number) => {
     loading.value = true
     payoutStore
-      .acceptPayout(payoutId, month.value)
+      .acceptPayout(payoutId, month.value, payoutDate.value)
       .then((response) => {
         if (response.success) {
           toast.success(response.content['message'])
@@ -87,6 +94,57 @@
       payoutStore.shops = filteredShops.value
     }
   })
+
+  const payoutOptions = ref([
+    { label: '01 - 07', value: PayoutDate.day8 },
+    { label: '08 - 14', value: PayoutDate.day15 },
+    { label: '15 - 21', value: PayoutDate.day22 },
+    { label: t('22 - End'), value: PayoutDate.day1 },
+  ])
+
+  const getPayoutLabel = (value: PayoutDate, month: Date) => {
+    var monthNumber = month.getMonth() + 1
+    var lastDayofLastMonth = DateTimeHelper.getLastDayOfMonth(month)
+    switch (value) {
+      case PayoutDate.day8:
+        return `1/${monthNumber} - 7/${monthNumber}`
+      case PayoutDate.day15:
+        return `8/${monthNumber} - 14/${monthNumber}`
+      case PayoutDate.day22:
+        return `15/${monthNumber} - 21/${monthNumber}`
+      case PayoutDate.day1:
+        return `22/${monthNumber - 1} - ${lastDayofLastMonth.getDate()}/${monthNumber - 1}`
+      default:
+        return ''
+    }
+  }
+
+  const viewOrdersVisible = ref(false)
+
+  const showOrders = (shopId: number) => {
+    return getOrdersInPayoutDate(shopId)
+  }
+
+  const orders = ref([])
+
+  const getOrdersInPayoutDate = (shopId: number) => {
+    return api
+      .get(
+        appConfig.appendUrl(appConfig.api.shop.ordersInPayoutDate, {
+          shopId,
+          monthToDate: month.value.toISOString(),
+          payoutDate: payoutDate.value,
+        }),
+      )
+      .then((response) => {
+        if (response.success) {
+          orders.value = response.content
+          viewOrdersVisible.value = true
+        } else {
+          toast.error(response.content)
+        }
+      })
+  }
 </script>
 <template>
   <Layout>
@@ -151,11 +209,25 @@
                   @update:model-value="
                     () => {
                       month.setDate(month.getDate() + 1)
-                      payoutStore.fetchShops(month)
+                      payoutStore.fetchShops(month, payoutDate)
                     }
                   "
                 >
                 </Calendar>
+                <Dropdown
+                  v-model="payoutDate"
+                  :options="payoutOptions"
+                  option-label="label"
+                  option-value="value"
+                  class="mx-3"
+                  :placeholder="$t('Payout Date')"
+                  @update:model-value="
+                    () => {
+                      payoutStore.fetchShops(month, payoutDate)
+                    }
+                  "
+                >
+                </Dropdown>
                 <Button
                   outlined
                   :label="$t('Create Request')"
@@ -225,6 +297,15 @@
             ></i>
           </template>
         </Column>
+        <Column field="id">
+          <template #body="{ data }">
+            <Button
+              outlined
+              :label="$t('View Orders')"
+              @click="showOrders(data.id)"
+            ></Button>
+          </template>
+        </Column>
         <template #expansion="slotProps">
           <div>
             <h4>{{ $t('Payout History') }}</h4>
@@ -233,6 +314,13 @@
                 <template #body="{ data }">
                   <span>{{
                     DateTimeHelper.format(data.monthToDate, 'month')
+                  }}</span>
+                </template>
+              </Column>
+              <Column field="payoutDate" :header="$t('Payout Date')">
+                <template #body="{ data }">
+                  <span>{{
+                    getPayoutLabel(data.payoutDate, new Date(data.monthToDate))
                   }}</span>
                 </template>
               </Column>
@@ -294,6 +382,23 @@
           </div>
         </template>
       </DataTable>
+      <Dialog v-model:visible="viewOrdersVisible" modal :header="$t('Orders')">
+        <DataTable :value="orders">
+          <Column field="id" :header="$t('Order ID')" sortable></Column>
+          <Column field="orderDate" :header="$t('Order Date')" sortable>
+            <template #body="{ data }">
+              <span>{{
+                DateTimeHelper.format(data.orderDate, 'datetime')
+              }}</span>
+            </template>
+          </Column>
+          <Column field="totalAmount" :header="$t('Total')" sortable>
+            <template #body="{ data }">
+              <span>{{ NumberHelper.formatCurrency(data.totalAmount) }}</span>
+            </template>
+          </Column>
+        </DataTable>
+      </Dialog>
     </template>
   </Layout>
 </template>

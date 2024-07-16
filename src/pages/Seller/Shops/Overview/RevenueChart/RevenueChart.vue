@@ -25,15 +25,22 @@
     const documentStyle = getComputedStyle(document.documentElement)
     const labels = props.dailyRevenues?.map((item: any) => item.date)
     const data = props.dailyRevenues?.map((item: any) => item.total)
+    const netData = props.dailyRevenues?.map((item: any) => item.net)
     return {
       labels: labels,
       datasets: [
         {
-          label: t('Revenue'),
+          label: t('Gross'),
           backgroundColor: documentStyle.getPropertyValue('--primary-color'),
           borderColor: documentStyle.getPropertyValue('--primary-color'),
           data: data,
         },
+        {
+          label: t('Net'),
+          backgroundColor: documentStyle.getPropertyValue('--primary-300'),
+          borderColor: documentStyle.getPropertyValue('--primary-300'),
+          data: netData,
+        }
       ],
     }
   }

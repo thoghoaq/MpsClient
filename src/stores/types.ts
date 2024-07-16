@@ -52,6 +52,7 @@ export interface AppConfig {
             },
             request: string;
             acceptRequest: string;
+            ordersInPayoutDate: string;
         },
         ecommerce: {
             products: string;
@@ -66,6 +67,7 @@ export interface AppConfig {
             details: string;
             requestMonthlyPayout: string;
             acceptPayout: string;
+            customRequestPayout: string;
         },
         external: {
             payPal: {

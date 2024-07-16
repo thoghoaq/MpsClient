@@ -82,7 +82,7 @@
   <Layout :hideBackground="true">
     <template #page-content>
       <div class="grid">
-        <div class="col-12 md:col-6 xl:col-4">
+        <div class="col-12 md:col-6 xl:col-3">
           <div class="card h-full bg-primary-reverse p-5 border-round">
             <span class="font-semibold text-lg">{{ $t('Sales') }}</span>
             <div class="flex justify-content-between align-items-start mt-3">
@@ -121,7 +121,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12 md:col-6 xl:col-4">
+        <div class="col-12 md:col-6 xl:col-3">
           <div class="card h-full bg-primary-reverse p-5 border-round">
             <span class="font-semibold text-lg">{{ $t('Revenue') }}</span>
             <div class="flex justify-content-between align-items-start mt-3">
@@ -162,7 +162,48 @@
             </div>
           </div>
         </div>
-        <div class="col-12 md:col-6 xl:col-4">
+        <div class="col-12 md:col-6 xl:col-3">
+          <div class="card h-full bg-primary-reverse p-5 border-round">
+            <span class="font-semibold text-lg">{{ $t('Net') }}</span>
+            <div class="flex justify-content-between align-items-start mt-3">
+              <div class="w-6rem">
+                <span class="text-4xl font-bold text-900">{{
+                  NumberHelper.formatCurrency(
+                    overviewStore.shopInfo?.overview?.totalNet,
+                  )
+                }}</span>
+                <div
+                  class="mt-2"
+                  :class="
+                    displayPercent(
+                      overviewStore.shopInfo?.overview
+                        ?.netPercentageWithLastMonth,
+                    ).class
+                  "
+                >
+                  <span class="font-medium">{{
+                    displayPercent(
+                      overviewStore.shopInfo?.overview
+                        ?.netPercentageWithLastMonth,
+                    ).display
+                  }}</span
+                  ><i
+                    class="pi text-xs ml-2"
+                    :class="
+                      displayPercent(
+                        overviewStore.shopInfo?.overview
+                          ?.netPercentageWithLastMonth,
+                      ).up
+                        ? 'pi-arrow-up'
+                        : 'pi-arrow-down'
+                    "
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 md:col-6 xl:col-3">
           <div class="card h-full bg-primary-reverse p-5 border-round">
             <span class="font-semibold text-lg">{{ $t('Customers') }}</span>
             <div class="flex justify-content-between align-items-start mt-3">

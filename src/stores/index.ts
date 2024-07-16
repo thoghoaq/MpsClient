@@ -107,6 +107,10 @@ export const appConfig: AppConfig = {
       },
       request: getControllerUrl('request', controllers.shop),
       acceptRequest: getControllerUrl('accept-request', controllers.shop),
+      ordersInPayoutDate: getControllerUrl(
+        'orders-in-payout-date',
+        controllers.shop,
+      ),
     },
     ecommerce: {
       products: getControllerUrl('products', controllers.ecommerce),
@@ -127,6 +131,10 @@ export const appConfig: AppConfig = {
         controllers.payment,
       ),
       acceptPayout: getControllerUrl('accept-payout', controllers.payment),
+      customRequestPayout: getControllerUrl(
+        'custom-request-payout',
+        controllers.payment,
+      ),
     },
     external: {
       payPal: {

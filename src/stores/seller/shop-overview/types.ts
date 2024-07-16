@@ -9,6 +9,7 @@ export interface ShopInfo {
 export interface DailyRevenue {
     date:  number;
     total: number;
+    net: number;
 }
 
 export interface Overview {
@@ -16,6 +17,8 @@ export interface Overview {
     salePercentageWithLastMonth:     number;
     totalRevenue:                    number;
     revenuePercentageWithLastMonth:  number;
+    totalNet:                        number;
+    netPercentageWithLastMonth:      number;
     totalCustomers:                  number;
     customerPercentageWithLastMonth: number;
 }

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Shop } from './types'
+import { PayoutDate, Shop } from './types'
 import { useApi } from 'src/stores/api'
 import { appConfig } from 'src/stores'
 import { APIResponse } from 'src/stores/types'
@@ -14,28 +14,28 @@ export const usePayoutStore = defineStore({
     totalPaidout: 0,
   }),
   actions: {
-    async fetchShops(monthToDate: Date) {
+    async fetchShops(monthToDate: Date, payoutDate: PayoutDate) {
       return api
-        .get(appConfig.appendUrl(appConfig.api.shop.base, { monthToDate: monthToDate.toISOString() }))
+        .get(appConfig.appendUrl(appConfig.api.shop.base, { monthToDate: monthToDate.toISOString(), payoutDate: payoutDate }))
         .then((response: APIResponse<Shop[]>) => {
           this.shops = response.content
           this.calculateOverview()
           return response
         })
     },
-    async requestMonthlyPayout(monthToDate: Date) {
+    async requestMonthlyPayout(monthToDate: Date, payoutDate: PayoutDate) {
       return api
-        .post(appConfig.api.payment.requestMonthlyPayout, { monthToDate: monthToDate.toISOString() })
+        .post(appConfig.api.payment.customRequestPayout, { monthToDate: monthToDate.toISOString(), payoutDate: payoutDate })
         .then((response: APIResponse<any>) => {
-          this.fetchShops(monthToDate)
+          this.fetchShops(monthToDate, payoutDate)
           return response
         })
     },
-    async acceptPayout(payoutId: number, monthToDate: Date) {
+    async acceptPayout(payoutId: number, monthToDate: Date, payoutDate: PayoutDate) {
       return api
         .post(appConfig.api.payment.acceptPayout, { payoutId: payoutId })
         .then((response: APIResponse<any>) => {
-          this.fetchShops(monthToDate)
+          this.fetchShops(monthToDate, payoutDate)
           return response
         })
     },
