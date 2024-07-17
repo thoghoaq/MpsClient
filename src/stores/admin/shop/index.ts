@@ -19,6 +19,14 @@ export const usePayoutStore = defineStore({
         .get(appConfig.appendUrl(appConfig.api.shop.base, { monthToDate: monthToDate.toISOString(), payoutDate: payoutDate }))
         .then((response: APIResponse<Shop[]>) => {
           this.shops = response.content
+          this.shops.forEach((shop) => {
+            shop.payouts.forEach((payout) => {
+              if (payout.payoutDate == PayoutDate.day1) {
+                var date = new Date(payout.monthToDate)
+                payout.monthToDate = new Date(date.getFullYear(), date.getMonth() - 1)
+              }
+            })
+          })
           this.calculateOverview()
           return response
         })

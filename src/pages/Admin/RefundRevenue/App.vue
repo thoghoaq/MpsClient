@@ -22,7 +22,21 @@
   const loading = ref(false)
   const filteredShops = ref()
 
+  const initPayoutDate = () => {
+    const date = now.getDate()
+    if (date <= 7) {
+      payoutDate.value = PayoutDate.day8
+    } else if (date <= 14) {
+      payoutDate.value = PayoutDate.day15
+    } else if (date <= 21) {
+      payoutDate.value = PayoutDate.day22
+    } else {
+      payoutDate.value = PayoutDate.day1
+    }
+  }
+
   onMounted(() => {
+    initPayoutDate()
     payoutStore.fetchShops(now, payoutDate.value).then(() => {
       filteredShops.value = payoutStore.shops
     })
@@ -113,7 +127,7 @@
       case PayoutDate.day22:
         return `15/${monthNumber} - 21/${monthNumber}`
       case PayoutDate.day1:
-        return `22/${monthNumber - 1} - ${lastDayofLastMonth.getDate()}/${monthNumber - 1}`
+        return `22/${monthNumber} - ${lastDayofLastMonth.getDate()}/${monthNumber}`
       default:
         return ''
     }

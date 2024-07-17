@@ -30,6 +30,7 @@ export interface Payout {
   amount: number | null
   currency: string | null
   monthToDate: Date
+  payoutDate: number
   batchId: string | null
   payoutStatusId: number
   createdDate: Date
