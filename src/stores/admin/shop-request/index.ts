@@ -17,13 +17,18 @@ export const useShopRequestStore = defineStore({
         return response
       })
     },
-    async acceptRequest(id: number) {
+    async acceptRequest(id: number, isAccepted: boolean) {
       return api
-        .post(appConfig.api.shop.acceptRequest, {
-          shopId: id,
+        .put(appConfig.api.staff.shop.accept, {
+          id: id,
+          isAccepted: isAccepted
         })
         .then((response) => {
-          this.shops.find((shop) => shop.id === id)!.isActive = true
+          if (response.success) {
+            var shop = this.shops.find((shop) => shop.id === id)
+            shop!.isActive = isAccepted
+            shop!.isAccepted = isAccepted
+          }
           return response
         })
     },

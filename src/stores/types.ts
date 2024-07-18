@@ -77,6 +77,11 @@ export interface AppConfig {
         },
         setting: {
             base: string;
+        },
+        staff: {
+            shop: {
+                accept: string;
+            }
         }
     },
     loggedUser: User,

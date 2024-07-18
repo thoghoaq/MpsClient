@@ -32,7 +32,7 @@
           icon: 'pi pi-envelope',
           route: '/admin/shop-request',
           visible: appConfig.loggedUser.isManagerGroup,
-          badge: shopRequestStore.shops.length,
+          badge: shopRequestStore.shops.filter(x => x.isAccepted).length,
         },
         {
           label: 'Manage Customers',
@@ -125,7 +125,7 @@
       var item = parent.find((i: any) => i.label === 'New Shop Request')
       if (item) {
         shopRequestStore.fetchShops().then(() => {
-          item.badge = shopRequestStore.shops.length
+          item.badge = shopRequestStore.shops.filter(x => x.isAccepted).length
         })
       }
     }

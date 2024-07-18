@@ -12,6 +12,7 @@ export interface Shop {
     avatar:        string | string;
     cover:         string | null;
     isActive:      boolean;
+    isAccepted:    boolean;
     payPalAccount: string;
     createdAt:     Date;
     updatedAt:     Date;

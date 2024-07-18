@@ -9,17 +9,17 @@
   const { t } = useI18n()
   const confirm = useConfirm()
   const shopRequestStore = useShopRequestStore()
-  const confirmDeactive = (id: number) => {
+  const confirmDeactive = (id: number, isAccepted: boolean) => {
     confirm.require({
       header: t('Confirm'),
       icon: 'pi pi-exclamation-triangle',
-      message: t('Are you sure you want to open this shop?'),
+      message: t(`Are you sure you want to ${isAccepted ? 'open' : 'reject'} this shop?`),
       rejectClass: 'p-button-secondary p-button-outlined',
       rejectLabel: t('No'),
       acceptLabel: t('Yes'),
       acceptClass: 'p-button-primary',
       accept: () => {
-        shopRequestStore.acceptRequest(id)
+        shopRequestStore.acceptRequest(id, isAccepted)
         .then((response) => {
           if (response.success) {
             toast.success(response.content["message"])
@@ -120,12 +120,21 @@
             </Column>
             <Column field="id" :header="$t('Action')">
               <template #body="{ data }">
-                <Button v-if="!data.isActive"
-                  type="button"
-                  :label="$t('Open')"
-                  outlined
-                  @click="confirmDeactive(data.id)"
-                />
+                <div class="flex gap-2">
+                  <Button v-if="!data.isActive"
+                    type="button"
+                    :label="$t('Open')"
+                    outlined
+                    @click="confirmDeactive(data.id, true)"
+                  />
+                  <Button v-if="data.isAccepted"
+                    type="button"
+                    :label="$t('Reject')"
+                    severity="danger"
+                    outlined
+                    @click="confirmDeactive(data.id, false)"
+                  />
+                </div>
               </template>
             </Column>
           </DataTable>
