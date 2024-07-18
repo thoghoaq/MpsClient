@@ -9,7 +9,7 @@
   const toast = useToastStore()
 </script>
 <template>
-  <ELayout :hide-category="true">
+  <ELayout :hide-category="true" :hide-scroll-top="true">
     <template #page-content>
       <div
         v-if="!isMobile"

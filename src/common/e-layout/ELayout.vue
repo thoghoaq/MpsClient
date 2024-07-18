@@ -12,6 +12,7 @@
     hideCategory: Boolean,
     viewProducts: Boolean,
     hideNavigation: Boolean,
+    hideScrollTop: Boolean,
   })
 
   const visible = ref(true)
@@ -248,7 +249,7 @@
           <slot name="page-content"></slot>
         </div>
       </div>
-      <ScrollTop
+      <ScrollTop v-if="!$props.hideScrollTop"
         :pt="{
           root: isMobile ? 'mb-8' : '',
         }"
