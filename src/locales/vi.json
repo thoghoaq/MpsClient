@@ -283,5 +283,6 @@
   "View Orders": "Xem đơn hàng",
   "Order ID": "Mã đơn hàng",
   "Reject": "Từ chối",
-  "Are you sure you want to reject this shop?": "Bạn có chắc chắn muốn từ chối cửa hàng này không?"
+  "Are you sure you want to reject this shop?": "Bạn có chắc chắn muốn từ chối cửa hàng này không?",
+  "Rejected": "Đã bị từ chối"
 }

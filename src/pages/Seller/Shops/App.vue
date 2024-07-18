@@ -55,41 +55,44 @@
         v-for="shop in shopStore.shops"
         class="border-1 border-round-md mx-4 p-1 mb-4"
       >
-        <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
-          <div
-            class="list-none p-0 m-0 flex align-items-center font-medium mb-3"
-          >
-            <i class="pi pi-map-marker mr-2"></i>
-            <span>{{ getFullAddress(shop) }}</span>
-          </div>
-          <div
-            class="flex align-items-start flex-column lg:justify-content-between lg:flex-row"
-          >
-            <div>
-              <div class="font-medium text-3xl text-900">
-                {{ shop.shopName }}
-              </div>
-              <div class="flex align-items-center text-700 flex-wrap">
-                <div class="mr-5 flex align-items-center mt-3">
-                  <i
-                    v-if="shop.isActive"
-                    class="pi pi-check text-green-500 mr-2"
-                  ></i>
-                  <i v-else class="pi pi-times text-red-500 mr-2"></i>
-                  <span
-                    :class="shop.isActive ? 'text-green-500' : 'text-red-500'"
-                    >{{ $t(getStatus(shop)) }}</span
-                  >
+        <div class="flex justify-content-between align-items-center px-4 py-5 md:px-6 lg:px-8">
+          <div>
+            <div
+              class="list-none p-0 m-0 flex align-items-center font-medium mb-3"
+            >
+              <i class="pi pi-map-marker mr-2"></i>
+              <span>{{ getFullAddress(shop) }}</span>
+            </div>
+            <div
+              class="flex align-items-start flex-column lg:justify-content-between lg:flex-row"
+            >
+              <div>
+                <div class="font-medium text-3xl text-900">
+                  {{ shop.shopName }}
                 </div>
-                <div class="mr-5 flex align-items-center mt-3">
-                  <i class="pi pi-phone mr-2"></i>
-                  <span>{{ shop.phoneNumber }}</span>
+                <div class="flex align-items-center text-700 flex-wrap">
+                  <div class="mr-5 flex align-items-center mt-3">
+                    <i
+                      v-if="shop.isActive"
+                      class="pi pi-check text-green-500 mr-2"
+                    ></i>
+                    <i v-else class="pi pi-times text-red-500 mr-2"></i>
+                    <span
+                      :class="shop.isActive ? 'text-green-500' : 'text-red-500'"
+                      >{{ $t(getStatus(shop)) }}</span
+                    >
+                  </div>
+                  <div class="mr-5 flex align-items-center mt-3">
+                    <i class="pi pi-phone mr-2"></i>
+                    <span>{{ shop.phoneNumber }}</span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="mt-3 lg:mt-0 flex gap-2">
+          </div>
+          <div>
+            <div v-if="shop.isActive" class="mt-3 lg:mt-0 flex gap-2">
               <SplitButton
-                v-if="shop.isActive"
                 :label="$t('Manage')"
                 icon="pi pi-cog"
                 :model="[
@@ -102,6 +105,9 @@
                 ]"
                 @click="initShopManagement(shop)"
               ></SplitButton>
+            </div>
+            <div v-else-if="!shop.isAccepted">
+              <h4 class="text-red-500">{{ $t('Rejected') }}</h4>
             </div>
           </div>
         </div>
