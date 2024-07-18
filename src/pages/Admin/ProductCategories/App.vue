@@ -54,12 +54,12 @@
         }
         dataSourceStore.deleteProductCategory(id!).then((response) => {
           if (response.success) {
-            toast.success(response.content["message"])
+            toast.success(response.content['message'])
           } else {
             toast.error(response.content)
           }
         })
-      }
+      },
     })
   }
 </script>
@@ -96,6 +96,12 @@
                       class="w-8rem sm:w-auto"
                     />
                   </IconField>
+                  <Button
+                    icon="pi pi-refresh"
+                    rounded
+                    outlined
+                    @click="dataSourceStore.fetchProductCategories()"
+                  />
                 </div>
               </template>
             </Menubar>

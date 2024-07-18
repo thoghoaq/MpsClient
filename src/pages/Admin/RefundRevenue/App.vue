@@ -256,6 +256,17 @@
                     class="w-8rem sm:w-auto"
                   />
                 </IconField>
+                <Button
+                  icon="pi pi-refresh"
+                  rounded
+                  outlined
+                  @click="
+                    () =>
+                      payoutStore.fetchShops(now, payoutDate).then(() => {
+                        filteredShops.value = payoutStore.shops
+                      })
+                  "
+                />
               </div>
             </template>
           </Menubar>

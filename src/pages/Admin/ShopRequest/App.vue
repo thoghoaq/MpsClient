@@ -58,6 +58,12 @@
                   class="w-8rem sm:w-auto"
                 />
               </IconField>
+              <Button
+                icon="pi pi-refresh"
+                rounded
+                outlined
+                @click="shopRequestStore.fetchShops()"
+              />
             </div>
           </template>
         </Menubar>

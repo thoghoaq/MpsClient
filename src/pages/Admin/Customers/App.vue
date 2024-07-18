@@ -86,8 +86,7 @@
       acceptLabel: t('Yes'),
       acceptClass: 'p-button-danger',
       accept: () => {
-        customerStore.activeOrDeactive(menuId.value)
-        .then((response) => {
+        customerStore.activeOrDeactive(menuId.value).then((response) => {
           if (response.success) {
             toast.success(t('Active/Deactive Successfully'))
           } else {
@@ -127,6 +126,12 @@
                   outlined
                 ></Button>
               </router-link>
+              <Button
+                icon="pi pi-refresh"
+                rounded
+                outlined
+                @click="customerStore.fetchCustomers()"
+              />
             </div>
           </template>
         </Menubar>
@@ -170,10 +175,14 @@
             <Column :header="$t('Role')">
               <template #body="slotProps">
                 <div class="flex gap-1">
-                  <Tag severity="contrast" v-for="role in (slotProps.data.role as string)
+                  <Tag
+                    severity="contrast"
+                    v-for="role in (slotProps.data.role as string)
                       .split(',')
-                      .filter((x) => x.trim() != '')" :value="role"
-                    :class="getRoleClass(role)"></Tag>
+                      .filter((x) => x.trim() != '')"
+                    :value="role"
+                    :class="getRoleClass(role)"
+                  ></Tag>
                 </div>
               </template>
             </Column>

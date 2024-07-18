@@ -170,28 +170,37 @@
         :style="{ width: '50rem' }"
         :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
       >
-        <DataTable
-          :value="importResult?.results"
-          showGridlines
-        >
-          <Column field="row" :header="$t('Row')" header-class="w-3rem" class="text-center"></Column>
-          <Column field="isSuccess" :header="$t('Result')" header-class="w-6rem" class="text-center">
+        <DataTable :value="importResult?.results" showGridlines>
+          <Column
+            field="row"
+            :header="$t('Row')"
+            header-class="w-3rem"
+            class="text-center"
+          ></Column>
+          <Column
+            field="isSuccess"
+            :header="$t('Result')"
+            header-class="w-6rem"
+            class="text-center"
+          >
             <template #body="{ data }">
               <span
                 :class="{
                   'text-green-500': data.isSuccess,
                   'text-red-500': !data.isSuccess,
                 }"
-                ><i :class="{
-                  'pi pi-check-circle': data.isSuccess,
-                  'pi pi-times-circle': !data.isSuccess,
-                }"></i></span
-              >
+                ><i
+                  :class="{
+                    'pi pi-check-circle': data.isSuccess,
+                    'pi pi-times-circle': !data.isSuccess,
+                  }"
+                ></i
+              ></span>
             </template>
           </Column>
           <Column field="message" :header="$t('Message')">
             <template #body="{ data }">
-              <span>{{ data.message ?? $t("Value inserted / updated") }}</span>
+              <span>{{ data.message ?? $t('Value inserted / updated') }}</span>
             </template>
           </Column>
         </DataTable>
@@ -235,6 +244,12 @@
                   outlined
                 ></Button>
               </router-link>
+              <Button
+                icon="pi pi-refresh"
+                rounded
+                outlined
+                @click="staffStore.fetchStaffs()"
+              />
             </div>
           </template>
         </Menubar>

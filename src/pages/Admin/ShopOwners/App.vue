@@ -127,6 +127,12 @@
                   outlined
                 ></Button>
               </router-link>
+              <Button
+                icon="pi pi-refresh"
+                rounded
+                outlined
+                @click="shopOwnerStore.fetchShopOwners()"
+              />
             </div>
           </template>
         </Menubar>

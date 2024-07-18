@@ -51,6 +51,12 @@
                 outlined
               ></Button>
             </router-link>
+            <Button
+                icon="pi pi-refresh"
+                rounded
+                outlined
+                @click="productStore.fetchProducts()"
+              />
           </div>
         </template>
       </Menubar>
