@@ -367,8 +367,8 @@
               </div>
               <Carousel
                 :value="similarProducts"
-                :numVisible="isMobile ? 2 : 3"
-                :numScroll="isMobile ? 2 : 3"
+                :numVisible="isMobile ? 1 : 3"
+                :numScroll="isMobile ? 1 : 3"
               >
                 <template #item="slotProps">
                   <div class="border-1 surface-border border-round m-2 p-3">
