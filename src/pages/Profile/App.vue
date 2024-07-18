@@ -65,6 +65,9 @@
           fullName: state.displayName,
           avatarPath: state.avatarFile,
           phoneNumber: state.phoneNumber,
+          customerData: {
+            address: state.address,
+          }
         })
         .then((res) => {
           if (res.success) {

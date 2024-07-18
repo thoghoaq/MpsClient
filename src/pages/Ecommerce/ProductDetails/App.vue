@@ -9,7 +9,7 @@
   import { useCartStore } from 'src/stores/cart'
   import { useI18n } from 'vue-i18n'
   import { useApi } from 'src/stores/api'
-  import { appConfig } from 'src/stores'
+  import { appConfig, isMobile } from 'src/stores'
   const api = useApi()
   const { t } = useI18n()
   const route = useRoute()
@@ -92,19 +92,14 @@
     },
     {
       breakpoint: '1199px',
-      numVisible: 3,
+      numVisible: 1,
       numScroll: 1,
     },
     {
       breakpoint: '767px',
-      numVisible: 2,
-      numScroll: 1,
-    },
-    {
-      breakpoint: '575px',
       numVisible: 1,
       numScroll: 1,
-    },
+    }
   ])
 
   const reload = (id: string) => {
@@ -134,7 +129,7 @@
   }
 </script>
 <template>
-  <ELayout :hide-category="true">
+  <ELayout :hide-category="true" :hide-navigation="true">
     <template #page-content>
       <div class="lg:flex grid">
         <div
@@ -226,26 +221,28 @@
               <div class="text-xl font-bold pb-2">
                 {{ $t('PRODUCT FEEDBACKS') }}
               </div>
-              <div v-if="feedback" class="p-4 grid align-items-center gap-5">
-                <div>
-                  <div class="flex align-items-center gap-2">
-                    <div class="text-2xl font-bold">
-                      {{ feedback?.averageRating }}
-                    </div>
-                    <Rating
-                      :model-value="feedback?.averageRating"
-                      :cancel="false"
-                      readonly
-                    />
-                  </div>
+              <div v-if="feedback" class="grid align-items-center">
+                <div class="col-12 lg:col-4 flex justify-content-center">
                   <div>
-                    {{ `(${feedback?.total} ${$t('feedbacks')})` }}
+                    <div class="flex align-items-center gap-2">
+                      <div class="text-2xl font-bold">
+                        {{ feedback?.averageRating }}
+                      </div>
+                      <Rating
+                        :model-value="feedback?.averageRating"
+                        :cancel="false"
+                        readonly
+                      />
+                    </div>
+                    <div class="flex">
+                      {{ `(${feedback?.total} ${$t('feedbacks')})` }}
+                    </div>
                   </div>
                 </div>
-                <div class="flex flex-column gap-2">
-                  <div class="flex gap-2">
+                <div class="flex flex-column gap-2 col-12 lg:col-8">
+                  <div class="flex gap-2 w-full">
                     <Rating :model-value="5" :cancel="false" readonly />
-                    <div class="w-20rem">
+                    <div class="w-full">
                       <ProgressBar
                         :value="(feedback?.fiveStar / feedback?.total) * 100"
                       >
@@ -253,9 +250,9 @@
                       </ProgressBar>
                     </div>
                   </div>
-                  <div class="flex gap-2">
+                  <div class="flex gap-2 w-full">
                     <Rating :model-value="4" :cancel="false" readonly />
-                    <div class="w-20rem">
+                    <div class="w-full">
                       <ProgressBar
                         :value="(feedback?.fourStar / feedback?.total) * 100"
                       >
@@ -263,9 +260,9 @@
                       </ProgressBar>
                     </div>
                   </div>
-                  <div class="flex gap-2">
+                  <div class="flex gap-2 w-full">
                     <Rating :model-value="3" :cancel="false" readonly />
-                    <div class="w-20rem">
+                    <div class="w-full">
                       <ProgressBar
                         :value="(feedback?.threeStar / feedback?.total) * 100"
                       >
@@ -273,9 +270,9 @@
                       </ProgressBar>
                     </div>
                   </div>
-                  <div class="flex gap-2">
+                  <div class="flex gap-2 w-full">
                     <Rating :model-value="2" :cancel="false" readonly />
-                    <div class="w-20rem">
+                    <div class="w-full">
                       <ProgressBar
                         :value="(feedback?.twoStar / feedback?.total) * 100"
                       >
@@ -283,9 +280,9 @@
                       </ProgressBar>
                     </div>
                   </div>
-                  <div class="flex gap-2">
+                  <div class="flex gap-2 w-full">
                     <Rating :model-value="1" :cancel="false" readonly />
-                    <div class="w-20rem">
+                    <div class="w-full">
                       <ProgressBar
                         :value="(feedback?.oneStar / feedback?.total) * 100"
                       >
@@ -328,13 +325,15 @@
               </div>
               <Carousel
                 :value="similarProducts"
-                :numVisible="3"
-                :numScroll="3"
-                :responsiveOptions="responsiveOptions2"
+                :numVisible="isMobile ? 2 : 3"
+                :numScroll="isMobile ? 2 : 3"
               >
                 <template #item="slotProps">
                   <div class="border-1 surface-border border-round m-2 p-3">
-                    <div class="cursor-pointer" @click="reload(slotProps.data.id)">
+                    <div
+                      class="cursor-pointer"
+                      @click="reload(slotProps.data.id)"
+                    >
                       <div class="mb-3">
                         <div class="relative mx-auto">
                           <img
@@ -343,8 +342,8 @@
                               'https://via.placeholder.com/200x250'
                             "
                             :alt="slotProps.data.name"
-                            class="w-full h-18rem border-round"
-                            style="object-fit: cover;"
+                            class="w-full h-10rem lg:h-16rem border-round"
+                            style="object-fit: cover"
                           />
                         </div>
                       </div>
@@ -447,6 +446,57 @@
                 "
               />
             </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="isMobile" class="fixed bottom-0 left-0 w-full shadow-4">
+        <div
+          class="flex justify-content-between align-items-center bg-primary-reverse h-4rem"
+        >
+          <div class="mx-4">
+            <InputNumber
+              v-model="quantity"
+              showButtons
+              buttonLayout="horizontal"
+              :step="1"
+              :min="1"
+              :max="10"
+              class="w-5rem"
+              input-class="w-3rem"
+              :allow-empty="false"
+            >
+              <template #incrementbuttonicon>
+                <span class="pi pi-plus"></span>
+              </template>
+              <template #decrementbuttonicon>
+                <span class="pi pi-minus"></span>
+              </template>
+            </InputNumber>
+          </div>
+          <div class="h-full">
+            <Button
+              icon="pi pi-shopping-cart"
+              :label="$t('ADD TO CART')"
+              text
+              class="h-full"
+              @click="() => productDetails && addToCart(productDetails)"
+            ></Button>
+            <Button
+              class="h-full justify-content-center" style="min-width: 10rem;"
+              @click="
+                () => {
+                  productDetails && addToCart(productDetails, true)
+                  $router.push({ name: 'checkout' })
+                }
+              "
+            >
+              <div class="flex flex-column gap-2">
+                <div>{{ $t('BUY NOW') }}</div>
+                <div class="font-bold">
+                  {{ NumberHelper.formatCurrency(total) }}
+                </div>
+              </div>
+            </Button>
           </div>
         </div>
       </div>

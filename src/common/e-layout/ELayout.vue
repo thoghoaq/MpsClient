@@ -11,6 +11,7 @@
   const props = defineProps({
     hideCategory: Boolean,
     viewProducts: Boolean,
+    hideNavigation: Boolean,
   })
 
   const visible = ref(true)
@@ -255,7 +256,7 @@
     </div>
     <div v-if="isMobile" class="h-5rem"></div>
   </main>
-  <footer v-if="isMobile" class="fixed bottom-0 w-full h-5rem" style="z-index: 9999;">
+  <footer v-if="isMobile && !$props.hideNavigation" class="fixed bottom-0 w-full h-5rem" style="z-index: 9999;">
     <div class="bg-primary-reverse p-1 h-full shadow-4">
       <div class="flex gap-3 justify-content-evenly align-items-center">
         <router-link to="/" style="text-decoration: none"
