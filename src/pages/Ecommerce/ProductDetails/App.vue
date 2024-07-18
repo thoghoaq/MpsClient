@@ -393,58 +393,60 @@
                   </div>
                 </div>
               </div>
-              <Divider></Divider>
-              <div class="flex flex-column mb-3">
-                <div class="flex gap-3">
-                  <div class="font-semibold mb-2">{{ $t('Quantity') }}</div>
-                  <div v-if="false" class="text-500">
-                    {{ `(${productDetails?.stock} ${$t('items available')})` }}
+              <div v-if="!isMobile">
+                <Divider></Divider>
+                <div class="flex flex-column mb-3">
+                  <div class="flex gap-3">
+                    <div class="font-semibold mb-2">{{ $t('Quantity') }}</div>
+                    <div v-if="false" class="text-500">
+                      {{ `(${productDetails?.stock} ${$t('items available')})` }}
+                    </div>
+                  </div>
+                  <InputNumber
+                    v-model="quantity"
+                    showButtons
+                    buttonLayout="horizontal"
+                    :step="1"
+                    :min="1"
+                    :max="10"
+                    class="w-5rem"
+                    input-class="w-3rem"
+                    :allow-empty="false"
+                  >
+                    <template #incrementbuttonicon>
+                      <span class="pi pi-plus" />
+                    </template>
+                    <template #decrementbuttonicon>
+                      <span class="pi pi-minus" />
+                    </template>
+                  </InputNumber>
+                </div>
+                <div class="flex flex-column">
+                  <div class="font-semibold mb-2">{{ $t('Provisional') }}</div>
+                  <div class="text-red-500 text-xl font-bold">
+                    {{ NumberHelper.formatCurrency(total) }}
                   </div>
                 </div>
-                <InputNumber
-                  v-model="quantity"
-                  showButtons
-                  buttonLayout="horizontal"
-                  :step="1"
-                  :min="1"
-                  :max="10"
-                  class="w-5rem"
-                  input-class="w-3rem"
-                  :allow-empty="false"
-                >
-                  <template #incrementbuttonicon>
-                    <span class="pi pi-plus" />
-                  </template>
-                  <template #decrementbuttonicon>
-                    <span class="pi pi-minus" />
-                  </template>
-                </InputNumber>
+                <Button
+                  type="button"
+                  severity="contrast"
+                  :label="$t('ADD TO CART')"
+                  class="w-full mt-3"
+                  @click="() => productDetails && addToCart(productDetails)"
+                />
+                <Button
+                  type="button"
+                  severity="danger"
+                  :label="$t('BUY NOW')"
+                  class="w-full mt-3"
+                  @click="
+                    () => {
+                      productDetails && addToCart(productDetails, true)
+                      $router.push({ name: 'checkout' })
+                    }
+                  "
+                />
               </div>
-              <div class="flex flex-column">
-                <div class="font-semibold mb-2">{{ $t('Provisional') }}</div>
-                <div class="text-red-500 text-xl font-bold">
-                  {{ NumberHelper.formatCurrency(total) }}
-                </div>
-              </div>
-              <Button
-                type="button"
-                severity="contrast"
-                :label="$t('ADD TO CART')"
-                class="w-full mt-3"
-                @click="() => productDetails && addToCart(productDetails)"
-              />
-              <Button
-                type="button"
-                severity="danger"
-                :label="$t('BUY NOW')"
-                class="w-full mt-3"
-                @click="
-                  () => {
-                    productDetails && addToCart(productDetails, true)
-                    $router.push({ name: 'checkout' })
-                  }
-                "
-              />
             </div>
           </div>
         </div>
