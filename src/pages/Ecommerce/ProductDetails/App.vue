@@ -478,11 +478,11 @@
             <Button
               icon="pi pi-shopping-cart"
               text
-              class="h-full w-6rem"
+              class="h-full w-5rem"
               @click="() => productDetails && addToCart(productDetails)"
             ></Button>
             <Button
-              class="h-full justify-content-center" style="min-width: 10rem;"
+              class="h-full justify-content-center bg-red-500 border-0"
               @click="
                 () => {
                   productDetails && addToCart(productDetails, true)
