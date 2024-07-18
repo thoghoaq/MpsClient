@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { appConfig } from '../index'
-import { Auth, PayPalAuth, PayPalCustomer } from './types'
+import { Auth, PayPalAuth, PayPalCustomer, User } from './types'
 import { APIResponse } from '../types'
 import axios, { AxiosError } from 'axios'
 import { StaffData } from '../admin/staff/types'
@@ -61,6 +61,13 @@ export const useAuthStore = defineStore({
     logout() {
       this.auth = undefined
       localStorage.removeItem('auth')
+      appConfig.loggedUser = <User>{
+        isManagerGroup: false,
+        isAdminGroup: false,
+        isShopOwner: false,
+        isCustomer: false,
+        isGuest: true,
+      }
     },
     async register(
       email: string,
