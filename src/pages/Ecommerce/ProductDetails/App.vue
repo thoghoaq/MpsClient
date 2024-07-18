@@ -99,7 +99,7 @@
       breakpoint: '767px',
       numVisible: 1,
       numScroll: 1,
-    }
+    },
   ])
 
   const reload = (id: string) => {
@@ -127,10 +127,52 @@
       }
     })
   }
+
+  const query = ref('')
 </script>
 <template>
-  <ELayout :hide-category="true" :hide-navigation="true">
+  <ELayout :hide-category="true" :hide-navigation="true" :hide-top-bar="isMobile">
     <template #page-content>
+      <div v-if="isMobile" class="fixed top-0 left-0 w-full shadow-1 z-5">
+        <div class="h-4rem bg-primary-reverse flex align-items-center justify-content-between">
+          <Button
+            icon="pi pi-arrow-left"
+            class="w-4rem h-4rem"
+            text
+            @click="() => $router.back()"
+          ></Button>
+          <div>
+            <IconField iconPosition="right">
+              <InputIcon class="pi pi-search"> </InputIcon>
+              <InputText
+                :placeholder="$t('Search Product')"
+                class="w-full"
+                v-model="query"
+                @change="
+                  () => {
+                    eProductStore.filter.query = query
+                    eProductStore.filterProducts()
+                    if (route.name != 'eProducts') {
+                      $router.push({ name: 'eProducts' })
+                    }
+                  }
+                "
+              />
+            </IconField>
+          </div>
+          <Button
+            icon="pi pi-shopping-cart"
+            class="p-button-rounded p-button-text"
+            @click="$router.push({ name: 'cart' })"
+            :badge="
+              cartStore.items.length > 0
+                ? `${cartStore.items.length}`
+                : undefined
+            "
+            badge-class="p-badge-danger p-badge-rounded p-badge-no-gutter"
+          />
+        </div>
+      </div>
       <div class="lg:flex grid">
         <div
           class="col-12 xl:col-4"
@@ -399,7 +441,9 @@
                   <div class="flex gap-3">
                     <div class="font-semibold mb-2">{{ $t('Quantity') }}</div>
                     <div v-if="false" class="text-500">
-                      {{ `(${productDetails?.stock} ${$t('items available')})` }}
+                      {{
+                        `(${productDetails?.stock} ${$t('items available')})`
+                      }}
                     </div>
                   </div>
                   <InputNumber

@@ -13,6 +13,7 @@
     viewProducts: Boolean,
     hideNavigation: Boolean,
     hideScrollTop: Boolean,
+    hideTopBar: Boolean,
   })
 
   const visible = ref(true)
@@ -163,7 +164,8 @@
   <header></header>
   <main>
     <div>
-      <ETopBar :on-toggle-menu="toggleMenu" />
+      <ETopBar :on-toggle-menu="toggleMenu" v-if="!$props.hideTopBar"/>
+      <div v-else class="h-4rem"></div>
       <div class="grid grid-nogutter justify-content-center gap-3 p-3">
         <Sidebar v-if="isMobile" v-model:visible="cateVisible" class="w-25rem">
           <Category
@@ -178,30 +180,33 @@
         ></Category>
         <div class="flex flex-column w-full col-12 md:col xl:col">
           <div class="bg-primary-reverse border-round mb-3">
-            <Breadcrumb :model="getBreadcrum(router.currentRoute.value.path)">
-              <template #item="{ item, props }">
-                <router-link
-                  v-if="item.route"
-                  :to="item.route"
-                  v-slot="{ href, navigate }"
-                  custom
-                >
-                  <a v-ripple v-bind="props.action" @click="navigate">
+            <div class="flex align-items-center">
+              <Button icon="pi pi-angle-left" class="w-3rem h-3rem" text @click="() => $router.back()"></Button>
+              <Breadcrumb :model="getBreadcrum(router.currentRoute.value.path)">
+                <template #item="{ item, props }">
+                  <router-link
+                    v-if="item.route"
+                    :to="item.route"
+                    v-slot="{ href, navigate }"
+                    custom
+                  >
+                    <a v-ripple v-bind="props.action" @click="navigate">
+                      <span class="font-semibold cursor-pointer">{{
+                        item.label
+                      }}</span>
+                    </a>
+                  </router-link>
+                  <a v-else v-ripple :target="item.target" v-bind="props.action">
                     <span class="font-semibold cursor-pointer">{{
                       item.label
                     }}</span>
                   </a>
-                </router-link>
-                <a v-else v-ripple :target="item.target" v-bind="props.action">
-                  <span class="font-semibold cursor-pointer">{{
-                    item.label
-                  }}</span>
-                </a>
-              </template>
-              <template #separator>
-                <span class="font-semibold">/</span>
-              </template>
-            </Breadcrumb>
+                </template>
+                <template #separator>
+                  <span class="font-semibold">/</span>
+                </template>
+              </Breadcrumb>
+            </div>
             <div v-if="props.viewProducts">
               <Divider class="m-0"></Divider>
               <div
