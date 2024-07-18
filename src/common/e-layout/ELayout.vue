@@ -163,106 +163,116 @@
 <template>
   <header></header>
   <main>
-    <div>
-      <ETopBar :on-toggle-menu="toggleMenu" v-if="!$props.hideTopBar"/>
-      <div v-else class="h-4rem"></div>
-      <div class="grid grid-nogutter justify-content-center gap-3 p-3">
-        <Sidebar v-if="isMobile" v-model:visible="cateVisible" class="w-25rem">
-          <Category
-            class="col-12 md:col-3 xl:col-2"
-            v-if="!props.hideCategory"
-          ></Category>
-        </Sidebar>
+    <ETopBar :on-toggle-menu="toggleMenu" v-if="!$props.hideTopBar" />
+    <div v-else class="h-4rem"></div>
+    <div class="flex p-2">
+      <Sidebar v-if="isMobile" v-model:visible="cateVisible" class="w-25rem">
         <Category
           class="col-12 md:col-3 xl:col-2"
-          v-else
           v-if="!props.hideCategory"
         ></Category>
-        <div class="flex flex-column w-full col-12 md:col xl:col">
-          <div class="bg-primary-reverse border-round mb-3">
-            <div class="flex align-items-center">
-              <Button icon="pi pi-angle-left" class="w-3rem h-3rem" text @click="() => $router.back()"></Button>
-              <Breadcrumb :model="getBreadcrum(router.currentRoute.value.path)">
-                <template #item="{ item, props }">
-                  <router-link
-                    v-if="item.route"
-                    :to="item.route"
-                    v-slot="{ href, navigate }"
-                    custom
-                  >
-                    <a v-ripple v-bind="props.action" @click="navigate">
-                      <span class="font-semibold cursor-pointer">{{
-                        item.label
-                      }}</span>
-                    </a>
-                  </router-link>
-                  <a v-else v-ripple :target="item.target" v-bind="props.action">
+      </Sidebar>
+      <div v-else v-if="!props.hideCategory" class="w-21rem">
+        <div class="col-12 md:col-3 xl:col-2 sticky top-0 z-5">
+          <Category></Category>
+        </div>
+      </div>
+      <div class="flex flex-column w-full col-12 md:col xl:col">
+        <div class="bg-primary-reverse border-round mb-3">
+          <div class="flex align-items-center">
+            <Button
+              icon="pi pi-angle-left"
+              class="w-3rem h-3rem"
+              text
+              @click="() => $router.back()"
+            ></Button>
+            <Breadcrumb :model="getBreadcrum(router.currentRoute.value.path)">
+              <template #item="{ item, props }">
+                <router-link
+                  v-if="item.route"
+                  :to="item.route"
+                  v-slot="{ href, navigate }"
+                  custom
+                >
+                  <a v-ripple v-bind="props.action" @click="navigate">
                     <span class="font-semibold cursor-pointer">{{
                       item.label
                     }}</span>
                   </a>
-                </template>
-                <template #separator>
-                  <span class="font-semibold">/</span>
-                </template>
-              </Breadcrumb>
-            </div>
-            <div v-if="props.viewProducts">
-              <Divider class="m-0"></Divider>
-              <div
-                class="grid grid-nogutter justify-content-between align-items-center m-3 gap-3"
-              >
-                <div class="flex align-items-center gap-3">
-                  <Button
-                    v-if="isMobile"
-                    icon="pi pi-bars"
-                    @click="cateVisible = true"
-                  />
-                  <div class="font-bold text-lg">{{ $t('All products') }}</div>
+                </router-link>
+                <a v-else v-ripple :target="item.target" v-bind="props.action">
+                  <span class="font-semibold cursor-pointer">{{
+                    item.label
+                  }}</span>
+                </a>
+              </template>
+              <template #separator>
+                <span class="font-semibold">/</span>
+              </template>
+            </Breadcrumb>
+          </div>
+          <div v-if="props.viewProducts">
+            <Divider class="m-0"></Divider>
+            <div
+              class="grid grid-nogutter justify-content-between align-items-center m-3 gap-3"
+            >
+              <div class="flex align-items-center gap-3">
+                <Button
+                  v-if="isMobile"
+                  icon="pi pi-bars"
+                  @click="cateVisible = true"
+                />
+                <div class="font-bold text-lg">
+                  {{ $t('All products') }}
                 </div>
-                <div class="grid grid-nogutter gap-3">
-                  <div
-                    class="flex gap-2 sm:justify-content-between align-items-center"
-                  >
-                    <span>{{ $t('Search by') }}</span>
-                    <Button
-                      :label="$t('Nearest Shop')"
-                      :outlined="!isFilterByNearest"
-                      :loading="loadingFilterByNearest"
-                      :icon="isFilterByNearest ? 'pi pi-check' : ''"
-                      @click="onSearchNearest"
-                    />
-                  </div>
-                  <div
-                    class="flex gap-2 sm:justify-content-between align-items-center"
-                  >
-                    <span>{{ $t('Accordion') }}</span>
-                    <Dropdown
-                      v-model="selectedFilter"
-                      :options="filters"
-                      optionLabel="name"
-                      :placeholder="$t('Select a Filter')"
-                      checkmark
-                      class="w-auto"
-                      @update:model-value="onSelectFilter"
-                    />
-                  </div>
+              </div>
+              <div class="grid grid-nogutter gap-3">
+                <div
+                  class="flex gap-2 sm:justify-content-between align-items-center"
+                >
+                  <span>{{ $t('Search by') }}</span>
+                  <Button
+                    :label="$t('Nearest Shop')"
+                    :outlined="!isFilterByNearest"
+                    :loading="loadingFilterByNearest"
+                    :icon="isFilterByNearest ? 'pi pi-check' : ''"
+                    @click="onSearchNearest"
+                  />
+                </div>
+                <div
+                  class="flex gap-2 sm:justify-content-between align-items-center"
+                >
+                  <span>{{ $t('Accordion') }}</span>
+                  <Dropdown
+                    v-model="selectedFilter"
+                    :options="filters"
+                    optionLabel="name"
+                    :placeholder="$t('Select a Filter')"
+                    checkmark
+                    class="w-auto"
+                    @update:model-value="onSelectFilter"
+                  />
                 </div>
               </div>
             </div>
           </div>
-          <slot name="page-content"></slot>
         </div>
+        <slot name="page-content"></slot>
       </div>
-      <ScrollTop v-if="!$props.hideScrollTop"
-        :pt="{
-          root: isMobile ? 'mb-8' : '',
-        }"
-      />
     </div>
+    <ScrollTop
+      v-if="!$props.hideScrollTop"
+      :pt="{
+        root: isMobile ? 'mb-8' : '',
+      }"
+    />
     <div v-if="isMobile" class="h-5rem"></div>
   </main>
-  <footer v-if="isMobile && !$props.hideNavigation" class="fixed bottom-0 w-full h-5rem" style="z-index: 9999;">
+  <footer
+    v-if="isMobile && !$props.hideNavigation"
+    class="fixed bottom-0 w-full h-5rem"
+    style="z-index: 9999"
+  >
     <div class="bg-primary-reverse p-1 h-full shadow-4">
       <div class="flex gap-3 justify-content-evenly align-items-center">
         <router-link to="/" style="text-decoration: none"

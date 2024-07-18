@@ -343,4 +343,3 @@
     </Sidebar>
   </div>
 </template>
-src/stores/cart

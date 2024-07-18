@@ -28,7 +28,7 @@
           ></ProductItem>
         </div>
         <div
-          v-if="eProductStore.products.length > 0"
+          v-if="eProductStore.products.length > 0 && eProductStore.products.length >= eProductStore.pageSize"
           class="grid grid-nogutter align-items-center justify-content-center my-3"
         >
           <Button
