@@ -484,7 +484,8 @@
               @click="() => productDetails && addToCart(productDetails)"
             ></Button>
             <Button
-              class="h-full justify-content-center bg-red-500 border-0"
+              class="h-full justify-content-center border-0"
+              severity="danger"
               @click="
                 () => {
                   productDetails && addToCart(productDetails, true)
