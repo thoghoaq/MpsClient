@@ -39,7 +39,7 @@
             <template #body="slotProps">
               <Inplace :closable="true">
                 <template #display>
-                  {{ slotProps.data.value || 'Click to Edit' }}
+                  {{ slotProps.data.value || $t('Click to Edit') }}
                 </template>
                 <template #content>
                   <InputText v-model="slotProps.data.value" autofocus />
@@ -47,7 +47,18 @@
               </Inplace>
             </template>
           </Column>
-          <Column field="description" :header="$t('Description')"></Column>
+          <Column field="description" :header="$t('Description')">
+            <template #body="slotProps">
+              <Inplace :closable="true">
+                <template #display>
+                  {{ slotProps.data.description || $t('Click to Edit') }}
+                </template>
+                <template #content>
+                  <InputText v-model="slotProps.data.description" autofocus />
+                </template>
+              </Inplace>
+            </template>
+          </Column>
         </DataTable>
       </div>
     </template>
