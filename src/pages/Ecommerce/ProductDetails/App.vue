@@ -473,12 +473,12 @@
               </template>
             </InputNumber>
           </div>
-          <div class="h-full">
+          <div class="h-full flex">
+            <Divider layout="vertical" class="p-0 m-0"></Divider>
             <Button
               icon="pi pi-shopping-cart"
-              :label="$t('ADD TO CART')"
               text
-              class="h-full"
+              class="h-full w-6rem"
               @click="() => productDetails && addToCart(productDetails)"
             ></Button>
             <Button
