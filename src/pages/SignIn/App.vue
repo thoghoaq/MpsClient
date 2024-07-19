@@ -83,76 +83,80 @@
             $t('Please enter your details')
           }}</span>
         </div>
-        <div class="flex flex-column">
-          <div class="mb-4 text-right">
-            <InputGroup>
-              <InputGroupAddon>
-                <i class="pi pi-envelope"></i>
-              </InputGroupAddon>
-              <InputText
-                v-model="state.email"
-                placeholder="Email"
-                class="w-full"
-                @blur="v$.email.$touch"
-                :invalid="v$.email.$error"
-              />
-            </InputGroup>
-            <small class="p-error" v-if="v$.email.$error">{{
-              $t(v$.email.$errors[0]?.$message?.toString())
-            }}</small>
-          </div>
-          <div class="mb-4 text-right">
-            <InputGroup>
-              <InputGroupAddon>
-                <i class="pi pi-lock"></i>
-              </InputGroupAddon>
-              <Password
-                v-model="state.password"
-                :placeholder="$t('Password')"
-                toggleMask
-                :feedback="false"
-                class="w-full"
-                @blur="v$.password.$touch"
-                :invalid="v$.password.$error"
-              />
-            </InputGroup>
-            <small class="p-error" v-if="v$.password.$error">{{
-              $t(v$.password.$errors[0]?.$message?.toString())
-            }}</small>
-          </div>
-          <div class="mb-4 flex flex-wrap gap-3">
-            <div>
-              <Checkbox
-                v-model="state.rememberMe"
-                input-id="rememberMe"
-                :binary="true"
-                class="mr-2"
-              />
-              <label for="rememberMe" class="text-900 font-medium mr-8">
-                {{ $t('Remember me') }}
-              </label>
+        <form>
+          <div class="flex flex-column">
+            <div class="mb-4 text-right">
+              <InputGroup>
+                <InputGroupAddon>
+                  <i class="pi pi-envelope"></i>
+                </InputGroupAddon>
+                <InputText
+                  v-model="state.email"
+                  placeholder="Email"
+                  class="w-full"
+                  autocomplete="username"
+                  @blur="v$.email.$touch"
+                  :invalid="v$.email.$error"
+                />
+              </InputGroup>
+              <small class="p-error" v-if="v$.email.$error">{{
+                $t(v$.email.$errors[0]?.$message?.toString())
+              }}</small>
             </div>
-            <router-link to="/password-reset">
-              <Button
-                :label="$t('Reset password')"
-                link
-                class="p-0 text-600 text-primary"
-              />
-            </router-link>
+            <div class="mb-4 text-right">
+              <InputGroup>
+                <InputGroupAddon>
+                  <i class="pi pi-lock"></i>
+                </InputGroupAddon>
+                <Password
+                  v-model="state.password"
+                  :placeholder="$t('Password')"
+                  toggleMask
+                  :feedback="false"
+                  class="w-full"
+                  v-bind:input-props="{ autocomplete: 'current-password' }"
+                  @blur="v$.password.$touch"
+                  :invalid="v$.password.$error"
+                />
+              </InputGroup>
+              <small class="p-error" v-if="v$.password.$error">{{
+                $t(v$.password.$errors[0]?.$message?.toString())
+              }}</small>
+            </div>
+            <div class="mb-4 flex flex-wrap gap-3">
+              <div>
+                <Checkbox
+                  v-model="state.rememberMe"
+                  input-id="rememberMe"
+                  :binary="true"
+                  class="mr-2"
+                />
+                <label for="rememberMe" class="text-900 font-medium mr-8">
+                  {{ $t('Remember me') }}
+                </label>
+              </div>
+              <router-link to="/password-reset">
+                <Button
+                  :label="$t('Reset password')"
+                  link
+                  class="p-0 text-600 text-primary"
+                />
+              </router-link>
+            </div>
+            <Button :label="$t('Log in')" :loading="loading" @click="submitForm" />
+            <div class="mt-3">
+              <span>{{ $t("Don't have an account? ") }}</span>
+              <router-link to="/sign-up">
+                <Button :label="$t('Sign up')" link class="p-0 text-primary" />
+              </router-link>
+            </div>
+            <div class="mt-3">
+              <router-link to="/ecommerce/products">
+                <Button :label="$t('Home')" link class="p-0 text-primary" />
+              </router-link>
+            </div>
           </div>
-          <Button :label="$t('Log in')" :loading="loading" @click="submitForm" />
-          <div class="mt-3">
-            <span>{{ $t("Don't have an account? ") }}</span>
-            <router-link to="/sign-up">
-              <Button :label="$t('Sign up')" link class="p-0 text-primary" />
-            </router-link>
-          </div>
-          <div class="mt-3">
-            <router-link to="/ecommerce/products">
-              <Button :label="$t('Home')" link class="p-0 text-primary" />
-            </router-link>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
