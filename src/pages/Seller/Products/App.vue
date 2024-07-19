@@ -1,7 +1,13 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue'
   import { useProductStore } from 'src/stores/seller/product'
+  import { useConfirm } from 'primevue/useconfirm'
+  import { useI18n } from 'vue-i18n'
+  import { useToastStore } from 'src/stores/toast'
+  const toast = useToastStore()
+  const { t } = useI18n()
   const productStore = useProductStore()
+  const confirm = useConfirm()
   onMounted(() => {
     productStore.fetchProducts()
   })
@@ -22,7 +28,8 @@
         {
           label: 'Deactivate',
           icon: 'pi pi-lock',
-          class: 'text-red-500'
+          class: 'text-red-500',
+          command: () => confirmDeactive(),
         },
       ],
     },
@@ -36,10 +43,32 @@
   }
 
   const query = ref()
+
+  const confirmDeactive = () => {
+    confirm.require({
+      header: t('Confirm'),
+      icon: 'pi pi-exclamation-triangle',
+      message: t('Are you sure you want to active/deactive this product?'),
+      rejectClass: 'p-button-secondary p-button-outlined',
+      rejectLabel: t('No'),
+      acceptLabel: t('Yes'),
+      acceptClass: 'p-button-danger',
+      accept: () => {
+        productStore.activeOrDeactiveProduct(menuId.value).then((response) => {
+          if (response.success) {
+            toast.success(response.content["message"])
+          } else {
+            toast.error(response.content)
+          }
+        })
+      },
+    })
+  }
 </script>
 <template>
   <Layout>
     <template #page-content>
+      <ConfirmDialog></ConfirmDialog>
       <Menubar class="border-0 m-2 px-3">
         <template #start>
           <h3>{{ $t('Your Products') }}</h3>

@@ -112,6 +112,7 @@ export const appConfig: AppConfig = {
         'orders-in-payout-date',
         controllers.shop,
       ),
+      productStatus: getControllerUrl('product/status', controllers.shop),
     },
     ecommerce: {
       products: getControllerUrl('products', controllers.ecommerce),

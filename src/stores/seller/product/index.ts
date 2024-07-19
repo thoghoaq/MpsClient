@@ -20,7 +20,21 @@ export const useProductStore = defineStore({
           }),
         )
         .then((response: APIResponse<Product[]>) => {
-          this.products = response.content
+          if (response.success) this.products = response.content
+          return response
+        })
+    },
+    async activeOrDeactiveProduct(productId: number) {
+      var product = this.products.find(p => p.id == productId)
+      return api
+        .put(appConfig.api.shop.productStatus, {
+          id: product?.id,
+          isActive: product?.isActive ? false : true,
+        })
+        .then((response: APIResponse<any>) => {
+          if (response.success) {
+            product!.isActive = product?.isActive ? false : true
+          }
           return response
         })
     },
