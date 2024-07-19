@@ -288,6 +288,7 @@
                 ? notificationStore.notifications.length.toString()
                 : undefined
             "
+            badge-class="p-badge-danger p-badge-rounded p-badge-no-gutter"
           />
           <OverlayPanel ref="op">
             <div style="min-width: 30rem;" class="flex flex-column gap-2">

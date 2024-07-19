@@ -109,6 +109,9 @@
             <div v-else-if="!shop.isAccepted">
               <h4 class="text-red-500">{{ $t('Rejected') }}</h4>
             </div>
+            <div v-else>
+              <Button :label="$t('Update')" outlined @click="$router.push({name: 'shopsUpdate', params: {id: shop.id}})"></Button>
+            </div>
           </div>
         </div>
       </div>
