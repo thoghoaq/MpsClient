@@ -44,5 +44,18 @@ export const useToastStore = defineStore({
         life: this.life,
       })
     },
+    custom(
+      summary: string | undefined,
+      detail: string | undefined,
+      life: number | undefined,
+    ) {
+      const toast = this.$toasts
+      toast.add({
+        severity: 'info',
+        summary: summary,
+        detail: detail,
+        life: life,
+      })
+    },
   },
 })

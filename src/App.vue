@@ -11,6 +11,10 @@
   import { initFirebaseMessaging } from './stores/firebase'
   import { getDeviceInfo } from 'src/helpers/device-helper'
   import { useAuthStore } from './stores/auth'
+  import { onMessage } from 'firebase/messaging'
+  import { messaging } from './stores/firebase'
+  import { useToastStore } from './stores/toast'
+  const toast = useToastStore()
   const authStore = useAuthStore()
   const shopStore = useShopStore()
   const primeVue = usePrimeVue()
@@ -83,6 +87,12 @@
         }
       })
     }
+  })
+
+  onMessage(messaging, (payload) => {
+    console.log('Message received. ', payload)
+    // Show a notification or update the UI with the message payload
+    toast.custom(payload.notification?.title, payload.notification?.body, 5000)
   })
 </script>
 
