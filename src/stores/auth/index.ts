@@ -81,6 +81,21 @@ export const useAuthStore = defineStore({
         isCustomer: false,
         isGuest: true,
       }
+      api
+        .put(appConfig.api.account.devices, {
+          id: this.userDevice?.id,
+          isLogged: false,
+        })
+        .then((response) => {
+          if (response.success) {
+            var device = response.content['device']
+            if (device) {
+              localStorage.setItem('userDevice', JSON.stringify(device))
+              this.userDevice = response.content['device']
+            }
+          }
+          return response
+        })
     },
     async register(
       email: string,
