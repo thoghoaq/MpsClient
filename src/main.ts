@@ -60,8 +60,8 @@ import ScrollTop from 'primevue/scrolltop'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
-import Ripple from 'primevue/ripple';
-import Tooltip from 'primevue/tooltip';
+import Ripple from 'primevue/ripple'
+import Tooltip from 'primevue/tooltip'
 
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
@@ -70,23 +70,24 @@ import { router } from './router'
 import { createI18n } from 'vue-i18n'
 import { messages, defaultLocale } from './locales'
 import vi from 'src/locales/prime/vi.json'
+import './stores/firebase'
 
 const app = createApp(App)
 const pinia = createPinia()
 const i18n = createI18n({
-    legacy: false,
-    globalInjection: true,
-    locale: defaultLocale,
-    fallbackLocale: "en",
-    availableLocales: ["en", "vi"],
-    messages: messages,
+  legacy: false,
+  globalInjection: true,
+  locale: defaultLocale,
+  fallbackLocale: 'en',
+  availableLocales: ['en', 'vi'],
+  messages: messages,
 })
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL
 axios.defaults.headers.common['Accept-Language'] = 'vi-VN'
 
 app.use(PrimeVue, {
-    locale: vi,
+  locale: vi,
 })
 app.use(ToastService)
 app.use(ConfirmationService)

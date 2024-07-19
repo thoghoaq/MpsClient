@@ -1,18 +1,23 @@
 import { defineStore } from 'pinia'
 import { appConfig } from '../index'
-import { Auth, PayPalAuth, PayPalCustomer, User } from './types'
+import { Auth, PayPalAuth, PayPalCustomer, User, UserDevice } from './types'
 import { APIResponse } from '../types'
 import axios, { AxiosError } from 'axios'
 import { StaffData } from '../admin/staff/types'
 import { useApi } from '../api'
 import { ShopOwnerData } from '../admin/shopowner/types'
 import { CustomerData } from '../admin/customer/types'
+import { initFirebaseMessaging } from '../firebase'
+import { getDeviceInfo } from 'src/helpers/device-helper'
 const api = useApi()
 
 export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
     auth: <Auth | undefined>JSON.parse(localStorage.getItem('auth') || '{}'),
+    userDevice: <UserDevice | undefined>(
+      JSON.parse(localStorage.getItem('userDevice') || '{}')
+    ),
   }),
   actions: {
     async login(email: string, password: string): Promise<APIResponse<any>> {
@@ -33,6 +38,14 @@ export const useAuthStore = defineStore({
           appConfig.loggedUser = this.auth.user
           axios.defaults.headers.common['Authorization'] =
             `Bearer ${this.auth?.accessToken}`
+
+          // register device
+          initFirebaseMessaging().then((token) => {
+            if (token) {
+              const deviceInfo = getDeviceInfo()
+              this.updateDevice(token, deviceInfo?.browserName)
+            }
+          })
           return {
             success: true,
             content: response.data,
@@ -226,6 +239,25 @@ export const useAuthStore = defineStore({
             content: error.message || 'Internal Server Error',
             status: error.status,
           }
+        })
+    },
+    async updateDevice(deviceToken: string, deviceName: string) {
+      return api
+        .put(appConfig.api.account.devices, {
+          id: this.userDevice?.id,
+          deviceToken: deviceToken,
+          deviceName: deviceName,
+          isLogged: true,
+        })
+        .then((response) => {
+          if (response.success) {
+            var device = response.content['device']
+            if (device) {
+              localStorage.setItem('userDevice', JSON.stringify(device))
+              this.userDevice = response.content['device']
+            }
+          }
+          return response
         })
     },
   },

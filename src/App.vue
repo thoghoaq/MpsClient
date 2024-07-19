@@ -7,6 +7,11 @@
   import { useI18n } from 'vue-i18n'
   import { getMessage } from 'src/locales'
   import { useShopStore } from './stores/seller/shop'
+  import { appConfig } from './stores'
+  import { initFirebaseMessaging } from './stores/firebase'
+  import { getDeviceInfo } from 'src/helpers/device-helper'
+  import { useAuthStore } from './stores/auth'
+  const authStore = useAuthStore()
   const shopStore = useShopStore()
   const primeVue = usePrimeVue()
   const i18n = useI18n()
@@ -69,6 +74,15 @@
       }
     }
     window.history.pushState({}, document.title, '/')
+
+    if (!appConfig.loggedUser.isGuest) {
+      initFirebaseMessaging().then((token) => {
+        if (token) {
+          var deviceInfo = getDeviceInfo()
+          authStore.updateDevice(token, deviceInfo?.browserName)
+        }
+      })
+    }
   })
 </script>
 

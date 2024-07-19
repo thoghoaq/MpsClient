@@ -27,7 +27,8 @@ export interface AppConfig {
             staffs: {
                 export: string;
                 import: string;
-            }
+            },
+            devices: string;
         },
         image: {
             upload: string;

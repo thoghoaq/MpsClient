@@ -84,6 +84,7 @@ export const appConfig: AppConfig = {
         export: getControllerUrl('staffs/export', controllers.account),
         import: getControllerUrl('staffs/import', controllers.account),
       },
+      devices: getControllerUrl('devices', controllers.account),
     },
     image: {
       upload: getControllerUrl('upload', controllers.image),

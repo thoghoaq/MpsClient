@@ -2,7 +2,6 @@ import { createMemoryHistory, createRouter } from 'vue-router'
 import { routes } from './routes'
 import { useAuthStore } from 'src/stores/auth'
 import TokenHelper from 'src/helpers/token-helper'
-
 export const router = createRouter({
   history: createMemoryHistory(),
   routes,
