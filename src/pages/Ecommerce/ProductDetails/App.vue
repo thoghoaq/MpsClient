@@ -226,7 +226,7 @@
           :class="
             productDetails?.images && productDetails?.images.length > 0
               ? 'col-12 xl:col-5'
-              : 'col'
+              : 'col-12'
           "
           class="xl:flex xl:flex-auto gap-3"
         >
