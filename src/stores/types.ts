@@ -87,6 +87,9 @@ export interface AppConfig {
                 accept: string;
             },
             shops: string;
+        },
+        notification: {
+            base: string;
         }
     },
     loggedUser: User,

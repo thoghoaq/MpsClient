@@ -72,15 +72,6 @@ export const useAuthStore = defineStore({
         })
     },
     logout() {
-      this.auth = undefined
-      localStorage.removeItem('auth')
-      appConfig.loggedUser = <User>{
-        isManagerGroup: false,
-        isAdminGroup: false,
-        isShopOwner: false,
-        isCustomer: false,
-        isGuest: true,
-      }
       api
         .put(appConfig.api.account.devices, {
           id: this.userDevice?.id,
@@ -95,6 +86,17 @@ export const useAuthStore = defineStore({
             }
           }
           return response
+        })
+        .finally(() => {
+          this.auth = undefined
+          localStorage.removeItem('auth')
+          appConfig.loggedUser = <User>{
+            isManagerGroup: false,
+            isAdminGroup: false,
+            isShopOwner: false,
+            isCustomer: false,
+            isGuest: true,
+          }
         })
     },
     async register(

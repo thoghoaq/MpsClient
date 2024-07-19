@@ -14,6 +14,8 @@
   import { onMessage } from 'firebase/messaging'
   import { messaging } from './stores/firebase'
   import { useToastStore } from './stores/toast'
+  import { useNotificationStore } from './stores/notification'
+  const notificationStore = useNotificationStore()
   const toast = useToastStore()
   const authStore = useAuthStore()
   const shopStore = useShopStore()
@@ -93,6 +95,7 @@
     console.log('Message received. ', payload)
     // Show a notification or update the UI with the message payload
     toast.custom(payload.notification?.title, payload.notification?.body, 5000)
+    notificationStore.getNotifications()
   })
 </script>
 

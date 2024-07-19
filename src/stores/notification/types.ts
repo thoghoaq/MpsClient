@@ -9,3 +9,14 @@ export type Device = {
     createdAt: Date
     updatedAt: Date | null
 }
+
+export type Notification = {
+    id: number,
+    title: string,
+    body: string,
+    imageUrl: string | null,
+    createdAt: Date,
+    readAt: Date | null,
+    userId: number
+    data: any
+}

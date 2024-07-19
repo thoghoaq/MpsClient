@@ -39,6 +39,7 @@ const controllers = {
   payment: '/payment',
   setting: '/setting',
   staff: '/staff',
+  notification: '/notification',
 }
 
 const getLoggedUser = function () {
@@ -155,6 +156,9 @@ export const appConfig: AppConfig = {
         accept: getControllerUrl('shop/accept', controllers.staff),
       },
       shops: getControllerUrl('shops', controllers.staff)
+    },
+    notification: {
+      base: getUrl(controllers.notification)
     }
   },
   loggedUser: getLoggedUser(),

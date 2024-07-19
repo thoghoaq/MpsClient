@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useI18n } from 'vue-i18n'
-  import { ref, watch } from 'vue'
+  import { ref, watch, onMounted } from 'vue'
   import { useSettingStore } from 'src/stores/setting'
   import { usePrimeVue } from 'primevue/config'
   import { Theme } from 'src/stores/setting/types'
@@ -11,6 +11,8 @@
   import axios from 'axios'
   import { getLocale } from 'src/locales/prime'
   import { getMessage } from 'src/locales'
+  import { useNotificationStore } from 'src/stores/notification'
+  const notificationStore = useNotificationStore()
   const i18n = useI18n()
   const t = i18n.t
   const primeVue = usePrimeVue()
@@ -20,6 +22,7 @@
 
   const props = defineProps({
     onToggleMenu: Function,
+    getNotifications: Boolean,
   })
   const items = ref([])
 
@@ -199,6 +202,16 @@
   watch(scale, (value) => {
     settingStore.changeScale(value)
   })
+
+  onMounted(() => {
+    if (props.getNotifications) {
+      notificationStore.getNotifications()
+    }
+  })
+  const op = ref()
+  const toggle = (event: any) => {
+    op.value.toggle(event)
+  }
 </script>
 <template>
   <div class="card w-full">
@@ -266,6 +279,39 @@
             class="p-button-rounded p-button-text"
             @click="showSettings = true"
           />
+          <Button
+            icon="pi pi-bell"
+            class="p-button-rounded p-button-text"
+            @click="toggle"
+            :badge="
+              notificationStore.notifications.length > 0
+                ? notificationStore.notifications.length.toString()
+                : undefined
+            "
+          />
+          <OverlayPanel ref="op">
+            <div style="min-width: 30rem;" class="flex flex-column gap-2">
+              <div class="font-bold text-lg py-2">{{ $t('Notifications') }}</div>
+              <div
+                v-for="notification in notificationStore.notifications"
+                :key="notification.id"
+              >
+                <div class="flex gap-2 align-items-center border-1 p-3 border-round border-primary-100" :class="notification.readAt == null ? 'bg-primary-50': ''">
+                  <img
+                    v-if="notification.imageUrl"
+                    :src="notification.imageUrl"
+                    alt="notification"
+                    class="w-3rem h-3rem"
+                    style="object-fit: cover;"
+                  />
+                  <div class="ml-2 flex flex-column gap-1">
+                    <div class="font-semibold">{{ notification.title }}</div>
+                    <div>{{ notification.body }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </OverlayPanel>
           <Avatar
             :image="appConfig.loggedUser.data.photoUrl"
             :label="
@@ -361,13 +407,13 @@
         <div class="mb-4">{{ appConfig.loggedUser.data.displayName }}</div>
         <div class="flex flex-column gap-3">
           <router-link to="/profile">
-              <Button severity="primary" class="w-full" outlined>
-                <i class="pi pi-user-edit px-2"></i>
-                <div class="flex flex-column text-left m-3">
-                  <span>{{ $t('Profile') }}</span>
-                </div>
-              </Button>
-            </router-link>
+            <Button severity="primary" class="w-full" outlined>
+              <i class="pi pi-user-edit px-2"></i>
+              <div class="flex flex-column text-left m-3">
+                <span>{{ $t('Profile') }}</span>
+              </div>
+            </Button>
+          </router-link>
           <Button severity="danger" class="w-full" outlined @click="logout">
             <i class="pi pi-power-off px-2"></i>
             <div class="flex flex-column text-left m-3">

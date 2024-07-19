@@ -22,6 +22,7 @@
       appConfig.loggedUser.isManagerGroup || appConfig.loggedUser.isShopOwner
     "
     :fetchShopsRequest="appConfig.loggedUser.isManagerGroup"
+    :getNotifications="true"
   >
     <template #page-content>
       <div></div>
