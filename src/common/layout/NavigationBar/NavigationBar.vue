@@ -8,6 +8,7 @@
   const props = defineProps({
     visible: Boolean,
     onVisibleChange: Function,
+    fetchShopsRequest: Boolean,
   })
 
   const items = ref<any[]>([
@@ -33,6 +34,12 @@
           route: '/admin/shop-request',
           visible: appConfig.loggedUser.isManagerGroup,
           badge: shopRequestStore.shops.filter(x => x.isAccepted).length,
+        },
+        {
+          label: 'Manage Shops',
+          icon: 'pi pi-shop',
+          route: '/admin/shops',
+          visible: appConfig.loggedUser.isManagerGroup,
         },
         {
           label: 'Manage Customers',
@@ -118,7 +125,7 @@
   }
 
   onMounted(() => {
-    if (appConfig.loggedUser.isManagerGroup) {
+    if (appConfig.loggedUser.isManagerGroup && props.fetchShopsRequest) {
       var parent = items.value.find(
         (item) => item.label === 'Administrator',
       ).items

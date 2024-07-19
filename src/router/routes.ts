@@ -15,6 +15,8 @@ import ProductCategories from '../pages/Admin/ProductCategories/App.vue'
 import RefundRevenue from '../pages/Admin/RefundRevenue/App.vue'
 import ShopRequest from '../pages/Admin/ShopRequest/App.vue'
 import Setting from '../pages/Admin/Setting/App.vue'
+import ShopsManagement from '../pages/Admin/Shops/App.vue'
+import ShopSetting from '../pages/Admin/Shops/Setting/App.vue'
 
 /** Seller */
 import Shops from '../pages/Seller/Shops/App.vue'
@@ -78,6 +80,16 @@ export const routes = [
         path: 'settings',
         name: 'settings',
         component: Setting,
+      },
+      {
+        path: 'shops',
+        name: 'shopsManagement',
+        component: ShopsManagement,
+      },
+      {
+        path: 'shop-setting/:id',
+        name: 'shopSetting',
+        component: ShopSetting,
       }
     ],
   },

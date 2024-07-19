@@ -170,6 +170,11 @@
           label: t('Profile'),
           class: 'm-0',
         }
+      case 'shop-setting':
+        return {
+          label: t('Shop Setting'),
+          class: 'm-0',
+        }
       default:
         return {
           label: item,

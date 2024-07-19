@@ -21,6 +21,7 @@
     v-if="
       appConfig.loggedUser.isManagerGroup || appConfig.loggedUser.isShopOwner
     "
+    :fetchShopsRequest="appConfig.loggedUser.isManagerGroup"
   >
     <template #page-content>
       <div></div>

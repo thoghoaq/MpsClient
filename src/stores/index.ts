@@ -145,11 +145,14 @@ export const appConfig: AppConfig = {
     },
     setting: {
       base: getUrl(controllers.setting),
+      shop: getControllerUrl('shop', controllers.setting),
+      shopRefresh: getControllerUrl('shop/refresh', controllers.setting)
     },
     staff: {
       shop: {
         accept: getControllerUrl('shop/accept', controllers.staff),
-      }
+      },
+      shops: getControllerUrl('shops', controllers.staff)
     }
   },
   loggedUser: getLoggedUser(),

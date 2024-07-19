@@ -285,5 +285,10 @@
   "Reject": "Từ chối",
   "Are you sure you want to reject this shop?": "Bạn có chắc chắn muốn từ chối cửa hàng này không?",
   "Rejected": "Đã bị từ chối",
-  "Click to Edit": "Nhấn để chỉnh sửa"
+  "Click to Edit": "Nhấn để chỉnh sửa",
+  "No shop found.": "Không tìm thấy cửa hàng nào.",
+  "List of Shops": "Danh sách cửa hàng",
+  "Shop Setting": "Cài đặt cửa hàng",
+  "Reset to default": "Khôi phục mặc định",
+  "Paypal": "Paypal"
 }

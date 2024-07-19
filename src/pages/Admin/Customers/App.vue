@@ -98,6 +98,8 @@
   }
 
   const selectedKey = ref()
+  
+  const refreshSpin = ref(false)
 </script>
 <template>
   <Layout>
@@ -127,10 +129,15 @@
                 ></Button>
               </router-link>
               <Button
-                icon="pi pi-refresh"
+                :icon="`pi pi-refresh ${refreshSpin ? 'pi-spin' : ''}`"
                 rounded
                 outlined
-                @click="customerStore.fetchCustomers()"
+                @click="() => {
+                  refreshSpin = true
+                  customerStore.fetchCustomers().finally(() => {
+                    refreshSpin = false
+                  })
+                }"
               />
             </div>
           </template>

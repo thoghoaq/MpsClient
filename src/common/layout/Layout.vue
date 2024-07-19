@@ -9,13 +9,14 @@
 
   const props = defineProps({
     hideBackground: Boolean,
+    fetchShopsRequest: Boolean,
   })
 </script>
 <template>
   <header></header>
   <main>
     <div class="flex">
-      <NavigationBar :visible="visible" />
+      <NavigationBar :visible="visible" :fetch-shops-request="fetchShopsRequest" />
       <div class="flex flex-column w-full h-screen">
         <TopBar :on-toggle-menu="toggleMenu" />
         <div class="h-full overflow-x-hidden m-3 border-round" :class="hideBackground ? '' : 'bg-primary-reverse'">
