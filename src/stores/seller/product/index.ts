@@ -11,9 +11,14 @@ export const useProductStore = defineStore({
     products: <Product[]>[],
   }),
   actions: {
-    async fetchProducts() {
+    async fetchProducts(query?: string | null) {
       return api
-        .get(appConfig.appendUrl(appConfig.api.shop.products, { shopId: appConfig.loggedUser.shopManaging?.id }))
+        .get(
+          appConfig.appendUrl(appConfig.api.shop.products, {
+            shopId: appConfig.loggedUser.shopManaging?.id,
+            filter: query,
+          }),
+        )
         .then((response: APIResponse<Product[]>) => {
           this.products = response.content
           return response

@@ -34,6 +34,8 @@
     menuId.value = event.currentTarget.id.replace('menu_', '')
     menu.value.toggle(event)
   }
+
+  const query = ref()
 </script>
 <template>
   <Layout>
@@ -44,6 +46,18 @@
         </template>
         <template #end>
           <div class="flex align-items-center gap-2">
+            <IconField iconPosition="left">
+                <InputIcon class="pi pi-search"> </InputIcon>
+                <InputText
+                  v-model="query"
+                  :placeholder="$t('Search')"
+                  type="text"
+                  class="w-8rem sm:w-auto"
+                  @change="() => {
+                    productStore.fetchProducts(query)
+                  }"
+                />
+              </IconField>
             <router-link to="/shop/products/create">
               <Button
                 icon="pi pi-plus"
