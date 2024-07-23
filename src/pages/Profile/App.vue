@@ -1,13 +1,15 @@
 <script setup lang="ts">
   import { appConfig } from 'src/stores'
   import { useToastStore } from 'src/stores/toast'
-  import { reactive } from 'vue'
+  import { reactive, ref } from 'vue'
   import { useApi } from 'src/stores/api'
   import { EFileType } from 'src/stores/types'
   import useVuelidate from '@vuelidate/core'
   import { useI18n } from 'vue-i18n'
   import { required, email, minLength } from '@vuelidate/validators'
   import { useAuthStore } from 'src/stores/auth'
+  import { useDataSourceStore } from 'src/stores/datasource'
+  const datasourceStore = useDataSourceStore()
   const authStore = useAuthStore()
   const { t } = useI18n()
   const api = useApi()
@@ -67,7 +69,7 @@
           phoneNumber: state.phoneNumber,
           customerData: {
             address: state.address,
-          }
+          },
         })
         .then((res) => {
           if (res.success) {
@@ -82,6 +84,17 @@
     } else {
       toast.warning(t('Please check your input'))
     }
+  }
+
+  const addressItems = ref(<any>[])
+  const searchAddress = (event: any) => {
+    datasourceStore.getPlaceAutocomplete(event.query).then((res) => {
+      if (res.success) {
+        addressItems.value = res.content.predictions.flatMap((item: any) => {
+          return item.description
+        })
+      }
+    })
   }
 </script>
 <template>
@@ -182,12 +195,13 @@
             </div>
             <div class="flex flex-column gap-2">
               <label for="address">{{ $t('Address') }}</label>
-              <InputText
-                class="w-full"
+              <AutoComplete
+                v-bind:input-class="'w-full'"
                 :placeholder="$t('Address')"
                 v-model="state.address"
+                :suggestions="addressItems"
                 :invalid="$v.address.$error"
-                @blur="$v.address.$touch"
+                @complete="searchAddress"
               />
               <small class="p-error" v-if="$v.address.$error">{{
                 $t($v.address.$errors[0]?.$message?.toString())
@@ -299,12 +313,13 @@
             </div>
             <div class="flex flex-column gap-2">
               <label for="address">{{ $t('Address') }}</label>
-              <InputText
-                class="w-full"
+              <AutoComplete
+                v-bind:input-class="'w-full'"
                 :placeholder="$t('Address')"
                 v-model="state.address"
+                :suggestions="addressItems"
                 :invalid="$v.address.$error"
-                @blur="$v.address.$touch"
+                @complete="searchAddress"
               />
               <small class="p-error" v-if="$v.address.$error">{{
                 $t($v.address.$errors[0]?.$message?.toString())

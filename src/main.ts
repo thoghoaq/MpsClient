@@ -57,6 +57,7 @@ import Rating from 'primevue/rating'
 import ProgressBar from 'primevue/progressbar'
 import Carousel from 'primevue/carousel'
 import ScrollTop from 'primevue/scrolltop'
+import AutoComplete from 'primevue/autocomplete'
 
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
@@ -147,6 +148,7 @@ app.component('Rating', Rating)
 app.component('ProgressBar', ProgressBar)
 app.component('Carousel', Carousel)
 app.component('ScrollTop', ScrollTop)
+app.component('AutoComplete', AutoComplete)
 
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)

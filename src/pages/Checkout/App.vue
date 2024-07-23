@@ -10,6 +10,8 @@
   import { appConfig, isMobile } from 'src/stores'
   import { EPaymentMethod } from 'src/stores/types'
   import { useRouter } from 'vue-router'
+  import { useDataSourceStore } from 'src/stores/datasource'
+  const datasourceStore = useDataSourceStore()
   const toast = useToastStore()
   const { t } = useI18n()
   const cartStore = useCartStore()
@@ -98,6 +100,17 @@
         })
     }
   }
+
+  const addressItems = ref(<any>[])
+  const searchAddress = (event: any) => {
+    datasourceStore.getPlaceAutocomplete(event.query).then((res) => {
+      if (res.success) {
+        addressItems.value = res.content.predictions.flatMap((item: any) => {
+          return item.description
+        })
+      }
+    })
+  }
 </script>
 <template>
   <ELayout :hide-category="true">
@@ -126,11 +139,13 @@
             </div>
             <div class="flex flex-column gap-2">
               <label class="required" for="address">{{ $t('Address') }}</label>
-              <InputText
-                v-model="state.address"
-                :invalid="v$.address.$error"
+              <AutoComplete
+                v-bind:input-class="'w-full'"
                 :placeholder="$t('Enter your address')"
-                @blur="v$.address.$touch"
+                v-model="state.address"
+                :suggestions="addressItems"
+                :invalid="v$.address.$error"
+                @complete="searchAddress"
               />
               <small class="p-error" v-if="v$.address.$error">{{
                 $t(v$.address.$errors[0]?.$message?.toString())

@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
-import { ProductBrand, ProductCategory } from './types'
+import { GoongPlaceResponse, ProductBrand, ProductCategory } from './types'
 import { useApi } from 'src/stores/api'
 import { appConfig } from 'src/stores'
 import { TreeNode } from 'primevue/treenode'
+import { APIResponse } from '../types'
 const api = useApi()
 
 export const useDataSourceStore = defineStore({
@@ -157,6 +158,21 @@ export const useDataSourceStore = defineStore({
         }
         return response
       })
+    },
+    async getPlaceAutocomplete(place: string) {
+      return api
+        .get(
+          appConfig.appendUrl(appConfig.api.external.goong.place.autoComplete, {
+            api_key: import.meta.env.VITE_GOONG_API_KEY,
+            input: place,
+          }),
+          {
+            'Content-Type': 'application/json',
+          },
+        )
+        .then((response: APIResponse<GoongPlaceResponse>) => {
+          return response
+        })
     },
   },
 })

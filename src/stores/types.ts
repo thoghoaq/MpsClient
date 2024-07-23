@@ -75,6 +75,11 @@ export interface AppConfig {
             payPal: {
                 auth: string;
                 customerInfo: string;
+            },
+            goong: {
+                place: {
+                    autoComplete: string;
+                }
             }
         },
         setting: {

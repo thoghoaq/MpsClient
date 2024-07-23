@@ -7,6 +7,7 @@ const getAppPath = function () {
 }
 
 const paypalUrl = import.meta.env.VITE_PAYPAL_API_ENDPOINT
+const goongUrl = import.meta.env.VITE_GOONG_API_ENDPOINT
 
 const getUrl = function (url: string, params?: any): string {
   return getAppPath() + appendUrl(url, params)
@@ -145,6 +146,11 @@ export const appConfig: AppConfig = {
         auth: `${paypalUrl}/oauth2/token`,
         customerInfo: `${paypalUrl}/identity/oauth2/userinfo`,
       },
+      goong: {
+        place: {
+          autoComplete: `${goongUrl}/Place/AutoComplete`
+        }
+      }
     },
     setting: {
       base: getUrl(controllers.setting),
