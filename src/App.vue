@@ -91,12 +91,12 @@
     }
   })
 
-  onMessage(messaging, (payload) => {
-    console.log('Message received. ', payload)
-    // Show a notification or update the UI with the message payload
-    toast.custom(payload.notification?.title, payload.notification?.body, 5000)
-    notificationStore.getNotifications()
-  })
+  // onMessage(messaging, (payload) => {
+  //   console.log('Message received. ', payload)
+  //   // Show a notification or update the UI with the message payload
+  //   toast.custom(payload.notification?.title, payload.notification?.body, 5000)
+  //   notificationStore.getNotifications()
+  // })
 </script>
 
 <template>

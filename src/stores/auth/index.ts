@@ -40,12 +40,12 @@ export const useAuthStore = defineStore({
             `Bearer ${this.auth?.accessToken}`
 
           // register device
-          initFirebaseMessaging().then((token) => {
-            if (token) {
-              const deviceInfo = getDeviceInfo()
-              this.updateDevice(token, deviceInfo?.browserName)
-            }
-          })
+          // initFirebaseMessaging().then((token) => {
+          //   if (token) {
+          //     const deviceInfo = getDeviceInfo()
+          //     this.updateDevice(token, deviceInfo?.browserName)
+          //   }
+          // })
           return {
             success: true,
             content: response.data,
