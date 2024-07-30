@@ -60,14 +60,22 @@
             </Column>
             <Column field="name" :header="$t('PRODUCT')">
               <template #body="{ data }">
-                <div class="flex gap-3 align-items-center">
-                  <img
-                    :src="data.imageUrl"
-                    class="w-10rem"
-                    style="object-fit: contain; max-height: 10rem"
-                  />
-                  <div>{{ data.name }}</div>
-                </div>
+                <router-link style="text-decoration: none;"
+                  :to="{
+                    name: 'eProductDetails',
+                    params: { id: data.id },
+                  }"
+                  :key="data.id"
+                >
+                  <div class="flex gap-3 align-items-center">
+                    <img
+                      :src="data.imageUrl"
+                      class="w-10rem"
+                      style="object-fit: contain; max-height: 10rem"
+                    />
+                    <div>{{ data.name }}</div>
+                  </div>
+                </router-link>
               </template>
             </Column>
             <Column field="price" :header="$t('PRICE')">
@@ -202,7 +210,9 @@
                 <div class="flex flex-column gap-2">
                   <div>{{ item.name }}</div>
                   <div class="text-red-500 font-bold">
-                    {{ NumberHelper.formatCurrency(item.price * item.quantity) }}
+                    {{
+                      NumberHelper.formatCurrency(item.price * item.quantity)
+                    }}
                   </div>
                 </div>
                 <div class="w-10rem">
@@ -246,10 +256,7 @@
         </div>
       </div>
       <div class="h-7rem"></div>
-      <div
-        v-if="isMobile && !isCartEmpty"
-        class="fixed bottom-0 left-0 w-full"
-      >
+      <div v-if="isMobile && !isCartEmpty" class="fixed bottom-0 left-0 w-full">
         <div class="bg-primary-reverse font-bold border-round flex mt-3">
           <DataTable :value="[{ label: 'Total' }]" class="w-full border-round">
             <Column :header="$t('CART TOTAL')" class="border-round">
@@ -270,7 +277,9 @@
             class="w-10rem"
             @click="
               () => {
-                if (cartStore.items.filter((item) => item.selected).length > 0) {
+                if (
+                  cartStore.items.filter((item) => item.selected).length > 0
+                ) {
                   $router.push({ name: 'checkout' })
                 } else {
                   toast.warning($t('Please select at least one product'))
