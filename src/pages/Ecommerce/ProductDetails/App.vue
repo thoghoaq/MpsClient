@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, onMounted, watch } from 'vue'
   import { useEProductStore } from 'src/stores/ecommerce/product'
-  import { useRoute } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import { Feedback, Product } from 'src/stores/ecommerce/product/types'
   import { useToastStore } from 'src/stores/toast'
   import NumberHelper from 'src/helpers/number-helper'
@@ -10,6 +10,7 @@
   import { useI18n } from 'vue-i18n'
   import { useApi } from 'src/stores/api'
   import { appConfig, isMobile } from 'src/stores'
+  const router = useRouter()
   const api = useApi()
   const { t } = useI18n()
   const route = useRoute()
@@ -128,13 +129,23 @@
     })
   }
 
+  const goToProduct = (productId: any) => {
+    router.push({ name: 'eProductDetails', params: { id: productId } })
+  }
+
   const query = ref('')
 </script>
 <template>
-  <ELayout :hide-category="true" :hide-navigation="true" :hide-top-bar="isMobile">
+  <ELayout
+    :hide-category="true"
+    :hide-navigation="true"
+    :hide-top-bar="isMobile"
+  >
     <template #page-content>
       <div v-if="isMobile" class="fixed top-0 left-0 w-full shadow-1 z-5">
-        <div class="h-4rem bg-primary-reverse flex align-items-center justify-content-between">
+        <div
+          class="h-4rem bg-primary-reverse flex align-items-center justify-content-between"
+        >
           <Button
             icon="pi pi-arrow-left"
             class="w-4rem h-4rem"
@@ -374,7 +385,7 @@
                   <div class="border-1 surface-border border-round m-2 p-3">
                     <div
                       class="cursor-pointer"
-                      @click="reload(slotProps.data.id)"
+                      @click="goToProduct(slotProps.data.id)"
                     >
                       <div class="mb-3">
                         <div class="relative mx-auto">
