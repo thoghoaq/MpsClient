@@ -110,11 +110,6 @@
           route: '/shop/products',
           visible: appConfig.loggedUser.isShopOwner,
         },
-        {
-          label: 'Information',
-          icon: 'pi pi-user-edit',
-          visible: appConfig.loggedUser.isShopOwner,
-        },
       ],
     },
   ])
