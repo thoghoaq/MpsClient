@@ -6,6 +6,7 @@
   import DateTimeHelper from 'src/helpers/datetime-helper'
   import { useConfirm } from 'primevue/useconfirm'
   import { useI18n } from 'vue-i18n'
+  import ShopsTable from 'src/common/components/ShopsTable.vue'
   const { t } = useI18n()
   const shopOwnerStore = useShopOwnerStore()
   const toast = useToastStore()
@@ -86,8 +87,7 @@
       acceptLabel: t('Yes'),
       acceptClass: 'p-button-danger',
       accept: () => {
-        shopOwnerStore.activeOrDeactive(menuId.value)
-        .then((response) => {
+        shopOwnerStore.activeOrDeactive(menuId.value).then((response) => {
           if (response.success) {
             toast.success(t('Active/Deactive Successfully'))
           } else {
@@ -99,6 +99,7 @@
   }
 
   const selectedKey = ref()
+  const expandedRows = ref({})
 </script>
 <template>
   <Layout>
@@ -139,6 +140,7 @@
         <div class="card mt-1">
           <DataTable
             v-model:selection="selectedKey"
+            v-model:expandedRows="expandedRows"
             data-key="id"
             :value="shopOwnerStore.shopOwners"
             :loading="false"
@@ -152,6 +154,7 @@
             :currentPageReportTemplate="`{first} ${$t('to')} {last} ${$t('of')} {totalRecords}`"
           >
             <template #empty> {{ $t('No shop owners found.') }} </template>
+            <Column expander class="w-3rem" />
             <Column field="fullName" sortable :header="$t('Full Name')">
               <template #body="slotProps">
                 <div class="flex align-items-center gap-2">
@@ -173,13 +176,17 @@
               </template>
             </Column>
             <Column field="email" sortable :header="$t('Email')"></Column>
-            <Column :header="$t('Role')">
+            <Column :header="$t('Role')" v-if="false">
               <template #body="slotProps">
                 <div class="flex gap-1">
-                  <Tag severity="contrast" v-for="role in (slotProps.data.role as string)
+                  <Tag
+                    severity="contrast"
+                    v-for="role in (slotProps.data.role as string)
                       .split(',')
-                      .filter((x) => x.trim() != '')" :value="role"
-                    :class="getRoleClass(role)"></Tag>
+                      .filter((x) => x.trim() != '')"
+                    :value="role"
+                    :class="getRoleClass(role)"
+                  ></Tag>
                 </div>
               </template>
             </Column>
@@ -276,6 +283,11 @@
                 </Menu>
               </template>
             </Column>
+            <template #expansion="slotProps">
+              <div>
+                <ShopsTable :shops="slotProps.data.shopOwner.shops"></ShopsTable>
+              </div>
+            </template>
           </DataTable>
         </div>
       </div>

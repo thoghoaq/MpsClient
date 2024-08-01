@@ -17,11 +17,12 @@ export const useShopRequestStore = defineStore({
         return response
       })
     },
-    async acceptRequest(id: number, isAccepted: boolean) {
+    async acceptRequest(id: number, isAccepted: boolean, reason: string | null) {
       return api
         .put(appConfig.api.staff.shop.accept, {
           id: id,
-          isAccepted: isAccepted
+          isAccepted: isAccepted,
+          comment: !isAccepted ? reason : null
         })
         .then((response) => {
           if (response.success) {

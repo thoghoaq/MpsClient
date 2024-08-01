@@ -5,6 +5,7 @@
   import { useConfirm } from 'primevue/useconfirm'
   import { useI18n } from 'vue-i18n'
   import { useToastStore } from 'src/stores/toast'
+  import ShopsTable from 'src/common/components/ShopsTable.vue'
   const toast = useToastStore()
   const { t } = useI18n()
   const confirm = useConfirm()
@@ -49,70 +50,7 @@
           </template>
         </Menubar>
         <div class="card mt-1">
-          <DataTable
-            v-model:selection="selectedKey"
-            data-key="id"
-            :value="shopManageStore.shops"
-            :loading="false"
-            removableSort
-            selectionMode="single"
-            paginator
-            :rows="10"
-            :rowsPerPageOptions="[5, 10, 20, 50]"
-            tableStyle="min-width: 50rem"
-            paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-            :currentPageReportTemplate="`{first} ${$t('to')} {last} ${$t('of')} {totalRecords}`"
-          >
-            <template #empty> {{ $t('No shop found.') }} </template>
-            <Column field="shopName" sortable :header="$t('Shop Name')">
-            </Column>
-            <Column
-              field="phoneNumber"
-              sortable
-              :header="$t('Phone Number')"
-            ></Column>
-            <Column field="address" sortable :header="$t('Address')">
-              <template #body="{ data }">
-                {{ `${data.address}, ${data.district}, ${data.city}` }}
-              </template>
-            </Column>
-            <Column field="payPalAccount" sortable :header="$t('Paypal')">
-            </Column>
-            <Column field="createdAt" sortable :header="$t('Created At')">
-              <template #body="{ data }">
-                {{ DateTimeHelper.format(data.createdAt, 'datetime') }}
-              </template>
-            </Column>
-            <Column field="updatedAt" sortable :header="$t('Updated At')">
-              <template #body="{ data }">
-                {{ DateTimeHelper.format(data.updatedAt, 'datetime') }}
-              </template>
-            </Column>
-            <Column field="isActive" sortable :header="$t('Status')">
-              <template #body="{ data }">
-                <i
-                  class="pi"
-                  :class="{
-                    'pi-check-circle text-green-500': data.isActive,
-                    'pi-times-circle text-red-400': !data.isActive,
-                  }"
-                ></i>
-              </template>
-            </Column>
-            <Column :header="$t('Action')" field="id">
-              <template #body="{ data }">
-                <router-link :to="{
-                  path: `/admin/shop-setting/${data.id}`,
-                  query: data
-                }">
-                  <Button
-                    icon="pi pi-cog"
-                    text
-                  />
-                </router-link>
-              </template>
-            </Column>  
-          </DataTable>
+          <ShopsTable :shops="shopManageStore.shops" :show-shop-owner="true"></ShopsTable>
         </div>
       </div>
     </template>

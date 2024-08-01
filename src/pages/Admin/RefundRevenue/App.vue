@@ -342,7 +342,7 @@
                   }}</span>
                 </template>
               </Column>
-              <Column field="payoutDate" :header="$t('Payout Date')">
+              <Column field="payoutDate" :header="$t('Order Payout Date')">
                 <template #body="{ data }">
                   <span>{{
                     getPayoutLabel(data.payoutDate, new Date(data.monthToDate))

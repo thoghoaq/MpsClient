@@ -9,8 +9,10 @@
       !appConfig.loggedUser.shopManaging
     ) {
       router.push({ name: 'shops' })
-    } else if (appConfig.loggedUser.isManagerGroup) {
+    } else if (appConfig.loggedUser.isAdminGroup) {
       router.push({ name: 'staffs' })
+    } else if (appConfig.loggedUser.isManagerGroup) {
+      router.push({ name: 'shopOwners' })
     } else {
       router.push({ name: 'eProducts' })
     }

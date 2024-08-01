@@ -297,7 +297,7 @@
               </template>
             </Column>
             <Column field="email" sortable :header="$t('Email')"></Column>
-            <Column :header="$t('Role')">
+            <Column :header="$t('Role')" v-if="false">
               <template #body="slotProps">
                 <div class="flex flex-auto gap-1">
                   <Tag

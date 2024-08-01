@@ -218,7 +218,7 @@
   "Payout": "Thanh toán",
   "Create Request": "Tạo yêu cầu",
   "Payout History": "Lịch sử thanh toán",
-  "Execute At": "Thực hiện vào",
+  "Execute At": "Ngày thanh toán thực tế",
   "Month": "Tháng",
   "Amount": "Số tiền",
   "Currency": "Đơn vị",
@@ -292,5 +292,8 @@
   "Reset to default": "Khôi phục mặc định",
   "Paypal": "Paypal",
   "Are you sure you want to active/deactive this product?": "Bạn có chắc chắn muốn vô hiệu hóa/ ngừng vô hiệu hóa sản phẩm này không?",
-  "Notifications": "Thông báo"
+  "Notifications": "Thông báo",
+  "Order Payout Date": "Quyết toán hóa đơn ngày",
+  "Shop Owner": "Chủ cửa hàng",
+  "Reason": "Lý do"
 }

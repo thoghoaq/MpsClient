@@ -10,6 +10,7 @@ export interface ShopOwner {
     createdAt:   Date;
     updatedAt:   Date | null;
     userDevices: null;
+    shopOwner: ShopOwnerInfo;
 }
 
 export interface ShopOwnerData {
@@ -22,5 +23,34 @@ export interface ShopOwnerEdit {
     phoneNumber: string | undefined;
     avatarPath: string | undefined;
     shopOwnerData: ShopOwnerData | undefined;
+}
+
+export interface ShopOwnerInfo {
+    userId:    number;
+    createdAt: Date;
+    updatedAt: Date | null;
+    shops:     Shop[];
+}
+
+export interface Shop {
+    id:            number;
+    shopOwnerId:   number;
+    shopName:      string;
+    phoneNumber:   string;
+    address:       string;
+    city:          string;
+    district:      string;
+    latitude:      number;
+    longitude:     number;
+    description:   string;
+    avatar:        string;
+    cover:         null;
+    isActive:      boolean;
+    isAccepted:    boolean;
+    payPalAccount: string;
+    createdAt:     Date;
+    updatedAt:     Date;
+    comment:       string | null;
+    payouts:       any[];
 }
 
