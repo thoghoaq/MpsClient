@@ -197,16 +197,17 @@
               :key="item.id"
               class="p-2 my-4 flex flex-column lg:flex-row justify-content-between align-items-center ng-star-inserted"
             >
-              <router-link style="text-decoration: none;"
-                :to="{
-                  name: 'eProductDetails',
-                  params: {
-                    id: item.productId,
-                  },
-                }"
+              <div
+                class="flex flex-column lg:flex-row justify-content-center align-items-center px-2"
               >
-                <div
-                  class="flex flex-column lg:flex-row justify-content-center align-items-center px-2"
+                <router-link
+                  style="text-decoration: none"
+                  :to="{
+                    name: 'eProductDetails',
+                    params: {
+                      id: item.productId,
+                    },
+                  }"
                 >
                   <img
                     alt="product"
@@ -215,33 +216,31 @@
                       item.productImage ?? 'https://via.placeholder.com/200x250'
                     "
                   />
-                  <div
-                    class="flex flex-column my-auto text-center md:text-left"
-                  >
-                    <span class="text-900 font-medium mb-3 mt-3 lg:mt-0"
-                      >{{ item.productName }} x {{ item.quantity }}</span
-                    ><span class="text-700 text-sm mb-3"
-                      >{{ NumberHelper.formatCurrency(item.total) }}
-                    </span>
-                    <Button
-                      v-if="
-                        !item.isFeedbacked &&
-                        order.orderStatusId === OrderStatus.Completed
-                      "
-                      :label="$t('Write a Review')"
-                      outlined
-                      class="w-10rem mx-auto lg:mx-0 border-round font-medium text-center border-1 border-primary text-primary"
-                      @click="
-                        showFeedback(
-                          item.productId,
-                          item.orderId,
-                          item.productName,
-                        )
-                      "
-                    ></Button>
-                  </div>
+                </router-link>
+                <div class="flex flex-column my-auto text-center md:text-left">
+                  <span class="text-900 font-medium mb-3 mt-3 lg:mt-0"
+                    >{{ item.productName }} x {{ item.quantity }}</span
+                  ><span class="text-700 text-sm mb-3"
+                    >{{ NumberHelper.formatCurrency(item.total) }}
+                  </span>
+                  <Button
+                    v-if="
+                      !item.isFeedbacked &&
+                      order.orderStatusId === OrderStatus.Completed
+                    "
+                    :label="$t('Write a Review')"
+                    outlined
+                    class="w-10rem mx-auto lg:mx-0 border-round font-medium text-center border-1 border-primary text-primary"
+                    @click="
+                      showFeedback(
+                        item.productId,
+                        item.orderId,
+                        item.productName,
+                      )
+                    "
+                  ></Button>
                 </div>
-              </router-link>
+              </div>
               <Tag
                 class="m-3"
                 :severity="getStatusDisplay(order.orderStatus.id).severity"
