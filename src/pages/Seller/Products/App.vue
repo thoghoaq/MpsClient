@@ -125,7 +125,7 @@
             </template>
           </Column>
           <Column field="category.name" :header="$t('Category')" sortable></Column>
-          <Column field="brand.name" :header="$t('Brand')" sortable></Column>
+          <Column field="brand.name" :header="$t('Brand')" sortable v-if="false"></Column>
           <Column field="price" :header="$t('Price')" sortable>
             <template #body="slotProps">
               {{ formatCurrency(slotProps.data.price) }}

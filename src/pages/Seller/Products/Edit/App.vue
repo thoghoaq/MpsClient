@@ -342,7 +342,7 @@
                 }}</small>
               </div>
             </div>
-            <div class="border-1 surface-border border-round">
+            <div class="border-1 surface-border border-round" v-if="false">
               <span
                 class="text-900 font-bold block border-bottom-1 surface-border p-3"
                 >{{ $t('Brand') }}</span
