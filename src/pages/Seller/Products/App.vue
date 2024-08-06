@@ -23,10 +23,10 @@
         {
           label: 'Detail',
           icon: 'pi pi-box',
-          route: '/shop/products'
+          route: '/shop/products',
         },
         {
-          label: 'Deactivate',
+          label: 'Start/Stop selling',
           icon: 'pi pi-lock',
           class: 'text-red-500',
           command: () => confirmDeactive(),
@@ -56,7 +56,7 @@
       accept: () => {
         productStore.activeOrDeactiveProduct(menuId.value).then((response) => {
           if (response.success) {
-            toast.success(response.content["message"])
+            toast.success(response.content['message'])
           } else {
             toast.error(response.content)
           }
@@ -76,17 +76,19 @@
         <template #end>
           <div class="flex align-items-center gap-2">
             <IconField iconPosition="left">
-                <InputIcon class="pi pi-search"> </InputIcon>
-                <InputText
-                  v-model="query"
-                  :placeholder="$t('Search')"
-                  type="text"
-                  class="w-8rem sm:w-auto"
-                  @change="() => {
+              <InputIcon class="pi pi-search"> </InputIcon>
+              <InputText
+                v-model="query"
+                :placeholder="$t('Search')"
+                type="text"
+                class="w-8rem sm:w-auto"
+                @change="
+                  () => {
                     productStore.fetchProducts(query)
-                  }"
-                />
-              </IconField>
+                  }
+                "
+              />
+            </IconField>
             <router-link to="/shop/products/create">
               <Button
                 icon="pi pi-plus"
@@ -95,11 +97,11 @@
               ></Button>
             </router-link>
             <Button
-                icon="pi pi-refresh"
-                rounded
-                outlined
-                @click="productStore.fetchProducts()"
-              />
+              icon="pi pi-refresh"
+              rounded
+              outlined
+              @click="productStore.fetchProducts()"
+            />
           </div>
         </template>
       </Menubar>
@@ -110,7 +112,9 @@
           showGridlines
           tableStyle="min-width: 50rem"
           removable-sort
-          paginator :rows="10" :rowsPerPageOptions="[5, 10, 20, 50]"
+          paginator
+          :rows="10"
+          :rowsPerPageOptions="[5, 10, 20, 50]"
         >
           <Column field="name" :header="$t('Name')" sortable></Column>
           <Column :header="$t('Image')">
@@ -124,8 +128,17 @@
               />
             </template>
           </Column>
-          <Column field="category.name" :header="$t('Category')" sortable></Column>
-          <Column field="brand.name" :header="$t('Brand')" sortable v-if="false"></Column>
+          <Column
+            field="category.name"
+            :header="$t('Category')"
+            sortable
+          ></Column>
+          <Column
+            field="brand.name"
+            :header="$t('Brand')"
+            sortable
+            v-if="false"
+          ></Column>
           <Column field="price" :header="$t('Price')" sortable>
             <template #body="slotProps">
               {{ formatCurrency(slotProps.data.price) }}
@@ -154,7 +167,7 @@
                 aria-controls="overlay_menu"
                 :id="`menu_${data.id}`"
               />
-              <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
+              <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" >
                 <template #item="{ item, props }">
                   <router-link
                     v-if="item.route"

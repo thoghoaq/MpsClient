@@ -35,6 +35,7 @@
   const productDetails = ref<Product>()
   const feedback = ref<Feedback>()
   const similarProducts = ref<Product[]>([])
+  const shopRating = ref(0)
 
   onMounted(() => {
     window.scrollTo(0, 0)
@@ -42,6 +43,17 @@
       if (res.success) {
         productDetails.value = res.content
         total.value = productDetails.value?.price ?? 0
+        if (productDetails.value) {
+          eProductStore
+            .getShopRating(productDetails.value.shopId)
+            .then((res) => {
+              if (res.success) {
+                shopRating.value = res.content['rating']
+              } else {
+                toast.error(res.content)
+              }
+            })
+        }
       } else {
         toast.error(res.content)
       }
@@ -443,6 +455,19 @@
                     {{
                       `${productDetails?.shop?.address}, ${productDetails?.shop?.district}, ${productDetails?.shop?.city}`
                     }}
+                  </div>
+                  <div class="flex align-items-center gap-2">
+                    <div>
+                      {{ $t('Feedback') }}
+                    </div>
+                    <div class="text-xl font-bold">
+                      {{ shopRating }}
+                    </div>
+                    <Rating
+                      :model-value="shopRating"
+                      :cancel="false"
+                      readonly
+                    />
                   </div>
                 </div>
               </div>

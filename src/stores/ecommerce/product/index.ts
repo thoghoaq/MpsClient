@@ -88,5 +88,16 @@ export const useEProductStore = defineStore({
           return response
         })
     },
+    async getShopRating(shopId: number) {
+      return api
+        .get(
+          appConfig.appendUrl(appConfig.api.ecommerce.shopRating, {
+            shopId: shopId,
+          }),
+        )
+        .then((response) => {
+          return response
+        })
+    },
   },
 })

@@ -64,6 +64,7 @@ export interface AppConfig {
             feedback: string;
             feedbacks: string;
             similar: string;
+            shopRating: string;
         },
         payment: {
             details: string;

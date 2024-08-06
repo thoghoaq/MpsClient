@@ -128,6 +128,7 @@ export const appConfig: AppConfig = {
       feedback: getControllerUrl('feedback', controllers.ecommerce),
       feedbacks: getControllerUrl('feedbacks', controllers.ecommerce),
       similar: getControllerUrl('similar', controllers.ecommerce),
+      shopRating: getControllerUrl('shop-rating', controllers.ecommerce),
     },
     payment: {
       details: getControllerUrl('details', controllers.payment),
