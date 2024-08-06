@@ -136,6 +136,10 @@
       toast.warning(t('Please check your input'))
       return
     }
+    if (state.productImages.length < 1) {
+      toast.warning(t('Please upload at least one image'))
+      return
+    }
     loading.value = true
     const categoryId = getCategoryNode(Object.keys(state.category)[0])?.data.id
     const data = {
