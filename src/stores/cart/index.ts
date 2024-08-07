@@ -77,6 +77,7 @@ export const useCartStore = defineStore({
                 shopId: item.shopId,
                 productId: item.id,
                 productName: item.name,
+                productImage: item.imageUrl,
                 price: item.price,
                 quantity: item.quantity,
                 discount: 0,

@@ -65,6 +65,7 @@ export interface AppConfig {
             feedbacks: string;
             similar: string;
             shopRating: string;
+            receiveOrder: string;
         },
         payment: {
             details: string;
@@ -126,7 +127,8 @@ export enum OrderStatus {
     Cancelled = 4,
     Returned = 5,
     Refunded = 6,
-    Completed = 7
+    Completed = 7,
+    Received = 8,
 }
 
 type ImportResult = {

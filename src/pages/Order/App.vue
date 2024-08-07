@@ -53,6 +53,11 @@
           label: 'Completed',
           severity: 'success',
         }
+      case 8:
+        return {
+          label: 'Received',
+          severity: 'success',
+        }
       default:
         return {
           label: 'Unknown',
@@ -117,6 +122,16 @@
     } else {
       toast.warning(t('Please select a rating'))
     }
+  }
+
+  const receive = async (orderId: number) => {
+    return eOrderStore.receivedOrder(orderId).then((res) => {
+      if (res.success) {
+        toast.success(t('Change order status successfully'))
+      } else {
+        toast.error(res.content)
+      }
+    })
   }
 </script>
 <template>
@@ -243,8 +258,8 @@
               </div>
               <Tag
                 class="m-3"
-                :severity="getStatusDisplay(order.orderStatus.id).severity"
-                :value="$t(getStatusDisplay(order.orderStatus.id).label)"
+                :severity="getStatusDisplay(order.orderStatusId).severity"
+                :value="$t(getStatusDisplay(order.orderStatusId).label)"
               >
               </Tag>
             </div>
@@ -263,19 +278,26 @@
               ><i class="pi pi-refresh mr-2 mb-2 md:mb-1"></i
               >{{ $t('Return') }}</a
             > -->
-            <a
+            <!-- <a
               tabindex="0"
               class="cursor-pointer py-4 flex flex-column md:flex-row text-center justify-content-center align-items-center text-primary hover:bg-primary hover:text-0 transition-duration-150 w-full"
               ><i class="pi pi-file mr-2 mb-2 md:mb-1"></i
               >{{ $t('View Invoice') }}</a
-            >
-            <!-- <a
+            > -->
+            <!-- <a 
               tabindex="0"
               class="cursor-pointer py-4 flex flex-column md:flex-row text-center justify-content-center align-items-center text-primary hover:bg-primary hover:text-0 transition-duration-150 w-full"
               style="border-bottom-right-radius: 6px"
               ><i class="pi pi-comment mr-2 mb-2 md:mb-1"></i
-              >{{ $t('Write a Review') }}</a
+              >{{ $t('Received') }}</a
             > -->
+            <Button
+              v-if="order.orderStatusId == OrderStatus.Delivered"
+              icon="pi pi-received"
+              :label="$t('Received')"
+              class="w-full h-4rem border-0 border-noround"
+              @click="receive(order.id)"
+            ></Button>
           </div>
         </div>
         <div v-else>

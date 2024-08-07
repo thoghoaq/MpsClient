@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { Order } from './types'
 import { useApi } from 'src/stores/api'
 import { appConfig } from 'src/stores'
+import { OrderStatus } from 'src/stores/types'
 const api = useApi()
 
 export const useEOrderStore = defineStore({
@@ -44,5 +45,18 @@ export const useEOrderStore = defineStore({
           return response
         })
     },
+    async receivedOrder(orderId: number) {
+      return api.put(appConfig.api.ecommerce.receiveOrder, {
+        orderId: orderId,
+      }).then((response) => {
+        if (response.success) {
+          const order = this.orders.find((o) => o.id === orderId)
+          if (order) {
+            order.orderStatusId = OrderStatus.Received
+          }
+        }
+        return response
+      })
+    }
   },
 })
