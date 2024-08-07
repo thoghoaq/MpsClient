@@ -6,6 +6,7 @@
   import { useToastStore } from 'src/stores/toast'
   import { Order } from 'src/stores/seller/order/types'
   import NumberHelper from 'src/helpers/number-helper'
+  import { OrderStatus } from 'src/stores/types'
   const toast = useToastStore()
   const { t } = useI18n()
   const orderStore = useOrderStore()
@@ -43,6 +44,12 @@
       },
     },
     {
+      label: t('Received'),
+      command: () => {
+        orderStore.filterOrders(8)
+      },
+    },
+    {
       label: t('Cancelled'),
       command: () => {
         orderStore.filterOrders(4)
@@ -68,8 +75,7 @@
     },
   ])
 
-  const onUpdateStatus = (status: number) => {
-    const orderId = parseInt(menuId.value)
+  const onUpdateStatus = (orderId: number ,status: number) => {
     orderStore.updateOrderStatus(orderId, status).then((res) => {
       if (res.success) {
         toast.success(res.content['message'])
@@ -78,37 +84,6 @@
       }
     })
   }
-
-  const actionItems = ref([
-    {
-      label: t('Pending'),
-      command: () => onUpdateStatus(1),
-    },
-    {
-      label: t('Processing'),
-      command: () => onUpdateStatus(2),
-    },
-    {
-      label: t('Delivered'),
-      command: () => onUpdateStatus(3),
-    },
-    {
-      label: t('Cancelled'),
-      command: () => onUpdateStatus(4),
-    },
-    {
-      label: t('Returned'),
-      command: () => onUpdateStatus(5),
-    },
-    {
-      label: t('Refunded'),
-      command: () => onUpdateStatus(6),
-    },
-    {
-      label: t('Completed'),
-      command: () => onUpdateStatus(7),
-    },
-  ])
 
   const getStatusDisplay = (status: any) => {
     switch (status.id) {
@@ -145,6 +120,11 @@
       case 7:
         return {
           label: 'Completed',
+          severity: 'success',
+        }
+      case 8:
+        return {
+          label: 'Received',
           severity: 'success',
         }
       default:
@@ -230,71 +210,12 @@
           <Column field="note" :header="$t('Note')" sortable></Column>
           <Column field="orderStatusId" :header="$t('Status')" sortable>
             <template #body="{ data }">
-              <Button :id="`menu_${data.id}`" text class="p-0" @click="toggle">
-                <Tag
+              <!-- <Button :id="`menu_${data.id}`" text class="p-0" @click="toggle"> -->
+                <Tag class="text-center"
                   :severity="getStatusDisplay(data.orderStatus).severity"
                   :value="$t(getStatusDisplay(data.orderStatus).label)"
                 ></Tag>
-              </Button>
-              <Menu
-                ref="menu"
-                id="overlay_menu"
-                :model="actionItems"
-                :popup="true"
-              >
-                <template #item="{ item, props }">
-                  <router-link
-                    v-if="item.route"
-                    v-slot="{ href, navigate }"
-                    :to="`${item.route}/${menuId}`"
-                    custom
-                  >
-                    <a
-                      v-ripple
-                      :href="href"
-                      v-bind="props.action"
-                      @click="navigate"
-                    >
-                      <span :class="`${item.icon} ${item.class}`" />
-                      <span :class="`ml-2 ${item.class}`">{{
-                        item.label ? $t(item.label?.toString()) : ''
-                      }}</span>
-                      <Badge
-                        v-if="item.badge"
-                        class="ml-auto"
-                        :value="item.badge"
-                      />
-                      <span
-                        v-if="item.shortcut"
-                        class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1"
-                        >{{ item.shortcut }}
-                      </span>
-                    </a>
-                  </router-link>
-                  <a
-                    v-else
-                    v-ripple
-                    class="flex align-items-center"
-                    :target="item.target"
-                    v-bind="props.action"
-                  >
-                    <span :class="`${item.icon} ${item.class}`" />
-                    <span :class="`ml-2 ${item.class}`">{{
-                      item.label ? $t(item.label?.toString()) : ''
-                    }}</span>
-                    <Badge
-                      v-if="item.badge"
-                      class="ml-auto"
-                      :value="item.badge"
-                    />
-                    <span
-                      v-if="item.shortcut"
-                      class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1"
-                      >{{ item.shortcut }}
-                    </span>
-                  </a>
-                </template>
-              </Menu>
+              <!-- </Button> -->
             </template>
           </Column>
           <Column :header="$t('Detail')">
@@ -304,6 +225,27 @@
                 text
                 :id="slotProps.data.id"
                 @click="showOrderDetails"
+              ></Button>
+            </template>
+          </Column>
+          <Column :header="$t('Action')">
+            <template #body="slotProps">
+              <Button
+                v-if="slotProps.data.orderStatusId === OrderStatus.Processing"
+                :label="$t('Delivery')"
+                icon="pi pi-truck"
+                :id="slotProps.data.id"
+                @click="onUpdateStatus(slotProps.data.id, OrderStatus.Delivered)"
+              ></Button>
+              <Button
+                v-else-if="
+                  slotProps.data.orderStatusId === OrderStatus.Delivered
+                "
+                :label="$t('Return')"
+                icon="pi pi-undo"
+                severity="warning"
+                :id="slotProps.data.id"
+                @click="onUpdateStatus(slotProps.data.id, OrderStatus.Returned)"
               ></Button>
             </template>
           </Column>

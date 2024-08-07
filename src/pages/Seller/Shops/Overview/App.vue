@@ -70,6 +70,11 @@
           label: 'Completed',
           severity: 'success',
         }
+      case 8:
+        return {
+          label: 'Received',
+          severity: 'success',
+        }
       default:
         return {
           label: 'Unknown',
