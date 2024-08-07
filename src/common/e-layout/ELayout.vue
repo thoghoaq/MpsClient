@@ -5,7 +5,9 @@
   import { useRouter } from 'vue-router'
   import { useEProductStore } from 'src/stores/ecommerce/product'
   import { isMobile } from 'src/stores'
+  import { useCartStore } from 'src/stores/cart'
   const eProductStore = useEProductStore()
+  const cartStore = useCartStore()
   const router = useRouter()
   const { t } = useI18n()
   const props = defineProps({
@@ -286,6 +288,8 @@
             <Button
               icon="pi pi-shopping-cart"
               class="p-button-rounded p-button-text"
+              :badge="cartStore.items.length > 0 ? cartStore.items.length.toString() : undefined"
+              badge-class="bg-red-500 text-white"
             />
             <div class="text-primary">{{ $t('Cart') }}</div>
           </div>
