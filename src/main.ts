@@ -72,7 +72,6 @@ import { createI18n } from 'vue-i18n'
 import { messages, defaultLocale } from './locales'
 import vi from 'src/locales/prime/vi.json'
 import './stores/firebase'
-import Fragment from 'vue-fragment'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -96,7 +95,6 @@ app.use(ConfirmationService)
 app.use(pinia)
 app.use(router)
 app.use(i18n)
-app.use(Fragment.Plugin)
 
 app.component('Layout', Layout)
 app.component('ELayout', ELayout)
