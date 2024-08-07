@@ -241,7 +241,7 @@
                   <Button
                     v-if="
                       !item.isFeedbacked &&
-                      order.orderStatusId === OrderStatus.Completed
+                      order.orderStatusId === OrderStatus.Received
                     "
                     :label="$t('Write a Review')"
                     outlined
