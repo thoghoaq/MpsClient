@@ -116,6 +116,8 @@ export const appConfig: AppConfig = {
         controllers.shop,
       ),
       productStatus: getControllerUrl('product/status', controllers.shop),
+      importProducts: getControllerUrl('products/import', controllers.shop),
+      exportProducts: getControllerUrl('products/export', controllers.shop),
     },
     ecommerce: {
       products: getControllerUrl('products', controllers.ecommerce),

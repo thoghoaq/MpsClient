@@ -4,6 +4,10 @@
   import { useConfirm } from 'primevue/useconfirm'
   import { useI18n } from 'vue-i18n'
   import { useToastStore } from 'src/stores/toast'
+  import { useApi } from 'src/stores/api'
+  import { appConfig } from 'src/stores'
+  import { ImportResponse } from 'src/stores/types'
+  const api = useApi()
   const toast = useToastStore()
   const { t } = useI18n()
   const productStore = useProductStore()
@@ -64,6 +68,63 @@
       },
     })
   }
+
+  const exportLoading = ref(false)
+  const exportProducts = () => {
+    exportLoading.value = true
+    api
+      .getFile(
+        appConfig.appendUrl(appConfig.api.shop.exportProducts, {
+          shopId: appConfig.loggedUser.shopManaging?.id,
+        }),
+      )
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.content]))
+        const link = document.createElement('a')
+        link.href
+        link.setAttribute('href', url)
+        link.setAttribute('download', 'products.xlsx')
+        link.click()
+      })
+      .finally(() => {
+        exportLoading.value = false
+      })
+  }
+
+  const importLoading = ref(false)
+  const importProducts = () => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = '.xlsx'
+    input.onchange = (event) => {
+      const files = (event.target as HTMLInputElement).files
+      const file = files ? files[0] : null
+      if (file) {
+        importLoading.value = true
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('shopId', appConfig.loggedUser.shopManaging?.id.toString() || '')
+        api
+          .post(appConfig.api.shop.importProducts, formData)
+          .then((response) => {
+            if (response.success) {
+              importResult.value = response.content
+              isShowImportResult.value = true
+              productStore.fetchProducts()
+            } else {
+              toast.error(response.content)
+            }
+          })
+          .finally(() => {
+            importLoading.value = false
+          })
+      }
+    }
+    input.click()
+  }
+
+  const importResult = ref<ImportResponse>()
+  const isShowImportResult = ref(false)
 </script>
 <template>
   <Layout>
@@ -75,6 +136,22 @@
         </template>
         <template #end>
           <div class="flex align-items-center gap-2">
+            <Button
+                icon="pi pi-download"
+                aria-label="Download"
+                outlined
+                v-tooltip.top="$t('Export Products')"
+                :loading="exportLoading"
+                @click="exportProducts"
+              />
+              <Button
+                icon="pi pi-upload"
+                aria-label="Upload"
+                outlined
+                v-tooltip.top="$t('Import Products')"
+                :loading="importLoading"
+                @click="importProducts"
+              />
             <IconField iconPosition="left">
               <InputIcon class="pi pi-search"> </InputIcon>
               <InputText

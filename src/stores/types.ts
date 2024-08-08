@@ -55,6 +55,8 @@ export interface AppConfig {
             acceptRequest: string;
             ordersInPayoutDate: string;
             productStatus: string;
+            importProducts: string;
+            exportProducts: string;
         },
         ecommerce: {
             products: string;
