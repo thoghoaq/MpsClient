@@ -300,5 +300,7 @@
   "Start/Stop selling": "Mở bán/Dừng bán",
   "Received": "Đã nhận hàng",
   "Change order status successfully": "Thay đổi trạng thái đơn hàng thành công",
-  "Delivery": "Giao hàng"
+  "Delivery": "Giao hàng",
+  "Export Products": "Xuất sản phẩm",
+  "Import Products": "Nhập sản phẩm"
 }
