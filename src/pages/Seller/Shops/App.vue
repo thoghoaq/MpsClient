@@ -107,7 +107,10 @@
               ></SplitButton>
             </div>
             <div v-else-if="!shop.isAccepted">
-              <h4 class="text-red-500">{{ $t('Rejected') }}</h4>
+              <div class="flex gap-3 align-items-center">
+                <h4 class="text-red-500">{{ $t('Rejected') }}</h4>
+                <Button :label="$t('Update')" outlined @click="$router.push({name: 'shopsUpdate', params: {id: shop.id}})" class="h-3rem w-8rem"></Button>
+              </div>
             </div>
             <div v-else>
               <Button :label="$t('Update')" outlined @click="$router.push({name: 'shopsUpdate', params: {id: shop.id}})"></Button>
