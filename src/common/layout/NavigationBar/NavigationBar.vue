@@ -66,7 +66,7 @@
       visible: appConfig.loggedUser.isManagerGroup,
       items: [
         {
-          label: 'Refund Revenue',
+          label: 'Payout Revenue',
           icon: 'pi pi-paypal',
           route: '/business/refund',
           visible: appConfig.loggedUser.isManagerGroup,

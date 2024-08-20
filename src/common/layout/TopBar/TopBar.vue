@@ -137,7 +137,7 @@
         }
       case 'refund':
         return {
-          label: t('Refund Revenue'),
+          label: t('Payout Revenue'),
           route: '/business/refund',
           class: 'm-0',
         }
