@@ -205,7 +205,7 @@
                 style="object-fit: contain"
               />
               <div
-                class="flex w-full align-items-center justify-content-between"
+                class="grid-nogutter grid gap-3 align-items-center justify-content-between"
               >
                 <div class="flex flex-column gap-2">
                   <div>{{ item.name }}</div>
