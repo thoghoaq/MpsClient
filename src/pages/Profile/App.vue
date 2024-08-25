@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { appConfig } from 'src/stores'
   import { useToastStore } from 'src/stores/toast'
-  import { reactive, ref } from 'vue'
+  import { reactive, ref, onMounted } from 'vue'
   import { useApi } from 'src/stores/api'
   import { EFileType } from 'src/stores/types'
   import useVuelidate from '@vuelidate/core'
@@ -20,6 +20,21 @@
     email: appConfig.loggedUser.data.email,
     phoneNumber: appConfig.loggedUser.data.phoneNumber,
     address: appConfig.loggedUser.data.customerAddress,
+    identityCardFront: '',
+    identityCardBack: '',
+    taxNumber: '',
+  })
+
+  onMounted(() => {
+    if (appConfig.loggedUser.isShopOwner) {
+      authStore.fetchProfile(appConfig.loggedUser.userId).then((res) => {
+        if (res.success) {
+          state.taxNumber = res.content.shopOwnerData.taxNumber
+          state.identityCardFront = res.content.shopOwnerData.identityFrontImage
+          state.identityCardBack = res.content.shopOwnerData.identityBackImage
+        }
+      })
+    }
   })
 
   const rules = {
@@ -27,6 +42,9 @@
     email: { required, email },
     phoneNumber: { required, minLength: minLength(10) },
     address: {},
+    identityCardFront: {},
+    identityCardBack: {},
+    taxNumber: {}
   }
 
   const $v = useVuelidate(rules, state)
@@ -70,6 +88,11 @@
           customerData: {
             address: state.address,
           },
+          shopOwnerData: {
+            taxNumber: state.taxNumber,
+            identityFrontImage: state.identityCardFront,
+            identityBackImage: state.identityCardBack,
+          },
         })
         .then((res) => {
           if (res.success) {
@@ -96,6 +119,18 @@
       }
     })
   }
+
+  const onUploadIdentityCardFront = async (event: any) => {
+    await onUpload(event).then((res) => {
+      if (res) state.identityCardFront = res
+    })
+  }
+
+  const onUploadIdentityCardBack = async (event: any) => {
+    await onUpload(event).then((res) => {
+      if (res) state.identityCardBack = res
+    })
+  }
 </script>
 <template>
   <Layout
@@ -109,7 +144,7 @@
           state.displayName
         }}</span>
         <div class="grid">
-          <div class="col-12 lg:col-8">
+          <div class="col-12 lg:col-8 flex flex-column gap-3">
             <div class="flex flex-column gap-2">
               <label class="required" for="avatar">{{ $t('Avatar') }}</label>
               <FileUpload
@@ -148,6 +183,98 @@
                   </div>
                 </template>
               </FileUpload>
+            </div>
+            <div class="flex gap-4 w-full">
+              <div class="flex flex-column gap-2 w-full">
+                <label>{{ $t('Identity Card Front') }}</label>
+                <div class="card w-full">
+                  <FileUpload
+                    name="demo[]"
+                    :preview-width="100"
+                    :custom-upload="true"
+                    @uploader="onUploadIdentityCardFront"
+                    :multiple="false"
+                    :auto="true"
+                    :chooseLabel="
+                      state.identityCardFront ? $t('Change') : $t('Upload')
+                    "
+                    :choose-icon="
+                      state.identityCardFront ? 'pi pi-pencil' : 'pi pi-plus'
+                    "
+                    :show-upload-button="false"
+                    :show-cancel-button="false"
+                    accept="image/*"
+                    :maxFileSize="2000000"
+                  >
+                    <template #empty>
+                      <div class="card flex" v-if="state.identityCardFront">
+                        <Image
+                          :src="state.identityCardFront"
+                          alt="IdentityCardFront"
+                          width="250"
+                          preview
+                        />
+                      </div>
+                      <div
+                        v-else
+                        class="flex align-items-center justify-content-center flex-column"
+                      >
+                        <i
+                          class="pi pi-cloud-upload border-2 border-circle p-5 text-8xl text-400 border-400"
+                        />
+                        <p class="mt-4 mb-4">
+                          {{ $t('Drag and drop files to here to upload.') }}
+                        </p>
+                      </div>
+                    </template>
+                  </FileUpload>
+                </div>
+              </div>
+              <div class="flex flex-column gap-2 w-full">
+                <label>{{ $t('Identity Card Back') }}</label>
+                <div class="card">
+                  <FileUpload
+                    name="demo[]"
+                    :preview-width="100"
+                    :custom-upload="true"
+                    @uploader="onUploadIdentityCardBack"
+                    :multiple="false"
+                    :auto="true"
+                    :chooseLabel="
+                      state.identityCardBack ? $t('Change') : $t('Upload')
+                    "
+                    :choose-icon="
+                      state.identityCardBack ? 'pi pi-pencil' : 'pi pi-plus'
+                    "
+                    :show-upload-button="false"
+                    :show-cancel-button="false"
+                    accept="image/*"
+                    :maxFileSize="2000000"
+                  >
+                    <template #empty>
+                      <div class="card flex" v-if="state.identityCardBack">
+                        <Image
+                          :src="state.identityCardBack"
+                          alt="IdentityCardBack"
+                          width="250"
+                          preview
+                        />
+                      </div>
+                      <div
+                        v-else
+                        class="flex align-items-center justify-content-center flex-column"
+                      >
+                        <i
+                          class="pi pi-cloud-upload border-2 border-circle p-5 text-8xl text-400 border-400"
+                        />
+                        <p class="mt-4 mb-4">
+                          {{ $t('Drag and drop files to here to upload.') }}
+                        </p>
+                      </div>
+                    </template>
+                  </FileUpload>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-12 lg:col-4 flex flex-column gap-3">
@@ -191,6 +318,21 @@
               />
               <small class="p-error" v-if="$v.phoneNumber.$error">{{
                 $t($v.phoneNumber.$errors[0]?.$message?.toString())
+              }}</small>
+            </div>
+            <div class="flex flex-column gap-2">
+              <label for="taxNumber">{{
+                $t('Tax Number')
+              }}</label>
+              <InputText
+                class="w-full"
+                :placeholder="$t('Tax Number')"
+                v-model="state.taxNumber"
+                :invalid="$v.taxNumber.$error"
+                @blur="$v.taxNumber.$touch"
+              />
+              <small class="p-error" v-if="$v.taxNumber.$error">{{
+                $t($v.taxNumber.$errors[0]?.$message?.toString())
               }}</small>
             </div>
             <div class="flex flex-column gap-2">

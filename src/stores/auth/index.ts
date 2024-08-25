@@ -18,6 +18,7 @@ export const useAuthStore = defineStore({
     userDevice: <UserDevice | undefined>(
       JSON.parse(localStorage.getItem('userDevice') || '{}')
     ),
+    userProfile: <any>{},
   }),
   actions: {
     async login(email: string, password: string): Promise<APIResponse<any>> {
@@ -277,5 +278,13 @@ export const useAuthStore = defineStore({
           return response
         })
     },
+    async fetchProfile(userId: number) {
+      return api
+        .get(`${appConfig.api.account.details}/${userId}`)
+        .then((response) => {
+          this.userProfile = response.content
+          return response
+        })
+    }
   },
 })
