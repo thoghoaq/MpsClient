@@ -272,7 +272,7 @@
           </DataTable>
           <Button
             type="button"
-            severity="contrast"
+            severity="danger"
             :label="$t('CHECKOUT')"
             class="w-10rem"
             @click="
