@@ -205,7 +205,7 @@
                 style="object-fit: contain"
               />
               <div
-                class="grid-nogutter grid gap-3 align-items-center justify-content-between"
+                class="flex flex-column align-items-center justify-content-between"
               >
                 <div class="flex flex-column gap-2">
                   <div>{{ item.name }}</div>
@@ -214,27 +214,27 @@
                       NumberHelper.formatCurrency(item.price * item.quantity)
                     }}
                   </div>
-                </div>
-                <div class="w-10rem">
-                  <InputNumber
-                    v-model="item.quantity"
-                    showButtons
-                    buttonLayout="horizontal"
-                    :step="1"
-                    :min="0"
-                    :max="10"
-                    class="w-5rem"
-                    input-class="w-3rem"
-                    :allow-empty="false"
-                    @update:model-value="cartStore.updateQuantity()"
-                  >
-                    <template #incrementbuttonicon>
-                      <span class="pi pi-plus" />
-                    </template>
-                    <template #decrementbuttonicon>
-                      <span class="pi pi-minus" />
-                    </template>
-                  </InputNumber>
+                  <div class="w-10rem">
+                    <InputNumber
+                      v-model="item.quantity"
+                      showButtons
+                      buttonLayout="horizontal"
+                      :step="1"
+                      :min="0"
+                      :max="10"
+                      class="w-5rem"
+                      input-class="w-3rem"
+                      :allow-empty="false"
+                      @update:model-value="cartStore.updateQuantity()"
+                    >
+                      <template #incrementbuttonicon>
+                        <span class="pi pi-plus" />
+                      </template>
+                      <template #decrementbuttonicon>
+                        <span class="pi pi-minus" />
+                      </template>
+                    </InputNumber>
+                  </div>
                 </div>
               </div>
             </div>
