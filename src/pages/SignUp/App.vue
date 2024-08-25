@@ -8,6 +8,7 @@
   import { useI18n } from 'vue-i18n'
   import { ERole } from 'src/stores/types'
   const fullName = helpers.regex(/^[\p{L}\p{M}]+([\p{L}\p{M} '-]*[\p{L}\p{M}]+)*$/u)
+  const passwordRegex = helpers.regex(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,}$/)
   const { t } = useI18n()
   const authStore = useAuthStore()
   const toast = useToastStore()
@@ -28,7 +29,7 @@
       required,
       email,
     },
-    password: { required, minLength: minLength(8) },
+    password: { required, minLength: minLength(8), password: helpers.withMessage('Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character', passwordRegex) },
     asShopOwner: {},
     readTerm: {
       sameAs: sameAs(true)
