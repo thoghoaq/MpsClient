@@ -7,7 +7,7 @@
   import { useI18n } from 'vue-i18n'
   import { getMessage } from 'src/locales'
   import { useShopStore } from './stores/seller/shop'
-  import { appConfig } from './stores'
+  import { appConfig, isMobile } from './stores'
   import { initFirebaseMessaging } from './stores/firebase'
   import { getDeviceInfo } from 'src/helpers/device-helper'
   import { useAuthStore } from './stores/auth'
@@ -100,6 +100,6 @@
 </script>
 
 <template>
-  <Toast />
+  <Toast :position="isMobile ? 'top-center' : 'top-right'" />
   <router-view :key="$route.fullPath"/>
 </template>
