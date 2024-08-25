@@ -16,4 +16,5 @@ export interface Shop {
     createdAt:   Date;
     updatedAt:   Date | null;
     payPalAccount: string | null;
+    comment: string | null;
 }

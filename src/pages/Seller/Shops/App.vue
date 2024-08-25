@@ -108,8 +108,11 @@
             </div>
             <div v-else-if="!shop.isAccepted">
               <div class="flex gap-3 align-items-center">
-                <h4 class="text-red-500">{{ $t('Rejected') }}</h4>
-                <Button :label="$t('Update')" outlined @click="$router.push({name: 'shopsUpdate', params: {id: shop.id}})" class="h-3rem w-8rem"></Button>
+                <div class="flex flex-column text-right">
+                  <div class="text-red-500 text-lg font-bold">{{ $t('Rejected') }}</div>
+                  <div>{{ shop.comment }}</div>
+                </div>
+                <Button :label="$t('Update')" outlined @click="$router.push({name: 'shopsUpdate', params: {id: shop.id}})"></Button>
               </div>
             </div>
             <div v-else>
