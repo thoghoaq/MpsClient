@@ -205,7 +205,7 @@
                   </div>
                   <div class="font-bold">
                     {{
-                      `${$t('Total Platform Earned')}: ${NumberHelper.formatCurrency(payoutStore.totalRevenue - payoutStore.totalPaidout)}`
+                      `${$t('Total Platform Hold')}: ${NumberHelper.formatCurrency(payoutStore.totalRevenue - payoutStore.totalPaidout)}`
                     }}
                   </div>
                 </div>
