@@ -91,7 +91,7 @@
             </div>
           </div>
           <div>
-            <div v-if="shop.isActive" class="mt-3 lg:mt-0 flex gap-2">
+            <div v-if="shop.isActive" class="mt-3 lg:mt-0 flex flex-column gap-2">
               <SplitButton
                 :label="$t('Manage')"
                 icon="pi pi-cog"
@@ -105,6 +105,7 @@
                 ]"
                 @click="initShopManagement(shop)"
               ></SplitButton>
+              <div v-if="shop.processingOrderCount > 0" class="text-red-500">{{ `${shop.processingOrderCount} ${$t('processing order')}` }}</div>
             </div>
             <div v-else-if="!shop.isAccepted">
               <div class="flex gap-3 align-items-center">

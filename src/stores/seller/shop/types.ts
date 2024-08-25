@@ -17,4 +17,5 @@ export interface Shop {
     updatedAt:   Date | null;
     payPalAccount: string | null;
     comment: string | null;
+    processingOrderCount: number;
 }

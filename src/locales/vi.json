@@ -302,5 +302,6 @@
   "Change order status successfully": "Thay đổi trạng thái đơn hàng thành công",
   "Delivery": "Giao hàng",
   "Export Products": "Xuất sản phẩm",
-  "Import Products": "Nhập sản phẩm"
+  "Import Products": "Nhập sản phẩm",
+  "processing order": "đơn hàng cần xử lý"
 }
