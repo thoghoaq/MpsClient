@@ -203,11 +203,11 @@
     settingStore.changeScale(value)
   })
 
-  onMounted(() => {
-    if (props.getNotifications) {
-      notificationStore.getNotifications()
-    }
-  })
+  // onMounted(() => {
+  //   if (props.getNotifications) {
+  //     notificationStore.getNotifications()
+  //   }
+  // })
   const op = ref()
   const toggle = (event: any) => {
     op.value.toggle(event)
@@ -279,7 +279,7 @@
             class="p-button-rounded p-button-text"
             @click="showSettings = true"
           />
-          <Button
+          <!-- <Button
             icon="pi pi-bell"
             class="p-button-rounded p-button-text"
             @click="toggle"
@@ -289,7 +289,7 @@
                 : undefined
             "
             badge-class="p-badge-danger p-badge-rounded p-badge-no-gutter"
-          />
+          /> -->
           <OverlayPanel ref="op">
             <div style="min-width: 30rem;" class="flex flex-column gap-2">
               <div class="font-bold text-lg py-2">{{ $t('Notifications') }}</div>
