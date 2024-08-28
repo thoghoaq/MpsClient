@@ -189,7 +189,7 @@
                 <label for="readTerm" class="text-900 font-medium mr-2">
                   {{ $t('I have read the') }}
                 </label>
-                <router-link to="/" target="_blank" rel="noopener">
+                <router-link :to="state.asShopOwner ? '/policy/seller' : '/policy/customer'">
                   <Button
                     :label="$t('Terms and Conditions')"
                     link

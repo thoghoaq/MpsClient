@@ -36,6 +36,10 @@ import VnPay from '../pages/VnPay/Redirect/App.vue'
 import VnPayReturn from '../pages/VnPay/Return/App.vue'
 import EOrders from '../pages/Order/App.vue'
 
+/** Policy */
+import CustomerPolicy from '../pages/Policy/Customer/App.vue'
+import SellerPolicy from '../pages/Policy/Seller/App.vue'
+
 export const routes = [
   { path: '/', name: 'home', component: Home },
   { path: '/sign-in', name: 'signIn', component: SignIn },
@@ -161,5 +165,21 @@ export const routes = [
     path: '/profile',
     name: 'profile',
     component: Profile,
+  },
+  {
+    path: '/policy',
+    name: 'policy',
+    children: [
+      {
+        path: 'customer',
+        name: 'customerPolicy',
+        component: CustomerPolicy,
+      },
+      {
+        path: 'seller',
+        name: 'sellerPolicy',
+        component: SellerPolicy,
+      }
+    ]
   }
 ]

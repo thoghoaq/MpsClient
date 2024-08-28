@@ -415,6 +415,14 @@
               </div>
             </Button>
           </router-link>
+          <router-link v-if="appConfig.loggedUser.isShopOwner" to="/policy/seller">
+            <Button severity="primary" class="w-full" outlined>
+              <i class="pi pi-question-circle px-2"></i>
+              <div class="flex flex-column text-left m-3">
+                <span>{{ $t('Terms and Conditions') }}</span>
+              </div>
+            </Button>
+          </router-link>
           <Button severity="danger" class="w-full" outlined @click="logout">
             <i class="pi pi-power-off px-2"></i>
             <div class="flex flex-column text-left m-3">

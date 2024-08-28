@@ -32,6 +32,7 @@
     city: '',
     description: '',
     avatar: '',
+    businessLicenseImage: '',
     cover: '',
     payPalAccount: '',
     latitude: <Number | null>null,
@@ -96,6 +97,13 @@
     })
   }
 
+  const onUploadBusinessLicense = async (event: any) => {
+    await onUpload(event).then((res) => {
+      if (res) state.businessLicenseImage = res
+    })
+  }
+
+
   const loading = ref(false)
 
   const submit = function () {
@@ -114,6 +122,7 @@
         payPalAccount: state.payPalAccount,
         latitude: state.latitude,
         longitude: state.longitude,
+        businessLicenseImage: state.businessLicenseImage
       }
       if (shopId) {
         api
@@ -565,6 +574,47 @@ Latitude: ${lngLat.lat}`
                       <Image
                         :src="state.avatar"
                         alt="Avatar"
+                        width="250"
+                        preview
+                      />
+                    </div>
+                    <div
+                      v-else
+                      class="flex align-items-center justify-content-center flex-column"
+                    >
+                      <i
+                        class="pi pi-cloud-upload border-2 border-circle p-5 text-8xl text-400 border-400"
+                      />
+                      <p class="mt-4 mb-4">
+                        {{ $t('Drag and drop files to here to upload.') }}
+                      </p>
+                    </div>
+                  </template>
+                </FileUpload>
+              </div>
+            </div>
+            <div class="flex flex-column gap-2">
+              <label>{{ $t('Business License') }}</label>
+              <div class="card w-30rem">
+                <FileUpload
+                  name="demo[]"
+                  :preview-width="100"
+                  :custom-upload="true"
+                  @uploader="onUploadBusinessLicense"
+                  :multiple="false"
+                  :auto="true"
+                  :chooseLabel="state.businessLicenseImage ? $t('Change') : $t('Upload')"
+                  :choose-icon="state.businessLicenseImage ? 'pi pi-pencil' : 'pi pi-plus'"
+                  :show-upload-button="false"
+                  :show-cancel-button="false"
+                  accept="image/*"
+                  :maxFileSize="2000000"
+                >
+                  <template #empty>
+                    <div class="card flex" v-if="state.businessLicenseImage">
+                      <Image
+                        :src="state.businessLicenseImage"
+                        alt="BusinessLicense"
                         width="250"
                         preview
                       />
