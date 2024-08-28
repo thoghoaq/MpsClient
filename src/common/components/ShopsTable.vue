@@ -49,6 +49,17 @@
       </template>
     </Column>
     <Column field="payPalAccount" sortable :header="$t('Paypal')"> </Column>
+    <Column field="businessLicenseImage" :header="$t('Business License')">
+      <template #body="slotProps">
+        <Image
+          v-if="slotProps.data.businessLicenseImage"
+          :src="slotProps.data.businessLicenseImage"
+          :alt="`BusinessLicenseImage ${slotProps.data.id}`"
+          height="50"
+          preview
+        />
+      </template>
+    </Column>
     <Column field="createdAt" sortable :header="$t('Created At')">
       <template #body="{ data }">
         {{ DateTimeHelper.format(data.createdAt, 'datetime') }}

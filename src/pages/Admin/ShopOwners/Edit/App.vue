@@ -28,6 +28,10 @@
         state.email = shopOwner.email
         state.phoneNumber = shopOwner.phoneNumber ?? ''
         state.avatarFile = shopOwner.avatarPath ?? ''
+        state.identityCardFront =
+          shopOwner.shopOwnerData.identityFrontImage ?? ''
+        state.identityCardBack = shopOwner.shopOwnerData.identityBackImage ?? ''
+        state.taxNumber = shopOwner.shopOwnerData.taxNumber ?? ''
       })
     }
   })
@@ -37,6 +41,9 @@
     email: '',
     phoneNumber: '',
     avatarFile: '',
+    identityCardFront: '',
+    identityCardBack: '',
+    taxNumber: '',
   })
 
   const rules = {
@@ -49,6 +56,9 @@
     },
     phoneNumber: { minLength: minLength(10) },
     avatarFile: {},
+    identityCardFront: {},
+    identityCardBack: {},
+    taxNumber: {}
   }
 
   const v$ = useVuelidate(rules, state)
@@ -184,9 +194,24 @@
           </div>
           <div class="flex flex-column gap-2">
             <label for="phoneNumber">{{ $t('Phone Number') }}</label>
-            <InputText v-model="state.phoneNumber" :disabled="!canEdit" @blur="v$.phoneNumber.$touch"/>
+            <InputText
+              v-model="state.phoneNumber"
+              :disabled="!canEdit"
+              @blur="v$.phoneNumber.$touch"
+            />
             <small class="p-error" v-if="v$.phoneNumber.$error">{{
               $t(v$.phoneNumber.$errors[0]?.$message?.toString())
+            }}</small>
+          </div>
+          <div class="flex flex-column gap-2">
+            <label for="taxNumber">{{ $t('Tax Number') }}</label>
+            <InputText
+              v-model="state.taxNumber"
+              :disabled="!canEdit"
+              @blur="v$.taxNumber.$touch"
+            />
+            <small class="p-error" v-if="v$.taxNumber.$error">{{
+              $t(v$.taxNumber.$errors[0]?.$message?.toString())
             }}</small>
           </div>
           <div class="flex flex-column gap-2">
@@ -194,7 +219,11 @@
             <div class="card w-30rem">
               <div class="card flex" v-if="!canEdit">
                 <Image
-                  :src="state.avatarFile ? state.avatarFile : 'https://via.placeholder.com/250'"
+                  :src="
+                    state.avatarFile
+                      ? state.avatarFile
+                      : 'https://via.placeholder.com/250'
+                  "
                   alt="Avatar"
                   width="250"
                   preview
@@ -237,6 +266,38 @@
                   </div>
                 </template>
               </FileUpload>
+            </div>
+          </div>
+          <div class="flex gap-5">
+            <div class="flex flex-column gap-2">
+              <label>{{ $t('Identity Card Front') }}</label>
+              <div class="card flex">
+                <Image
+                  :src="
+                    state.identityCardFront
+                      ? state.identityCardFront
+                      : 'https://via.placeholder.com/250'
+                  "
+                  alt="Front"
+                  width="250"
+                  preview
+                />
+              </div>
+            </div>
+            <div class="flex flex-column gap-2">
+              <label>{{ $t('Identity Card Back') }}</label>
+              <div class="card flex">
+                <Image
+                  :src="
+                    state.identityCardBack
+                      ? state.identityCardBack
+                      : 'https://via.placeholder.com/250'
+                  "
+                  alt="Back"
+                  width="250"
+                  preview
+                />
+              </div>
             </div>
           </div>
           <Button

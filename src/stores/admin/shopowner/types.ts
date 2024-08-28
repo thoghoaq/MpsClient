@@ -11,10 +11,13 @@ export interface ShopOwner {
     updatedAt:   Date | null;
     userDevices: null;
     shopOwner: ShopOwnerInfo;
+    shopOwnerData: ShopOwnerData;
 }
 
 export interface ShopOwnerData {
-
+    identityFrontImage: string | null;
+    identityBackImage:  string | null;
+    taxNumber:          string | null;
 }
 
 export interface ShopOwnerEdit {

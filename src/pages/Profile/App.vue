@@ -184,7 +184,7 @@
                 </template>
               </FileUpload>
             </div>
-            <div class="flex gap-4 w-full">
+            <div class="flex gap-4 w-full" v-if="appConfig.loggedUser.isShopOwner">
               <div class="flex flex-column gap-2 w-full">
                 <label>{{ $t('Identity Card Front') }}</label>
                 <div class="card w-full">
@@ -320,7 +320,7 @@
                 $t($v.phoneNumber.$errors[0]?.$message?.toString())
               }}</small>
             </div>
-            <div class="flex flex-column gap-2">
+            <div class="flex flex-column gap-2" v-if="appConfig.loggedUser.isShopOwner">
               <label for="taxNumber">{{
                 $t('Tax Number')
               }}</label>

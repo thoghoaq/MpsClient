@@ -16,4 +16,5 @@ export interface Shop {
     payPalAccount: string;
     createdAt:     Date;
     updatedAt:     Date;
+    businessLicenseImage: string | null;
 }
