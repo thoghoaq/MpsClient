@@ -75,7 +75,7 @@
     },
   ])
 
-  const onUpdateStatus = (orderId: number ,status: number) => {
+  const onUpdateStatus = (orderId: number, status: number) => {
     orderStore.updateOrderStatus(orderId, status).then((res) => {
       if (res.success) {
         toast.success(res.content['message'])
@@ -153,6 +153,7 @@
 
   const op = ref()
   const selectedOrder = ref<Order>()
+  const activeIndex = ref(0)
 </script>
 <template>
   <Layout>
@@ -161,8 +162,19 @@
         <template #start>
           <h3>{{ $t('Your Orders') }}</h3>
         </template>
+        <template #end>
+          <Button
+            icon="pi pi-refresh"
+            rounded
+            outlined
+            @click="() => {
+              orderStore.fetchOrders()
+              activeIndex = 0
+            }"
+          />
+        </template>
       </Menubar>
-      <TabMenu :model="items" />
+      <TabMenu :model="items" v-model:activeIndex="activeIndex"/>
       <div class="card m-3">
         <DataTable
           :value="orderStore.orders"
@@ -211,10 +223,11 @@
           <Column field="orderStatusId" :header="$t('Status')" sortable>
             <template #body="{ data }">
               <!-- <Button :id="`menu_${data.id}`" text class="p-0" @click="toggle"> -->
-                <Tag class="text-center"
-                  :severity="getStatusDisplay(data.orderStatus).severity"
-                  :value="$t(getStatusDisplay(data.orderStatus).label)"
-                ></Tag>
+              <Tag
+                class="text-center"
+                :severity="getStatusDisplay(data.orderStatus).severity"
+                :value="$t(getStatusDisplay(data.orderStatus).label)"
+              ></Tag>
               <!-- </Button> -->
             </template>
           </Column>
@@ -235,7 +248,9 @@
                 :label="$t('Delivery')"
                 icon="pi pi-truck"
                 :id="slotProps.data.id"
-                @click="onUpdateStatus(slotProps.data.id, OrderStatus.Delivered)"
+                @click="
+                  onUpdateStatus(slotProps.data.id, OrderStatus.Delivered)
+                "
               ></Button>
               <Button
                 v-else-if="
