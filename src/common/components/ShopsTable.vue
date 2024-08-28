@@ -2,6 +2,7 @@
   import { ref, PropType } from 'vue'
   import DateTimeHelper from 'src/helpers/datetime-helper'
   import { Shop } from 'src/stores/admin/shop-manage/types'
+  import { appConfig } from 'src/stores'
   const selectedKey = ref()
 
   const props = defineProps({
@@ -81,7 +82,7 @@
         ></i>
       </template>
     </Column>
-    <Column :header="$t('Action')" field="id">
+    <Column :header="$t('Action')" field="id" v-if="appConfig.loggedUser.isAdminGroup">
       <template #body="{ data }">
         <router-link
           :to="{
