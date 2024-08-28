@@ -354,6 +354,7 @@ Latitude: ${lngLat.lat}`
           isActive.value = shop.isActive
           state.latitude = shop.latitude
           state.longitude = shop.longitude
+          state.businessLicenseImage = shop.businessLicenseImage ?? ''
         } else {
           toast.error(res.content)
         }

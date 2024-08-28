@@ -18,4 +18,5 @@ export interface Shop {
     payPalAccount: string | null;
     comment: string | null;
     processingOrderCount: number;
+    businessLicenseImage: string | null;
 }
