@@ -132,6 +132,18 @@
       }
     }
   })
+
+  const getLogoDisplay = () => {
+    if (appConfig.loggedUser.isAdminGroup) {
+      return 'Admin'
+    }
+    if (appConfig.loggedUser.isManagerGroup) {
+      return 'Staff'
+    }
+    if (appConfig.loggedUser.isShopOwner) {
+      return 'ShopOwner'
+    }
+  }
 </script>
 <template>
   <div v-if="props.visible" class="card flex justify-content-center h-screen">
@@ -160,7 +172,7 @@
           <router-link v-else to="/">
             <span class="inline-flex align-items-center gap-1 px-2 py-4">
               <span class="font-medium text-xl font-semibold"
-                >MPC<span class="text-primary">Admin</span></span
+                >MPC<span class="text-primary">{{ getLogoDisplay() }}</span></span
               >
             </span>
           </router-link>
